@@ -396,7 +396,6 @@ void compute_once()
 {
 	struct pkt_data dummy;
 
-	CounterSz = sizeof(dummy.pkt_len);
 	PdataSz = sizeof(struct pkt_data);
 	PpayloadSz = sizeof(struct pkt_payload);
 	PextrasSz = sizeof(struct pkt_extras);
