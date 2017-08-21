@@ -1353,7 +1353,6 @@ void compute_once()
 	SFSampleSz = sizeof(SFSample);
 	SFLAddressSz = sizeof(SFLAddress);
 	SFrenormEntrySz = sizeof(struct xflow_status_entry_sampling);
-	UDPHdrSz = sizeof(struct pm_udphdr);
 
 #if defined ENABLE_IPV6
 	IP6HdrSz = sizeof(struct ip6_hdr);

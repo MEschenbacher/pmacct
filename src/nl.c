@@ -399,7 +399,6 @@ void compute_once()
 	MyTLHdrSz = sizeof(struct pm_tlhdr);
 	TCPFlagOff = 13;
 	MyTCPHdrSz = TCPFlagOff+1;
-	UDPHdrSz = 8;
 	IpFlowCmnSz = sizeof(struct ip_flow_common);
 #if defined ENABLE_IPV6
 	IP6HdrSz = sizeof(struct ip6_hdr);

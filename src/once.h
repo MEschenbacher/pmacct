@@ -55,12 +55,13 @@
 #define IP4TlSz (sizeof(struct pm_iphdr)+sizeof(struct pm_tlhdr))
 #define CSSz (sizeof(struct class_st))
 #define HostAddrSz (sizeof(struct host_addr))
+#define UDPHdrSz (sizeof(struct pm_udphdr))
 
 u_int32_t IpFixHdrSz;
 u_int32_t IP6HdrSz, IP6AddrSz, IP6TlSz;
 u_int32_t MyTLHdrSz, TCPFlagOff;
 u_int32_t SFSampleSz, SFLAddressSz, SFrenormEntrySz;
-u_int32_t UDPHdrSz, MyTCPHdrSz, IpFlowCmnSz;
+u_int32_t MyTCPHdrSz, IpFlowCmnSz;
 
 
 #endif /* _ONCE_H_ */
