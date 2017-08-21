@@ -38,8 +38,9 @@
 #define PtunSz (sizeof(struct pkt_tunnel_primitives))
 #define PvhdrSz (sizeof(struct pkt_vlen_hdr_primitives))
 #define PmLabelTSz (sizeof(pm_label_t))
+#define CharPtrSz (sizeof(char *))
 
-u_int32_t CharPtrSz, HostAddrSz;
+u_int32_t HostAddrSz;
 u_int32_t NfHdrV5Sz, NfHdrV1Sz, NfHdrV7Sz, NfHdrV8Sz, NfHdrV9Sz;
 u_int32_t IpFixHdrSz;
 u_int32_t NfDataHdrV9Sz, NfTplHdrV9Sz, NfOptTplHdrV9Sz;
