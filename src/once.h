@@ -47,10 +47,10 @@
 #define NfDataHdrV9Sz (sizeof(struct data_hdr_v9))
 #define NfTplHdrV9Sz (sizeof(struct template_hdr_v9))
 #define NfTplFieldV9Sz (sizeof(struct template_field_v9))
+#define NfOptTplHdrV9Sz (sizeof(struct options_template_hdr_v9))
 
 u_int32_t HostAddrSz;
 u_int32_t IpFixHdrSz;
-u_int32_t NfOptTplHdrV9Sz;
 u_int32_t NfDataV1Sz, NfDataV5Sz, NfDataV7Sz;
 u_int32_t IP4HdrSz, IP4TlSz, IP6HdrSz, IP6AddrSz, IP6TlSz;
 u_int32_t MyTLHdrSz, TCPFlagOff;
