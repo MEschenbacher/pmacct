@@ -2147,8 +2147,6 @@ void compute_once()
 {
 	struct pkt_data dummy;
 
-	IpFixHdrSz = sizeof(struct struct_header_ipfix);
-
 #if defined ENABLE_IPV6
 	IP6HdrSz = sizeof(struct ip6_hdr);
 	IP6AddrSz = sizeof(struct in6_addr);
