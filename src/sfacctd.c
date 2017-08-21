@@ -1350,7 +1350,6 @@ void compute_once()
 {
 	struct pkt_data dummy;
 
-	PnatSz = sizeof(struct pkt_nat_primitives);
 	PmplsSz = sizeof(struct pkt_mpls_primitives);
 	PtunSz = sizeof(struct pkt_tunnel_primitives);
 	PvhdrSz = sizeof(struct pkt_vlen_hdr_primitives);
