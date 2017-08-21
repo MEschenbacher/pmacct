@@ -26,7 +26,9 @@
 #else
 #endif
 
-u_int32_t PdataSz, ChBufHdrSz, CharPtrSz, HostAddrSz;
+#define PdataSz (sizeof(struct pkt_data))
+
+u_int32_t ChBufHdrSz, CharPtrSz, HostAddrSz;
 u_int32_t PpayloadSz, PextrasSz, PmsgSz, PvhdrSz, PtLabelTSz;
 u_int32_t PmLabelTSz;
 u_int32_t NfHdrV5Sz, NfHdrV1Sz, NfHdrV7Sz, NfHdrV8Sz, NfHdrV9Sz;

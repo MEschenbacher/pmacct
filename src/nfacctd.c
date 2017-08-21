@@ -2147,7 +2147,6 @@ void compute_once()
 {
 	struct pkt_data dummy;
 
-	PdataSz = sizeof(struct pkt_data);
 	PpayloadSz = sizeof(struct pkt_payload);
 	PmsgSz = sizeof(struct pkt_msg);
 	PextrasSz = sizeof(struct pkt_extras);
