@@ -42,22 +42,6 @@ char pmtele_globstr[] = "pmtelemetryd\0";
 char pmbgpd_globstr[] = "pmbgpd\0";
 char pmbmpd_globstr[] = "pmbmpd\0";
 
-/*
- * NEWSTR -- Create a copy of a C string
- */
-
-char *spt_newstr(s)
-const char *s;
-{
-	size_t l;
-	char *n;
-
-	l = strlen(s);
-	n = malloc(l + 1);
-	strlcpy(n, s, l + 1);
-
-	return n;
-}
 
 #ifndef SPT_TYPE
 #  define SPT_TYPE	SPT_NONE
