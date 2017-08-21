@@ -1349,10 +1349,6 @@ void process_SF_raw_packet(SFSample *spp, struct packet_ptrs_vector *pptrsv,
 void compute_once()
 {
 	struct pkt_data dummy;
-
-#if defined ENABLE_IPV6
-	IP6TlSz = sizeof(struct ip6_hdr)+sizeof(struct pm_tlhdr);
-#endif
 }
 
 void SF_notify_malf_packet(short int severity, char *ostr, struct sockaddr *sa)

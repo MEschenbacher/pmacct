@@ -65,8 +65,7 @@
 #ifdef ENABLE_IPV6
 #define IP6HdrSz (sizeof(struct ip6_hdr))
 #define IP6AddrSz (sizeof(struct in6_addr))
+#define IP6TlSz (sizeof(struct ip6_hdr)+sizeof(struct pm_tlhdr))
 #endif
-
-u_int32_t IP6TlSz;
 
 #endif /* _ONCE_H_ */
