@@ -20,11 +20,8 @@
 */
 
 #if (!defined __NDPI_UTIL_C)
-#define EXT extern
 #else
-#define EXT
 #endif
 /* prototypes */
-EXT struct pm_ndpi_workflow *pm_ndpi_workflow_init();
-EXT void pm_ndpi_export_proto_to_class(struct pm_ndpi_workflow *);
-#undef EXT
+struct pm_ndpi_workflow *pm_ndpi_workflow_init();
+void pm_ndpi_export_proto_to_class(struct pm_ndpi_workflow *);

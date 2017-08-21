@@ -36,12 +36,9 @@
 
 /* vars */
 #if (!defined __PMACCTD_C) && (!defined __NFACCTD_C) && (!defined __SFACCTD_C) && (!defined __UACCTD_C) && (!defined __PMTELEMETRYD_C) && (!defined __PMACCT_CLIENT_C) && (!defined __PMBGPD_C) && (!defined __PMBMPD_C)
-#define EXT extern
 #else
-#define EXT
 #endif
-EXT int protocols_number;
-#undef EXT
+int protocols_number;
 
 /* structures */
 static const struct _primitives_matrix_struct _primitives_matrix[] = {

@@ -49,22 +49,19 @@ struct bgp_dump_stats {
 
 /* prototypes */
 #if (!defined __BGP_LOGDUMP_C)
-#define EXT extern
 #else
-#define EXT
 #endif
-EXT int bgp_peer_log_init(struct bgp_peer *, int, int);
-EXT int bgp_peer_log_close(struct bgp_peer *, int, int);
-EXT void bgp_peer_log_seq_init(u_int64_t *);
-EXT void bgp_peer_log_seq_increment(u_int64_t *);
-EXT void bgp_peer_log_dynname(char *, int, char *, struct bgp_peer *);
-EXT int bgp_peer_log_msg(struct bgp_node *, struct bgp_info *, afi_t, safi_t, char *, int, int);
-EXT int bgp_peer_dump_init(struct bgp_peer *, int, int);
-EXT int bgp_peer_dump_close(struct bgp_peer *, struct bgp_dump_stats *, int, int);
-EXT void bgp_handle_dump_event();
-EXT void bgp_daemon_msglog_init_amqp_host();
-EXT void bgp_table_dump_init_amqp_host();
-EXT int bgp_daemon_msglog_init_kafka_host();
-EXT int bgp_table_dump_init_kafka_host();
-#undef EXT
+int bgp_peer_log_init(struct bgp_peer *, int, int);
+int bgp_peer_log_close(struct bgp_peer *, int, int);
+void bgp_peer_log_seq_init(u_int64_t *);
+void bgp_peer_log_seq_increment(u_int64_t *);
+void bgp_peer_log_dynname(char *, int, char *, struct bgp_peer *);
+int bgp_peer_log_msg(struct bgp_node *, struct bgp_info *, afi_t, safi_t, char *, int, int);
+int bgp_peer_dump_init(struct bgp_peer *, int, int);
+int bgp_peer_dump_close(struct bgp_peer *, struct bgp_dump_stats *, int, int);
+void bgp_handle_dump_event();
+void bgp_daemon_msglog_init_amqp_host();
+void bgp_table_dump_init_amqp_host();
+int bgp_daemon_msglog_init_kafka_host();
+int bgp_table_dump_init_kafka_host();
 #endif

@@ -70,19 +70,16 @@ struct ecommunity_val {
 #define ecom_length(X)    ((X)->size * ECOMMUNITY_SIZE)
 
 #if (!defined __BGP_ECOMMUNITY_C)
-#define EXT extern
 #else
-#define EXT
 #endif
-EXT void ecommunity_init (int, struct hash **);
-EXT void ecommunity_free (struct ecommunity *);
-EXT struct ecommunity *ecommunity_new (struct bgp_peer *);
-EXT struct ecommunity *ecommunity_parse (struct bgp_peer *, u_int8_t *, u_short);
-EXT struct ecommunity *ecommunity_intern (struct bgp_peer *, struct ecommunity *);
-EXT int ecommunity_cmp (const void *, const void *);
-EXT void ecommunity_unintern (struct bgp_peer *, struct ecommunity *);
-EXT unsigned int ecommunity_hash_make (void *);
-EXT char *ecommunity_ecom2str (struct bgp_peer *, struct ecommunity *, int);
+void ecommunity_init (int, struct hash **);
+void ecommunity_free (struct ecommunity *);
+struct ecommunity *ecommunity_new (struct bgp_peer *);
+struct ecommunity *ecommunity_parse (struct bgp_peer *, u_int8_t *, u_short);
+struct ecommunity *ecommunity_intern (struct bgp_peer *, struct ecommunity *);
+int ecommunity_cmp (const void *, const void *);
+void ecommunity_unintern (struct bgp_peer *, struct ecommunity *);
+unsigned int ecommunity_hash_make (void *);
+char *ecommunity_ecom2str (struct bgp_peer *, struct ecommunity *, int);
 
-#undef EXT
 #endif

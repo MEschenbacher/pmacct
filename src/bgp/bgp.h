@@ -255,38 +255,32 @@ struct bgp_comm_range {
 
 /* prototypes */
 #if (!defined __BGP_C)
-#define EXT extern
 #else
-#define EXT
 #endif
-EXT void nfacctd_bgp_wrapper();
-EXT void skinny_bgp_daemon();
-EXT void skinny_bgp_daemon_online();
-EXT void skinny_bgp_daemon_offline();
-EXT void bgp_prepare_thread();
-EXT void bgp_prepare_daemon();
+void nfacctd_bgp_wrapper();
+void skinny_bgp_daemon();
+void skinny_bgp_daemon_online();
+void skinny_bgp_daemon_offline();
+void bgp_prepare_thread();
+void bgp_prepare_daemon();
 
-EXT void bgp_offline_read_file_spool(char *, time_t, void **);
-EXT int bgp_offline_read_json(char *, char *, int, void **);
-#undef EXT
+void bgp_offline_read_file_spool(char *, time_t, void **);
+int bgp_offline_read_json(char *, char *, int, void **);
 
 /* global variables */
 #if (!defined __BGP_C)
-#define EXT extern
 #else
-#define EXT
 #endif
-EXT struct bgp_peer *peers;
-EXT void *offline_peers;
-EXT char *std_comm_patterns[MAX_BGP_COMM_PATTERNS];
-EXT char *ext_comm_patterns[MAX_BGP_COMM_PATTERNS];
-EXT char *lrg_comm_patterns[MAX_BGP_COMM_PATTERNS];
-EXT char *std_comm_patterns_to_asn[MAX_BGP_COMM_PATTERNS];
-EXT struct bgp_comm_range peer_src_as_ifrange;
-EXT struct bgp_comm_range peer_src_as_asrange;
-EXT u_int32_t (*bgp_route_info_modulo)(struct bgp_peer *, path_id_t *, int);
+struct bgp_peer *peers;
+void *offline_peers;
+char *std_comm_patterns[MAX_BGP_COMM_PATTERNS];
+char *ext_comm_patterns[MAX_BGP_COMM_PATTERNS];
+char *lrg_comm_patterns[MAX_BGP_COMM_PATTERNS];
+char *std_comm_patterns_to_asn[MAX_BGP_COMM_PATTERNS];
+struct bgp_comm_range peer_src_as_ifrange;
+struct bgp_comm_range peer_src_as_asrange;
+u_int32_t (*bgp_route_info_modulo)(struct bgp_peer *, path_id_t *, int);
 
-EXT struct bgp_rt_structs inter_domain_routing_dbs[FUNC_TYPE_MAX], *bgp_routing_db;
-EXT struct bgp_misc_structs inter_domain_misc_dbs[FUNC_TYPE_MAX], *bgp_misc_db;
-#undef EXT
+struct bgp_rt_structs inter_domain_routing_dbs[FUNC_TYPE_MAX], *bgp_routing_db;
+struct bgp_misc_structs inter_domain_misc_dbs[FUNC_TYPE_MAX], *bgp_misc_db;
 #endif

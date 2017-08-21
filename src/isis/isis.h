@@ -78,37 +78,34 @@ struct sysid_fragment {
 
 /* prototypes */
 #if (!defined __ISIS_C)
-#define EXT extern
 #else
-#define EXT
 #endif
-EXT void nfacctd_isis_wrapper();
-EXT void skinny_isis_daemon();
-EXT void isis_pdu_runner(u_char *, const struct pcap_pkthdr *, const u_char *);
-EXT int iso_handler(register struct packet_ptrs *);
+void nfacctd_isis_wrapper();
+void skinny_isis_daemon();
+void isis_pdu_runner(u_char *, const struct pcap_pkthdr *, const u_char *);
+int iso_handler(register struct packet_ptrs *);
 
-EXT int igp_daemon_map_node_handler(char *, struct id_entry *, char *, struct plugin_requests *, int);
-EXT int igp_daemon_map_area_id_handler(char *, struct id_entry *, char *, struct plugin_requests *, int);
-EXT int igp_daemon_map_adj_metric_handler(char *, struct id_entry *, char *, struct plugin_requests *, int);
-EXT int igp_daemon_map_reach_metric_handler(char *, struct id_entry *, char *, struct plugin_requests *, int);
+int igp_daemon_map_node_handler(char *, struct id_entry *, char *, struct plugin_requests *, int);
+int igp_daemon_map_area_id_handler(char *, struct id_entry *, char *, struct plugin_requests *, int);
+int igp_daemon_map_adj_metric_handler(char *, struct id_entry *, char *, struct plugin_requests *, int);
+int igp_daemon_map_reach_metric_handler(char *, struct id_entry *, char *, struct plugin_requests *, int);
 #ifdef ENABLE_IPV6
-EXT int igp_daemon_map_reach6_metric_handler(char *, struct id_entry *, char *, struct plugin_requests *, int);
+int igp_daemon_map_reach6_metric_handler(char *, struct id_entry *, char *, struct plugin_requests *, int);
 #endif
-EXT void igp_daemon_map_validate(char *, struct plugin_requests *);
-EXT void igp_daemon_map_initialize(char *, struct plugin_requests *);
-EXT void igp_daemon_map_finalize(char *, struct plugin_requests *);
-EXT int igp_daemon_map_handle_len(int *, int, struct plugin_requests *, char *);
-EXT int igp_daemon_map_handle_lsp_id(char *, struct host_addr *);
-EXT void isis_srcdst_lookup(struct packet_ptrs *);
+void igp_daemon_map_validate(char *, struct plugin_requests *);
+void igp_daemon_map_initialize(char *, struct plugin_requests *);
+void igp_daemon_map_finalize(char *, struct plugin_requests *);
+int igp_daemon_map_handle_len(int *, int, struct plugin_requests *, char *);
+int igp_daemon_map_handle_lsp_id(char *, struct host_addr *);
+void isis_srcdst_lookup(struct packet_ptrs *);
 
 /* global variables */
-EXT struct thread_master *master;
-EXT struct isis *isis;
-EXT struct in_addr router_id_zebra; /* XXX: do something with this eventually */
-EXT struct timeval isis_now, isis_spf_deadline, isis_psnp_deadline;
-EXT struct igp_map_entry ime;
-EXT pcap_dumper_t *idmm_fd; /* igp_daemon_map : file descriptor for igp_daemon_map_msglog */
-EXT u_int32_t glob_isis_seq_num;
-EXT struct sysid_fragment sysid_fragment_table[MAX_IGP_MAP_NODES];
-#undef EXT
+struct thread_master *master;
+struct isis *isis;
+struct in_addr router_id_zebra; /* XXX: do something with this eventually */
+struct timeval isis_now, isis_spf_deadline, isis_psnp_deadline;
+struct igp_map_entry ime;
+pcap_dumper_t *idmm_fd; /* igp_daemon_map : file descriptor for igp_daemon_map_msglog */
+u_int32_t glob_isis_seq_num;
+struct sysid_fragment sysid_fragment_table[MAX_IGP_MAP_NODES];
 #endif

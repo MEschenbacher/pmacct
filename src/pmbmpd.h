@@ -25,18 +25,12 @@
 
 /* prototypes */
 #if (!defined __PMBMPD_C)
-#define EXT extern
 #else
-#define EXT
-EXT void usage_daemon(char *);
-EXT void compute_once();
+void usage_daemon(char *);
+void compute_once();
 #endif
-#undef EXT
 
 /* global variables */
 #if (!defined __PMBMPD_C)
-#define EXT extern
 #else
-#define EXT
 #endif
-#undef EXT

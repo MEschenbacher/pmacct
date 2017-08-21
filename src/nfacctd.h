@@ -763,67 +763,58 @@ struct v8_handler_entry {
 
 /* functions */
 #if (!defined __NFACCTD_C)
-#define EXT extern
 #else
-#define EXT
 #endif
-EXT void process_v1_packet(unsigned char *, u_int16_t, struct packet_ptrs *, struct plugin_requests *);
-EXT void process_v5_packet(unsigned char *, u_int16_t, struct packet_ptrs *, struct plugin_requests *);
-EXT void process_v7_packet(unsigned char *, u_int16_t, struct packet_ptrs *, struct plugin_requests *);
-EXT void process_v8_packet(unsigned char *, u_int16_t, struct packet_ptrs *, struct plugin_requests *);
-EXT void process_v9_packet(unsigned char *, u_int16_t, struct packet_ptrs_vector *, struct plugin_requests *, u_int16_t);
-EXT void process_raw_packet(unsigned char *, u_int16_t, struct packet_ptrs_vector *, struct plugin_requests *);
-EXT u_int8_t NF_evaluate_flow_type(struct template_cache_entry *, struct packet_ptrs *);
-EXT u_int16_t NF_evaluate_direction(struct template_cache_entry *, struct packet_ptrs *);
-EXT pm_class_t NF_evaluate_classifiers(struct xflow_status_entry_class *, pm_class_t *, struct xflow_status_entry *);
-EXT void reset_mac(struct packet_ptrs *);
-EXT void reset_mac_vlan(struct packet_ptrs *);
-EXT void reset_ip4(struct packet_ptrs *);
-EXT void reset_ip6(struct packet_ptrs *);
-EXT void notify_malf_packet(short int, char *, struct sockaddr *, u_int32_t);
-EXT int NF_find_id(struct id_table *, struct packet_ptrs *, pm_id_t *, pm_id_t *);
+void process_v1_packet(unsigned char *, u_int16_t, struct packet_ptrs *, struct plugin_requests *);
+void process_v5_packet(unsigned char *, u_int16_t, struct packet_ptrs *, struct plugin_requests *);
+void process_v7_packet(unsigned char *, u_int16_t, struct packet_ptrs *, struct plugin_requests *);
+void process_v8_packet(unsigned char *, u_int16_t, struct packet_ptrs *, struct plugin_requests *);
+void process_v9_packet(unsigned char *, u_int16_t, struct packet_ptrs_vector *, struct plugin_requests *, u_int16_t);
+void process_raw_packet(unsigned char *, u_int16_t, struct packet_ptrs_vector *, struct plugin_requests *);
+u_int8_t NF_evaluate_flow_type(struct template_cache_entry *, struct packet_ptrs *);
+u_int16_t NF_evaluate_direction(struct template_cache_entry *, struct packet_ptrs *);
+pm_class_t NF_evaluate_classifiers(struct xflow_status_entry_class *, pm_class_t *, struct xflow_status_entry *);
+void reset_mac(struct packet_ptrs *);
+void reset_mac_vlan(struct packet_ptrs *);
+void reset_ip4(struct packet_ptrs *);
+void reset_ip6(struct packet_ptrs *);
+void notify_malf_packet(short int, char *, struct sockaddr *, u_int32_t);
+int NF_find_id(struct id_table *, struct packet_ptrs *, pm_id_t *, pm_id_t *);
 
-EXT char *nfv578_check_status(struct packet_ptrs *);
-EXT char *nfv9_check_status(struct packet_ptrs *, u_int32_t, u_int32_t, u_int32_t, u_int8_t);
+char *nfv578_check_status(struct packet_ptrs *);
+char *nfv9_check_status(struct packet_ptrs *, u_int32_t, u_int32_t, u_int32_t, u_int8_t);
 
-EXT struct template_cache tpl_cache;
-EXT struct v8_handler_entry v8_handlers[15];
+struct template_cache tpl_cache;
+struct v8_handler_entry v8_handlers[15];
 
-EXT struct host_addr debug_a;
-EXT u_char debug_agent_addr[50];
-EXT u_int16_t debug_agent_port;
-#undef EXT
+struct host_addr debug_a;
+u_char debug_agent_addr[50];
+u_int16_t debug_agent_port;
 
 #if (!defined __NFV9_TEMPLATE_C)
-#define EXT extern
 #else
-#define EXT
 #endif
-EXT struct template_cache_entry *handle_template(struct template_hdr_v9 *, struct packet_ptrs *, u_int16_t, u_int32_t, u_int16_t *, u_int16_t, u_int32_t);
-EXT struct template_cache_entry *find_template(u_int16_t, struct host_addr *, u_int16_t, u_int32_t);
-EXT struct template_cache_entry *insert_template(struct template_hdr_v9 *, struct packet_ptrs *, u_int16_t, u_int32_t, u_int16_t *, u_int8_t, u_int16_t, u_int32_t);
-EXT struct template_cache_entry *refresh_template(struct template_hdr_v9 *, struct template_cache_entry *, struct packet_ptrs *, u_int16_t, u_int32_t, u_int16_t *, u_int8_t, u_int16_t, u_int32_t);
-EXT void log_template_header(struct template_cache_entry *, struct packet_ptrs *, u_int16_t, u_int32_t, u_int8_t);
-EXT void log_opt_template_field(u_int8_t, u_int32_t *, u_int16_t, u_int16_t, u_int16_t, u_int8_t);
-EXT void log_template_field(u_int8_t, u_int32_t *, u_int16_t, u_int16_t, u_int16_t, u_int8_t);
-EXT void log_template_footer(struct template_cache_entry *, u_int16_t, u_int8_t);
-EXT struct template_cache_entry *insert_opt_template(void *, struct packet_ptrs *, u_int16_t, u_int32_t, u_int16_t *, u_int8_t, u_int16_t, u_int32_t);
-EXT struct template_cache_entry *refresh_opt_template(void *, struct template_cache_entry *, struct packet_ptrs *, u_int16_t, u_int32_t, u_int16_t *, u_int8_t, u_int16_t, u_int32_t);
-EXT struct utpl_field *ext_db_get_ie(struct template_cache_entry *, u_int32_t, u_int16_t, u_int8_t);
-EXT struct utpl_field *ext_db_get_next_ie(struct template_cache_entry *, u_int16_t, u_int8_t *);
+struct template_cache_entry *handle_template(struct template_hdr_v9 *, struct packet_ptrs *, u_int16_t, u_int32_t, u_int16_t *, u_int16_t, u_int32_t);
+struct template_cache_entry *find_template(u_int16_t, struct host_addr *, u_int16_t, u_int32_t);
+struct template_cache_entry *insert_template(struct template_hdr_v9 *, struct packet_ptrs *, u_int16_t, u_int32_t, u_int16_t *, u_int8_t, u_int16_t, u_int32_t);
+struct template_cache_entry *refresh_template(struct template_hdr_v9 *, struct template_cache_entry *, struct packet_ptrs *, u_int16_t, u_int32_t, u_int16_t *, u_int8_t, u_int16_t, u_int32_t);
+void log_template_header(struct template_cache_entry *, struct packet_ptrs *, u_int16_t, u_int32_t, u_int8_t);
+void log_opt_template_field(u_int8_t, u_int32_t *, u_int16_t, u_int16_t, u_int16_t, u_int8_t);
+void log_template_field(u_int8_t, u_int32_t *, u_int16_t, u_int16_t, u_int16_t, u_int8_t);
+void log_template_footer(struct template_cache_entry *, u_int16_t, u_int8_t);
+struct template_cache_entry *insert_opt_template(void *, struct packet_ptrs *, u_int16_t, u_int32_t, u_int16_t *, u_int8_t, u_int16_t, u_int32_t);
+struct template_cache_entry *refresh_opt_template(void *, struct template_cache_entry *, struct packet_ptrs *, u_int16_t, u_int32_t, u_int16_t *, u_int8_t, u_int16_t, u_int32_t);
+struct utpl_field *ext_db_get_ie(struct template_cache_entry *, u_int32_t, u_int16_t, u_int8_t);
+struct utpl_field *ext_db_get_next_ie(struct template_cache_entry *, u_int16_t, u_int8_t *);
 
-EXT void resolve_vlen_template(char *, u_int16_t, struct template_cache_entry *);
-EXT u_int8_t get_ipfix_vlen(char *, u_int16_t *);
+void resolve_vlen_template(char *, u_int16_t, struct template_cache_entry *);
+u_int8_t get_ipfix_vlen(char *, u_int16_t *);
 
-EXT struct template_cache_entry *nfacctd_offline_read_json_template(char *, char *, int);
-EXT void load_templates_from_file(char *);
-EXT void save_template(struct template_cache_entry *, char *);
-#undef EXT
+struct template_cache_entry *nfacctd_offline_read_json_template(char *, char *, int);
+void load_templates_from_file(char *);
+void save_template(struct template_cache_entry *, char *);
 
 #if (!defined __PKT_HANDLERS_C)
-#define EXT extern
 #else
-#define EXT
 #endif
-EXT struct utpl_field *(*get_ext_db_ie_by_type)(struct template_cache_entry *, u_int32_t, u_int16_t, u_int8_t);
-#undef EXT
+struct utpl_field *(*get_ext_db_ie_by_type)(struct template_cache_entry *, u_int32_t, u_int16_t, u_int8_t);

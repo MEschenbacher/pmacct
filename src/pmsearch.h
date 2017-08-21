@@ -63,24 +63,21 @@ typedef void (*pm_free_fn_t) (void *);
 
 /* prototypes */
 #if (!defined __PMSEARCH_C)
-#define EXT extern
 #else
-#define EXT
 #endif
 /* Search for an entry matching the given KEY in the tree pointed to
    by *ROOTP and insert a new element if not found.  */
-EXT void *__pm_tsearch (const void *, void **, pm_compar_fn_t);
+void *__pm_tsearch (const void *, void **, pm_compar_fn_t);
 
 /* Search for an entry matching the given KEY in the tree pointed to
    by *ROOTP.  If no matching entry is available return NULL.  */
-EXT void *pm_tfind (const void *, void **, pm_compar_fn_t);
+void *pm_tfind (const void *, void **, pm_compar_fn_t);
 
 /* Remove the element matching KEY from the tree pointed to by *ROOTP.  */
-EXT void *pm_tdelete (const void *, void **, pm_compar_fn_t);
+void *pm_tdelete (const void *, void **, pm_compar_fn_t);
 
 /* Walk through the whole tree and call the ACTION callback for every node or leaf.  */
-EXT void pm_twalk (const void *, pm_action_fn_t, void *);
+void pm_twalk (const void *, pm_action_fn_t, void *);
 
 /* Destroy the whole tree, call FREEFCT for each node or leaf.  */
-EXT void __pm_tdestroy (void *, pm_free_fn_t);
-#undef EXT
+void __pm_tdestroy (void *, pm_free_fn_t);

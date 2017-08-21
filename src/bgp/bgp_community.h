@@ -57,21 +57,18 @@ struct community {
 
 /* Prototypes of communities attribute functions.  */
 #if (!defined __BGP_COMMUNITY_C)
-#define EXT extern
 #else
-#define EXT
 #endif
-EXT void community_init (int, struct hash **);
-EXT void community_free (struct community *);
-EXT struct community *community_uniq_sort (struct bgp_peer *, struct community *);
-EXT struct community *community_intern (struct bgp_peer *, struct community *);
-EXT void community_unintern (struct bgp_peer *, struct community *);
-EXT unsigned int community_hash_make (struct community *);
-EXT int community_cmp (const struct community *, const struct community *);
-EXT struct community *community_delete (struct community *, struct community *);
-EXT struct community *community_parse (struct bgp_peer *, u_int32_t *, u_short);
-EXT int community_include (struct community *, u_int32_t);
-EXT void community_del_val (struct community *, u_int32_t *);
+void community_init (int, struct hash **);
+void community_free (struct community *);
+struct community *community_uniq_sort (struct bgp_peer *, struct community *);
+struct community *community_intern (struct bgp_peer *, struct community *);
+void community_unintern (struct bgp_peer *, struct community *);
+unsigned int community_hash_make (struct community *);
+int community_cmp (const struct community *, const struct community *);
+struct community *community_delete (struct community *, struct community *);
+struct community *community_parse (struct bgp_peer *, u_int32_t *, u_short);
+int community_include (struct community *, u_int32_t);
+void community_del_val (struct community *, u_int32_t *);
 
-#undef EXT
 #endif

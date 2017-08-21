@@ -113,26 +113,20 @@ typedef struct _telemetry_peer_udp_timeout telemetry_peer_udp_timeout;
 
 /* prototypes */
 #if (!defined __TELEMETRY_C)
-#define EXT extern
 #else
-#define EXT
 #endif
-EXT void telemetry_wrapper();
-EXT void telemetry_daemon(void *);
-EXT void telemetry_prepare_thread(struct telemetry_data *);
-EXT void telemetry_prepare_daemon(struct telemetry_data *);
-#undef EXT
+void telemetry_wrapper();
+void telemetry_daemon(void *);
+void telemetry_prepare_thread(struct telemetry_data *);
+void telemetry_prepare_daemon(struct telemetry_data *);
 
 /* global variables */
 #if !defined(__TELEMETRY_C)
-#define EXT extern
 #else
-#define EXT
 #endif
-EXT telemetry_misc_structs *telemetry_misc_db;
+telemetry_misc_structs *telemetry_misc_db;
 
-EXT telemetry_peer *telemetry_peers;
-EXT telemetry_peer_z *telemetry_peers_z;
-EXT void *telemetry_peers_udp_cache;
-EXT telemetry_peer_udp_timeout *telemetry_peers_udp_timeout;
-#undef EXT
+telemetry_peer *telemetry_peers;
+telemetry_peer_z *telemetry_peers_z;
+void *telemetry_peers_udp_cache;
+telemetry_peer_udp_timeout *telemetry_peers_udp_timeout;

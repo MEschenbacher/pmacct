@@ -29,13 +29,10 @@
 
 /* prototypes */
 #if (!defined __KAFKA_PLUGIN_C)
-#define EXT extern
 #else
-#define EXT
 #endif
-EXT void kafka_plugin(int, struct configuration *, void *);
-EXT void kafka_cache_purge(struct chained_cache *[], int, int);
+void kafka_plugin(int, struct configuration *, void *);
+void kafka_cache_purge(struct chained_cache *[], int, int);
 #ifdef WITH_AVRO
-EXT void kafka_avro_schema_purge(char *);
+void kafka_avro_schema_purge(char *);
 #endif
-#undef EXT

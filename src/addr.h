@@ -29,36 +29,33 @@
 
 /* prototypes */
 #if (!defined __ADDR_C)
-#define EXT extern
 #else
-#define EXT
 #endif
-EXT unsigned int str_to_addr(const char *, struct host_addr *);
-EXT unsigned int addr_to_str(char *, const struct host_addr *);
-EXT unsigned int str_to_addr_mask(const char *, struct host_addr *, struct host_mask *);
-EXT unsigned int addr_to_sa(struct sockaddr *, struct host_addr *, u_int16_t);
-EXT unsigned int sa_to_addr(struct sockaddr *, struct host_addr *, u_int16_t *);
-EXT int sa_addr_cmp(struct sockaddr *, struct host_addr *);
-EXT int sa_port_cmp(struct sockaddr *, u_int16_t);
-EXT int host_addr_mask_sa_cmp(struct host_addr *, struct host_mask *, struct sockaddr *);
-EXT unsigned int raw_to_sa(struct sockaddr *, char *, u_int8_t);
-EXT unsigned int sa_to_str(char *, const struct sockaddr *);
-EXT void *pm_htonl6(void *);
-EXT void *pm_ntohl6(void *);
-EXT u_int64_t pm_htonll(u_int64_t);
-EXT u_int64_t pm_ntohll(u_int64_t);
-EXT int ip6_addr_cmp(void *, void *);
-EXT void ip6_addr_cpy(void *, void *);
-EXT void ip6_addr_32bit_cpy(void *, void *, int, int, int);
-EXT void etheraddr_string(const u_char *, char *);
-EXT int string_etheraddr(const u_char *, char *);
-EXT int is_multicast(struct host_addr *);
-EXT int is_any(struct host_addr *);
-EXT void clean_sin_addr(struct sockaddr *);
-EXT unsigned int label_to_addr(const char *, struct host_addr *, int);
+unsigned int str_to_addr(const char *, struct host_addr *);
+unsigned int addr_to_str(char *, const struct host_addr *);
+unsigned int str_to_addr_mask(const char *, struct host_addr *, struct host_mask *);
+unsigned int addr_to_sa(struct sockaddr *, struct host_addr *, u_int16_t);
+unsigned int sa_to_addr(struct sockaddr *, struct host_addr *, u_int16_t *);
+int sa_addr_cmp(struct sockaddr *, struct host_addr *);
+int sa_port_cmp(struct sockaddr *, u_int16_t);
+int host_addr_mask_sa_cmp(struct host_addr *, struct host_mask *, struct sockaddr *);
+unsigned int raw_to_sa(struct sockaddr *, char *, u_int8_t);
+unsigned int sa_to_str(char *, const struct sockaddr *);
+void *pm_htonl6(void *);
+void *pm_ntohl6(void *);
+u_int64_t pm_htonll(u_int64_t);
+u_int64_t pm_ntohll(u_int64_t);
+int ip6_addr_cmp(void *, void *);
+void ip6_addr_cpy(void *, void *);
+void ip6_addr_32bit_cpy(void *, void *, int, int, int);
+void etheraddr_string(const u_char *, char *);
+int string_etheraddr(const u_char *, char *);
+int is_multicast(struct host_addr *);
+int is_any(struct host_addr *);
+void clean_sin_addr(struct sockaddr *);
+unsigned int label_to_addr(const char *, struct host_addr *, int);
 
 #if defined ENABLE_IPV6
-EXT void ipv4_mapped_to_ipv4(struct sockaddr_storage *);
+void ipv4_mapped_to_ipv4(struct sockaddr_storage *);
 #endif
 
-#undef EXT

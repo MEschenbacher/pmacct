@@ -124,66 +124,63 @@ struct prefix_rd {
 
 /* Prototypes. */
 #if (!defined __BGP_PREFIX_C)
-#define EXT extern
 #else
-#define EXT
 #endif
-EXT int afi2family (int);
-EXT int family2afi (int);
+int afi2family (int);
+int family2afi (int);
 
-EXT struct prefix *prefix_new (void);
-EXT void prefix_free (struct prefix *);
-EXT const char *prefix_family_str (const struct prefix *);
-EXT int prefix_blen (const struct prefix *);
-EXT int str2prefix (const char *, struct prefix *);
-EXT int prefix2str (const struct prefix *, char *, int);
-EXT int prefix_match (const struct prefix *, const struct prefix *);
-EXT int prefix_same (const struct prefix *, const struct prefix *);
-EXT int prefix_cmp (const struct prefix *, const struct prefix *);
-EXT void prefix_copy (struct prefix *dest, const struct prefix *src);
-EXT void apply_mask (struct prefix *);
+struct prefix *prefix_new (void);
+void prefix_free (struct prefix *);
+const char *prefix_family_str (const struct prefix *);
+int prefix_blen (const struct prefix *);
+int str2prefix (const char *, struct prefix *);
+int prefix2str (const struct prefix *, char *, int);
+int prefix_match (const struct prefix *, const struct prefix *);
+int prefix_same (const struct prefix *, const struct prefix *);
+int prefix_cmp (const struct prefix *, const struct prefix *);
+void prefix_copy (struct prefix *dest, const struct prefix *src);
+void apply_mask (struct prefix *);
 
-EXT struct prefix_ipv4 *prefix_ipv4_new (void);
-EXT void prefix_ipv4_free (struct prefix_ipv4 *);
-EXT int str2prefix_ipv4 (const char *, struct prefix_ipv4 *);
-EXT void apply_mask_ipv4 (struct prefix_ipv4 *);
+struct prefix_ipv4 *prefix_ipv4_new (void);
+void prefix_ipv4_free (struct prefix_ipv4 *);
+int str2prefix_ipv4 (const char *, struct prefix_ipv4 *);
+void apply_mask_ipv4 (struct prefix_ipv4 *);
 
 #define PREFIX_COPY_IPV4(DST, SRC)	\
 	*((struct prefix_ipv4 *)(DST)) = *((const struct prefix_ipv4 *)(SRC));
 
-EXT int prefix_ipv4_any (const struct prefix_ipv4 *);
-EXT void apply_classful_mask_ipv4 (struct prefix_ipv4 *);
+int prefix_ipv4_any (const struct prefix_ipv4 *);
+void apply_classful_mask_ipv4 (struct prefix_ipv4 *);
 
-EXT u_char ip_masklen (struct in_addr);
-EXT void masklen2ip (int, struct in_addr *);
+u_char ip_masklen (struct in_addr);
+void masklen2ip (int, struct in_addr *);
 /* returns the network portion of the host address */
-EXT in_addr_t ipv4_network_addr (in_addr_t hostaddr, int masklen);
+in_addr_t ipv4_network_addr (in_addr_t hostaddr, int masklen);
 /* given the address of a host on a network and the network mask length,
  * calculate the broadcast address for that network;
  * special treatment for /31: returns the address of the other host
  * on the network by flipping the host bit */
-EXT in_addr_t ipv4_broadcast_addr (in_addr_t hostaddr, int masklen);
+in_addr_t ipv4_broadcast_addr (in_addr_t hostaddr, int masklen);
 
-EXT int netmask_str2prefix_str (const char *, const char *, char *);
+int netmask_str2prefix_str (const char *, const char *, char *);
 
 #ifdef ENABLE_IPV6
-EXT struct prefix_ipv6 *prefix_ipv6_new (void);
-EXT void prefix_ipv6_free (struct prefix_ipv6 *);
-EXT int str2prefix_ipv6 (const char *, struct prefix_ipv6 *);
-EXT void apply_mask_ipv6 (struct prefix_ipv6 *);
+struct prefix_ipv6 *prefix_ipv6_new (void);
+void prefix_ipv6_free (struct prefix_ipv6 *);
+int str2prefix_ipv6 (const char *, struct prefix_ipv6 *);
+void apply_mask_ipv6 (struct prefix_ipv6 *);
 
 #define PREFIX_COPY_IPV6(DST, SRC)	\
 	*((struct prefix_ipv6 *)(DST)) = *((const struct prefix_ipv6 *)(SRC));
 
-EXT int ip6_masklen (struct in6_addr);
-EXT void masklen2ip6 (int, struct in6_addr *);
+int ip6_masklen (struct in6_addr);
+void masklen2ip6 (int, struct in6_addr *);
 
-EXT void str2in6_addr (const char *, struct in6_addr *);
-EXT const char *inet6_ntoa (struct in6_addr);
+void str2in6_addr (const char *, struct in6_addr *);
+const char *inet6_ntoa (struct in6_addr);
 
 #endif /* ENABLE_IPV6 */
 
-EXT int all_digit (const char *);
+int all_digit (const char *);
 
-#undef EXT
 #endif

@@ -24,22 +24,16 @@
 
 /* prototypes */
 #if (!defined __PRINT_PLUGIN_C)
-#define EXT extern
 #else
-#define EXT
 #endif
-EXT void print_plugin(int, struct configuration *, void *);
-EXT void P_cache_purge(struct chained_cache *[], int, int);
-EXT void P_write_stats_header_formatted(FILE *, int);
-EXT void P_write_stats_header_csv(FILE *, int);
-EXT void P_fprintf_csv_string(FILE *, struct pkt_vlen_hdr_primitives *, pm_cfgreg_t, char *, char *);
-#undef EXT
+void print_plugin(int, struct configuration *, void *);
+void P_cache_purge(struct chained_cache *[], int, int);
+void P_write_stats_header_formatted(FILE *, int);
+void P_write_stats_header_csv(FILE *, int);
+void P_fprintf_csv_string(FILE *, struct pkt_vlen_hdr_primitives *, pm_cfgreg_t, char *, char *);
 
 /* global variables */
 #if (!defined __PRINT_PLUGIN_C)
-#define EXT extern
 #else
-#define EXT
 #endif
-EXT int print_output_stdout_header;
-#undef EXT
+int print_output_stdout_header;

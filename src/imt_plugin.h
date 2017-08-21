@@ -123,69 +123,54 @@ struct imt_custom_primitives {
 
 /* prototypes */
 #if (!defined __ACCT_C)
-#define EXT extern
 #else
-#define EXT
 #endif
-EXT void insert_accounting_structure(struct primitives_ptrs *);
-EXT struct acc *search_accounting_structure(struct primitives_ptrs *);
-EXT int compare_accounting_structure(struct acc *, struct primitives_ptrs *);
-#undef EXT
+void insert_accounting_structure(struct primitives_ptrs *);
+struct acc *search_accounting_structure(struct primitives_ptrs *);
+int compare_accounting_structure(struct acc *, struct primitives_ptrs *);
 
 #if (!defined __MEMORY_C)
-#define EXT extern
 #else
-#define EXT
 #endif
-EXT void init_memory_pool_table();
-EXT void clear_memory_pool_table();
-EXT struct memory_pool_desc *request_memory_pool(int);
-#undef EXT
+void init_memory_pool_table();
+void clear_memory_pool_table();
+struct memory_pool_desc *request_memory_pool(int);
 
 #if (!defined __SERVER_C)
-#define EXT extern
 #else
-#define EXT
 #endif
-EXT void set_reset_flag(struct acc *);
-EXT void reset_counters(struct acc *);
-EXT int build_query_server(char *);
-EXT void process_query_data(int, unsigned char *, int, struct extra_primitives *, int, int);
-EXT void mask_elem(struct pkt_primitives *, struct pkt_bgp_primitives *, struct pkt_legacy_bgp_primitives *,
+void set_reset_flag(struct acc *);
+void reset_counters(struct acc *);
+int build_query_server(char *);
+void process_query_data(int, unsigned char *, int, struct extra_primitives *, int, int);
+void mask_elem(struct pkt_primitives *, struct pkt_bgp_primitives *, struct pkt_legacy_bgp_primitives *,
                    struct pkt_nat_primitives *, struct pkt_mpls_primitives *, struct pkt_tunnel_primitives *,
                    struct acc *, u_int64_t, u_int64_t, struct extra_primitives *);
-EXT void enQueue_elem(int, struct reply_buffer *, void *, int, int);
-EXT void Accumulate_Counters(struct pkt_data *, struct acc *);
-EXT int test_zero_elem(struct acc *);
-#undef EXT
+void enQueue_elem(int, struct reply_buffer *, void *, int, int);
+void Accumulate_Counters(struct pkt_data *, struct acc *);
+int test_zero_elem(struct acc *);
 
 #if (!defined __IMT_PLUGIN_C)
-#define EXT extern
 #else
-#define EXT
 #endif
-EXT void sum_host_insert(struct primitives_ptrs *);
-EXT void sum_port_insert(struct primitives_ptrs *);
-EXT void sum_as_insert(struct primitives_ptrs *);
+void sum_host_insert(struct primitives_ptrs *);
+void sum_port_insert(struct primitives_ptrs *);
+void sum_as_insert(struct primitives_ptrs *);
 #if defined HAVE_L2
-EXT void sum_mac_insert(struct primitives_ptrs *);
+void sum_mac_insert(struct primitives_ptrs *);
 #endif
-EXT void exit_now(int);
-EXT void free_extra_allocs();
-#undef EXT
+void exit_now(int);
+void free_extra_allocs();
 
 /* global vars */
 #if (!defined __IMT_PLUGIN_C && !defined __PMACCT_CLIENT_C)
-#define EXT extern
 #else
-#define EXT
 #endif
-EXT void (*imt_insert_func)(struct primitives_ptrs *); /* pointer to INSERT function */
-EXT unsigned char *mpd;  /* memory pool descriptors table */
-EXT unsigned char *a;  /* accounting in-memory table */
-EXT struct memory_pool_desc *current_pool; /* pointer to currently used memory pool */
-EXT struct acc **lru_elem_ptr; /* pointer to Last Recently Used (lru) element in a bucket */
-EXT int no_more_space;
-EXT struct timeval cycle_stamp; /* timestamp for the current cycle */
-EXT struct timeval table_reset_stamp; /* global table reset timestamp */
-#undef EXT
+void (*imt_insert_func)(struct primitives_ptrs *); /* pointer to INSERT function */
+unsigned char *mpd;  /* memory pool descriptors table */
+unsigned char *a;  /* accounting in-memory table */
+struct memory_pool_desc *current_pool; /* pointer to currently used memory pool */
+struct acc **lru_elem_ptr; /* pointer to Last Recently Used (lru) element in a bucket */
+int no_more_space;
+struct timeval cycle_stamp; /* timestamp for the current cycle */
+struct timeval table_reset_stamp; /* global table reset timestamp */

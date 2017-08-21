@@ -79,48 +79,45 @@ typedef struct dict_load_t {
 } dict_load_t;
 
 #if (!defined __DICT_C)
-#define EXT extern
 #else
-#define EXT
 #endif
-EXT dict_t *dict_create(dictcount_t, dict_comp_t);
-EXT void dict_set_allocator(dict_t *, dnode_alloc_t, dnode_free_t, void *);
-EXT void dict_destroy(dict_t *);
-EXT void dict_free_nodes(dict_t *);
-EXT void dict_free(dict_t *);
-EXT dict_t *dict_init(dict_t *, dictcount_t, dict_comp_t);
-EXT void dict_init_like(dict_t *, const dict_t *);
-EXT int dict_verify(dict_t *);
-EXT int dict_similar(const dict_t *, const dict_t *);
-EXT dnode_t *dict_lookup(dict_t *, const void *);
-EXT dnode_t *dict_lower_bound(dict_t *, const void *);
-EXT dnode_t *dict_upper_bound(dict_t *, const void *);
-EXT void dict_insert(dict_t *, dnode_t *, const void *);
-EXT dnode_t *dict_delete(dict_t *, dnode_t *);
-EXT int dict_alloc_insert(dict_t *, const void *, void *);
-EXT void dict_delete_free(dict_t *, dnode_t *);
-EXT dnode_t *dict_first(dict_t *);
-EXT dnode_t *dict_last(dict_t *);
-EXT dnode_t *dict_next(dict_t *, dnode_t *);
-EXT dnode_t *dict_prev(dict_t *, dnode_t *);
-EXT dictcount_t dict_count(dict_t *);
-EXT int dict_isempty(dict_t *);
-EXT int dict_isfull(dict_t *);
-EXT int dict_contains(dict_t *, dnode_t *);
-EXT void dict_allow_dupes(dict_t *);
-EXT int dnode_is_in_a_dict(dnode_t *);
-EXT dnode_t *dnode_create(void *);
-EXT dnode_t *dnode_init(dnode_t *, void *);
-EXT void dnode_destroy(dnode_t *);
-EXT void *dnode_get(dnode_t *);
-EXT const void *dnode_getkey(dnode_t *);
-EXT void dnode_put(dnode_t *, void *);
-EXT void dict_process(dict_t *, void *, dnode_process_t);
-EXT void dict_load_begin(dict_load_t *, dict_t *);
-EXT void dict_load_next(dict_load_t *, dnode_t *, const void *);
-EXT void dict_load_end(dict_load_t *);
-EXT void dict_merge(dict_t *, dict_t *);
-#undef EXT
+dict_t *dict_create(dictcount_t, dict_comp_t);
+void dict_set_allocator(dict_t *, dnode_alloc_t, dnode_free_t, void *);
+void dict_destroy(dict_t *);
+void dict_free_nodes(dict_t *);
+void dict_free(dict_t *);
+dict_t *dict_init(dict_t *, dictcount_t, dict_comp_t);
+void dict_init_like(dict_t *, const dict_t *);
+int dict_verify(dict_t *);
+int dict_similar(const dict_t *, const dict_t *);
+dnode_t *dict_lookup(dict_t *, const void *);
+dnode_t *dict_lower_bound(dict_t *, const void *);
+dnode_t *dict_upper_bound(dict_t *, const void *);
+void dict_insert(dict_t *, dnode_t *, const void *);
+dnode_t *dict_delete(dict_t *, dnode_t *);
+int dict_alloc_insert(dict_t *, const void *, void *);
+void dict_delete_free(dict_t *, dnode_t *);
+dnode_t *dict_first(dict_t *);
+dnode_t *dict_last(dict_t *);
+dnode_t *dict_next(dict_t *, dnode_t *);
+dnode_t *dict_prev(dict_t *, dnode_t *);
+dictcount_t dict_count(dict_t *);
+int dict_isempty(dict_t *);
+int dict_isfull(dict_t *);
+int dict_contains(dict_t *, dnode_t *);
+void dict_allow_dupes(dict_t *);
+int dnode_is_in_a_dict(dnode_t *);
+dnode_t *dnode_create(void *);
+dnode_t *dnode_init(dnode_t *, void *);
+void dnode_destroy(dnode_t *);
+void *dnode_get(dnode_t *);
+const void *dnode_getkey(dnode_t *);
+void dnode_put(dnode_t *, void *);
+void dict_process(dict_t *, void *, dnode_process_t);
+void dict_load_begin(dict_load_t *, dict_t *);
+void dict_load_next(dict_load_t *, dnode_t *, const void *);
+void dict_load_end(dict_load_t *);
+void dict_merge(dict_t *, dict_t *);
 
 #if defined(DICT_IMPLEMENTATION) || !defined(KAZLIB_OPAQUE_DEBUG)
 #ifdef KAZLIB_SIDEEFFECT_DEBUG

@@ -251,45 +251,42 @@ struct pretag_label_filter {
 
 /* prototypes */
 #if (!defined __PRETAG_C)
-#define EXT extern
 #else
-#define EXT
 #endif
-EXT void load_id_file(int, char *, struct id_table *, struct plugin_requests *, int *);
-EXT void load_pre_tag_map(int, char *, struct id_table *, struct plugin_requests *, int *, int, int);
-EXT u_int8_t pt_check_neg(char **, u_int32_t *);
-EXT char * pt_check_range(char *);
-EXT void pretag_init_vars(struct packet_ptrs *, struct id_table *);
-EXT void pretag_init_label(pt_label_t *);
-EXT int pretag_malloc_label(pt_label_t *, int);
-EXT int pretag_realloc_label(pt_label_t *, int);
-EXT int pretag_copy_label(pt_label_t *, pt_label_t *);
-EXT void pretag_free_label(pt_label_t *);
-EXT int pretag_entry_process(struct id_entry *, struct packet_ptrs *, pm_id_t *, pm_id_t *);
-EXT pt_bitmap_t pretag_index_build_bitmap(struct id_entry *, int);
-EXT int pretag_index_insert_bitmap(struct id_table *, pt_bitmap_t);
-EXT int pretag_index_set_handlers(struct id_table *);
-EXT int pretag_index_allocate(struct id_table *);
-EXT int pretag_index_fill(struct id_table *, pt_bitmap_t, struct id_entry *);
-EXT void pretag_index_report(struct id_table *);
-EXT void pretag_index_destroy(struct id_table *);
-EXT void pretag_index_lookup(struct id_table *, struct packet_ptrs *, struct id_entry **, int);
-EXT void pretag_index_results_sort(struct id_entry **, int);
-EXT void pretag_index_results_compress(struct id_entry **, int);
-EXT void pretag_index_results_compress_jeqs(struct id_entry **, int);
-EXT int pretag_index_have_one(struct id_table *);
+void load_id_file(int, char *, struct id_table *, struct plugin_requests *, int *);
+void load_pre_tag_map(int, char *, struct id_table *, struct plugin_requests *, int *, int, int);
+u_int8_t pt_check_neg(char **, u_int32_t *);
+char * pt_check_range(char *);
+void pretag_init_vars(struct packet_ptrs *, struct id_table *);
+void pretag_init_label(pt_label_t *);
+int pretag_malloc_label(pt_label_t *, int);
+int pretag_realloc_label(pt_label_t *, int);
+int pretag_copy_label(pt_label_t *, pt_label_t *);
+void pretag_free_label(pt_label_t *);
+int pretag_entry_process(struct id_entry *, struct packet_ptrs *, pm_id_t *, pm_id_t *);
+pt_bitmap_t pretag_index_build_bitmap(struct id_entry *, int);
+int pretag_index_insert_bitmap(struct id_table *, pt_bitmap_t);
+int pretag_index_set_handlers(struct id_table *);
+int pretag_index_allocate(struct id_table *);
+int pretag_index_fill(struct id_table *, pt_bitmap_t, struct id_entry *);
+void pretag_index_report(struct id_table *);
+void pretag_index_destroy(struct id_table *);
+void pretag_index_lookup(struct id_table *, struct packet_ptrs *, struct id_entry **, int);
+void pretag_index_results_sort(struct id_entry **, int);
+void pretag_index_results_compress(struct id_entry **, int);
+void pretag_index_results_compress_jeqs(struct id_entry **, int);
+int pretag_index_have_one(struct id_table *);
 
-EXT int bpas_map_allocated;
-EXT int blp_map_allocated;
-EXT int bmed_map_allocated;
-EXT int biss_map_allocated;
-EXT int bta_map_allocated;
-EXT int bitr_map_allocated;
-EXT int sampling_map_allocated;
-EXT int custom_primitives_allocated;
+int bpas_map_allocated;
+int blp_map_allocated;
+int bmed_map_allocated;
+int biss_map_allocated;
+int bta_map_allocated;
+int bitr_map_allocated;
+int sampling_map_allocated;
+int custom_primitives_allocated;
 
-EXT int bta_map_caching;
-EXT int sampling_map_caching;
+int bta_map_caching;
+int sampling_map_caching;
 
-EXT int (*find_id_func)(struct id_table *, struct packet_ptrs *, pm_id_t *, pm_id_t *);
-#undef EXT
+int (*find_id_func)(struct id_table *, struct packet_ptrs *, pm_id_t *, pm_id_t *);

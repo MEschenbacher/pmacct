@@ -150,36 +150,33 @@ enum quagga_clkid {
 
 /* Prototypes. */
 #if (!defined __THREAD_C)
-#define EXT extern
 #else
-#define EXT
 #endif
-EXT struct thread_master *thread_master_create (void);
-EXT void thread_master_free (struct thread_master *);
-EXT struct thread *funcname_thread_add_read (struct thread_master *, int (*)(struct thread *), void *, int, const char *);
-EXT struct thread *funcname_thread_add_write (struct thread_master *, int (*)(struct thread *), void *, int, const char *);
-EXT struct thread *funcname_thread_add_timer (struct thread_master *, int (*)(struct thread *), void *, long, const char *);
-EXT struct thread *funcname_thread_add_timer_msec (struct thread_master *, int (*)(struct thread *), void *, long, const char *);
-EXT struct thread *funcname_thread_add_event (struct thread_master *, int (*)(struct thread *), void *, int, const char *);
-EXT struct thread *funcname_thread_add_background (struct thread_master *, int (*func)(struct thread *), void *arg, long, const char *);
-EXT struct thread *funcname_thread_execute (struct thread_master *, int (*)(struct thread *), void *, int, const char *);
-EXT void thread_cancel (struct thread *);
-EXT unsigned int thread_cancel_event (struct thread_master *, void *);
-EXT struct thread *thread_fetch (struct thread_master *, struct thread *);
-EXT void thread_call (struct thread *);
-EXT unsigned long thread_timer_remain_second (struct thread *);
-EXT int thread_should_yield (struct thread *);
-EXT void thread_getrusage (RUSAGE_T *);
-EXT int quagga_gettime (enum quagga_clkid, struct timeval *);
-EXT time_t quagga_time (time_t *);
-EXT unsigned long thread_consumed_time(RUSAGE_T *after, RUSAGE_T *before, unsigned long *cpu_time_elapsed);
+struct thread_master *thread_master_create (void);
+void thread_master_free (struct thread_master *);
+struct thread *funcname_thread_add_read (struct thread_master *, int (*)(struct thread *), void *, int, const char *);
+struct thread *funcname_thread_add_write (struct thread_master *, int (*)(struct thread *), void *, int, const char *);
+struct thread *funcname_thread_add_timer (struct thread_master *, int (*)(struct thread *), void *, long, const char *);
+struct thread *funcname_thread_add_timer_msec (struct thread_master *, int (*)(struct thread *), void *, long, const char *);
+struct thread *funcname_thread_add_event (struct thread_master *, int (*)(struct thread *), void *, int, const char *);
+struct thread *funcname_thread_add_background (struct thread_master *, int (*func)(struct thread *), void *arg, long, const char *);
+struct thread *funcname_thread_execute (struct thread_master *, int (*)(struct thread *), void *, int, const char *);
+void thread_cancel (struct thread *);
+unsigned int thread_cancel_event (struct thread_master *, void *);
+struct thread *thread_fetch (struct thread_master *, struct thread *);
+void thread_call (struct thread *);
+unsigned long thread_timer_remain_second (struct thread *);
+int thread_should_yield (struct thread *);
+void thread_getrusage (RUSAGE_T *);
+int quagga_gettime (enum quagga_clkid, struct timeval *);
+time_t quagga_time (time_t *);
+unsigned long thread_consumed_time(RUSAGE_T *after, RUSAGE_T *before, unsigned long *cpu_time_elapsed);
 
 /* Global variable containing a recent result from gettimeofday.  This can
    be used instead of calling gettimeofday if a recent value is sufficient.
    This is guaranteed to be refreshed before a thread is called. */
-EXT struct timeval recent_time;
+struct timeval recent_time;
 /* Similar to recent_time, but a monotonically increasing time value */
-EXT struct timeval recent_relative_time (void);
-#undef EXT
+struct timeval recent_relative_time (void);
 
 #endif /* _THREAD_H_ */

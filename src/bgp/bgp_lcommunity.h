@@ -49,19 +49,16 @@ struct lcommunity_val {
 #define lcom_length(X)    ((X)->size * LCOMMUNITY_SIZE)
 
 #if (!defined __BGP_LCOMMUNITY_C)
-#define EXT extern
 #else
-#define EXT
 #endif
-EXT void lcommunity_init (int, struct hash **);
-EXT void lcommunity_free (struct lcommunity *);
-EXT struct lcommunity *lcommunity_new (struct bgp_peer *);
-EXT struct lcommunity *lcommunity_parse (struct bgp_peer *, u_int8_t *, u_short);
-EXT struct lcommunity *lcommunity_intern (struct bgp_peer *, struct lcommunity *);
-EXT int lcommunity_cmp (const void *, const void *);
-EXT void lcommunity_unintern (struct bgp_peer *, struct lcommunity *);
-EXT unsigned int lcommunity_hash_make (void *);
-EXT char *lcommunity_lcom2str (struct bgp_peer *, struct lcommunity *);
+void lcommunity_init (int, struct hash **);
+void lcommunity_free (struct lcommunity *);
+struct lcommunity *lcommunity_new (struct bgp_peer *);
+struct lcommunity *lcommunity_parse (struct bgp_peer *, u_int8_t *, u_short);
+struct lcommunity *lcommunity_intern (struct bgp_peer *, struct lcommunity *);
+int lcommunity_cmp (const void *, const void *);
+void lcommunity_unintern (struct bgp_peer *, struct lcommunity *);
+unsigned int lcommunity_hash_make (void *);
+char *lcommunity_lcom2str (struct bgp_peer *, struct lcommunity *);
 
-#undef EXT
 #endif

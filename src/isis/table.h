@@ -52,25 +52,22 @@ struct route_node {
 
 /* Prototypes. */
 #if (!defined __TABLE_C)
-#define EXT extern
 #else
-#define EXT
 #endif
-EXT struct route_table *route_table_init (void);
-EXT void route_table_finish (struct route_table *);
-EXT void route_unlock_node (struct route_node *);
-EXT void route_node_delete (struct route_node *);
-EXT struct route_node *route_top (struct route_table *);
-EXT struct route_node *route_next (struct route_node *);
-EXT struct route_node *route_next_until (struct route_node *, struct route_node *);
-EXT struct route_node *route_node_get (struct route_table *, struct isis_prefix *);
-EXT struct route_node *route_node_lookup (struct route_table *, struct isis_prefix *);
-EXT struct route_node *route_lock_node (struct route_node *);
-EXT struct route_node *route_node_match (const struct route_table *, const struct isis_prefix *);
-EXT struct route_node *route_node_match_ipv4 (const struct route_table *, const struct in_addr *);
+struct route_table *route_table_init (void);
+void route_table_finish (struct route_table *);
+void route_unlock_node (struct route_node *);
+void route_node_delete (struct route_node *);
+struct route_node *route_top (struct route_table *);
+struct route_node *route_next (struct route_node *);
+struct route_node *route_next_until (struct route_node *, struct route_node *);
+struct route_node *route_node_get (struct route_table *, struct isis_prefix *);
+struct route_node *route_node_lookup (struct route_table *, struct isis_prefix *);
+struct route_node *route_lock_node (struct route_node *);
+struct route_node *route_node_match (const struct route_table *, const struct isis_prefix *);
+struct route_node *route_node_match_ipv4 (const struct route_table *, const struct in_addr *);
 #ifdef ENABLE_IPV6
-EXT struct route_node *route_node_match_ipv6 (const struct route_table *, const struct in6_addr *);
+struct route_node *route_node_match_ipv6 (const struct route_table *, const struct in6_addr *);
 #endif /* ENABLE_IPV6 */
-#undef EXT
 
 #endif /* _TABLE_H_ */

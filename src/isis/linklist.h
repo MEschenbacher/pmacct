@@ -61,25 +61,22 @@ struct list {
 
 /* Prototypes. */
 #if (!defined __LINKLIST_C)
-#define EXT extern
 #else
-#define EXT
 #endif
-EXT struct list *isis_list_new(void); /* encouraged: set list.del callback on new lists */
-EXT void isis_list_free (struct list *);
-EXT void isis_listnode_add (struct list *, void *);
-EXT void isis_listnode_add_sort (struct list *, void *);
-EXT void isis_listnode_add_after (struct list *, struct listnode *, void *);
-EXT void isis_listnode_delete (struct list *, void *);
-EXT struct listnode *isis_listnode_lookup (struct list *, void *);
-EXT void *isis_listnode_head (struct list *);
-EXT void isis_list_delete (struct list *);
-EXT void isis_list_delete_all_node (struct list *);
-EXT void isis_list_delete_node (struct list *, struct listnode *);
-EXT void isis_list_add_node_prev (struct list *, struct listnode *, void *);
-EXT void isis_list_add_node_next (struct list *, struct listnode *, void *);
-EXT void isis_list_add_list (struct list *, struct list *);
-#undef EXT
+struct list *isis_list_new(void); /* encouraged: set list.del callback on new lists */
+void isis_list_free (struct list *);
+void isis_listnode_add (struct list *, void *);
+void isis_listnode_add_sort (struct list *, void *);
+void isis_listnode_add_after (struct list *, struct listnode *, void *);
+void isis_listnode_delete (struct list *, void *);
+struct listnode *isis_listnode_lookup (struct list *, void *);
+void *isis_listnode_head (struct list *);
+void isis_list_delete (struct list *);
+void isis_list_delete_all_node (struct list *);
+void isis_list_delete_node (struct list *, struct listnode *);
+void isis_list_add_node_prev (struct list *, struct listnode *, void *);
+void isis_list_add_node_next (struct list *, struct listnode *, void *);
+void isis_list_add_list (struct list *, struct list *);
 
 /* List iteration macro.
  * Usage: for (ALL_LIST_ELEMENTS (...) { ... }

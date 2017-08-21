@@ -86,32 +86,29 @@ enum connect_result {
 
 /* Prototypes. */
 #if (!defined __SOCKUNION_C)
-#define EXT extern
 #else
-#define EXT
 #endif
-EXT int str2sockunion (const char *, union sockunion *);
-EXT const char *sockunion2str (union sockunion *, char *, size_t);
-EXT int sockunion_cmp (union sockunion *, union sockunion *);
-EXT int sockunion_same (union sockunion *, union sockunion *);
-EXT char *sockunion_su2str (union sockunion *);
-EXT union sockunion *sockunion_str2su (const char *);
-EXT struct in_addr sockunion_get_in_addr (union sockunion *);
-EXT int sockunion_accept (int sock, union sockunion *);
-EXT int sockunion_stream_socket (union sockunion *);
-EXT int sockopt_reuseaddr (int);
-EXT int sockopt_reuseport (int);
-EXT int sockunion_bind (int sock, union sockunion *, unsigned short, union sockunion *);
-EXT int sockopt_ttl (int, int, int);
-EXT int sockopt_minttl (int, int, int);
-EXT int sockopt_cork (int, int);
-EXT int sockunion_socket (union sockunion *);
-EXT const char *inet_sutop (union sockunion *, char *);
-EXT enum connect_result sockunion_connect (int, union sockunion *, unsigned short, unsigned int);
-EXT union sockunion *sockunion_getsockname (int);
-EXT union sockunion *sockunion_getpeername (int);
-EXT union sockunion *sockunion_dup (union sockunion *);
-EXT void sockunion_free (union sockunion *);
-#undef EXT
+int str2sockunion (const char *, union sockunion *);
+const char *sockunion2str (union sockunion *, char *, size_t);
+int sockunion_cmp (union sockunion *, union sockunion *);
+int sockunion_same (union sockunion *, union sockunion *);
+char *sockunion_su2str (union sockunion *);
+union sockunion *sockunion_str2su (const char *);
+struct in_addr sockunion_get_in_addr (union sockunion *);
+int sockunion_accept (int sock, union sockunion *);
+int sockunion_stream_socket (union sockunion *);
+int sockopt_reuseaddr (int);
+int sockopt_reuseport (int);
+int sockunion_bind (int sock, union sockunion *, unsigned short, union sockunion *);
+int sockopt_ttl (int, int, int);
+int sockopt_minttl (int, int, int);
+int sockopt_cork (int, int);
+int sockunion_socket (union sockunion *);
+const char *inet_sutop (union sockunion *, char *);
+enum connect_result sockunion_connect (int, union sockunion *, unsigned short, unsigned int);
+union sockunion *sockunion_getsockname (int);
+union sockunion *sockunion_getpeername (int);
+union sockunion *sockunion_dup (union sockunion *);
+void sockunion_free (union sockunion *);
 
 #endif /* _SOCKUNION_H_ */

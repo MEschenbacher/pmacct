@@ -20,24 +20,21 @@
 */
 
 #if (!defined __NFV8_HANDLERS_C)
-#define EXT extern
 #else
-#define EXT
 #endif
-EXT void load_nfv8_handlers();
+void load_nfv8_handlers();
 
-EXT void v8_1_filter_handler(struct packet_ptrs *, void *);
-EXT void v8_2_filter_handler(struct packet_ptrs *, void *);
-EXT void v8_3_filter_handler(struct packet_ptrs *, void *);
-EXT void v8_4_filter_handler(struct packet_ptrs *, void *);
-EXT void v8_5_filter_handler(struct packet_ptrs *, void *);
-EXT void v8_6_filter_handler(struct packet_ptrs *, void *);
-EXT void v8_7_filter_handler(struct packet_ptrs *, void *);
-EXT void v8_8_filter_handler(struct packet_ptrs *, void *);
-EXT void v8_9_filter_handler(struct packet_ptrs *, void *);
-EXT void v8_10_filter_handler(struct packet_ptrs *, void *);
-EXT void v8_11_filter_handler(struct packet_ptrs *, void *);
-EXT void v8_12_filter_handler(struct packet_ptrs *, void *);
-EXT void v8_13_filter_handler(struct packet_ptrs *, void *);
-EXT void v8_14_filter_handler(struct packet_ptrs *, void *);
-#undef EXT
+void v8_1_filter_handler(struct packet_ptrs *, void *);
+void v8_2_filter_handler(struct packet_ptrs *, void *);
+void v8_3_filter_handler(struct packet_ptrs *, void *);
+void v8_4_filter_handler(struct packet_ptrs *, void *);
+void v8_5_filter_handler(struct packet_ptrs *, void *);
+void v8_6_filter_handler(struct packet_ptrs *, void *);
+void v8_7_filter_handler(struct packet_ptrs *, void *);
+void v8_8_filter_handler(struct packet_ptrs *, void *);
+void v8_9_filter_handler(struct packet_ptrs *, void *);
+void v8_10_filter_handler(struct packet_ptrs *, void *);
+void v8_11_filter_handler(struct packet_ptrs *, void *);
+void v8_12_filter_handler(struct packet_ptrs *, void *);
+void v8_13_filter_handler(struct packet_ptrs *, void *);
+void v8_14_filter_handler(struct packet_ptrs *, void *);

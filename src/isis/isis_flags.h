@@ -29,16 +29,13 @@
 #define ISIS_MAX_CIRCUITS 32 /* = 1024 */	/*FIXME:defined in lsp.h as well */
 
 #if (!defined __ISIS_FLAGS_C)
-#define EXT extern
 #else
-#define EXT
 #endif
-EXT void flags_initialize (struct flags *);
-EXT struct flags *new_flags (int);
-EXT int flags_get_index (struct flags *);
-EXT void flags_free_index (struct flags *, int);
-EXT int flags_any_set (u_int32_t *);
-#undef EXT
+void flags_initialize (struct flags *);
+struct flags *new_flags (int);
+int flags_get_index (struct flags *);
+void flags_free_index (struct flags *, int);
+int flags_any_set (u_int32_t *);
 
 #define ISIS_SET_FLAG(F,C) \
         F[C->idx>>5] |= (1<<(C->idx & 0x1F));

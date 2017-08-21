@@ -128,68 +128,62 @@ extern struct channels_list_entry channels_list[MAX_N_PLUGINS];
 
 /* Function prototypes */
 #if (!defined __PLUGIN_HOOKS_C)
-#define EXT extern
 #else
-#define EXT
 #endif
-EXT void load_plugins(struct plugin_requests *);
-EXT void exec_plugins(struct packet_ptrs *, struct plugin_requests *);
-EXT void load_plugin_filters(int);
-EXT struct channels_list_entry *insert_pipe_channel(int, struct configuration *, int);
-EXT void delete_pipe_channel(int);
-EXT void sort_pipe_channels();
-EXT void init_pipe_channels();
-EXT int evaluate_filters(struct aggregate_filter *, char *, struct pcap_pkthdr *);
-EXT void recollect_pipe_memory(struct channels_list_entry *);
-EXT void init_random_seed();
-EXT void fill_pipe_buffer();
-EXT int check_pipe_buffer_space(struct channels_list_entry *, struct pkt_vlen_hdr_primitives *, int);
-EXT void return_pipe_buffer_space(struct channels_list_entry *, int);
-EXT int check_shadow_status(struct packet_ptrs *, struct channels_list_entry *);
-EXT int pkt_data_clean(void *, int);
-EXT int pkt_payload_clean(void *, int);
-EXT int pkt_msg_clean(void *, int);
-EXT int pkt_extras_clean(void *, int);
-EXT void evaluate_sampling(struct sampling *, pm_counter_t *, pm_counter_t *, pm_counter_t *);
-EXT pm_counter_t take_simple_random_skip(pm_counter_t);
-EXT pm_counter_t take_simple_systematic_skip(pm_counter_t);
-EXT void plugin_pipe_zmq_compile_check();
-EXT void plugin_pipe_check(struct configuration *);
-#undef EXT
+void load_plugins(struct plugin_requests *);
+void exec_plugins(struct packet_ptrs *, struct plugin_requests *);
+void load_plugin_filters(int);
+struct channels_list_entry *insert_pipe_channel(int, struct configuration *, int);
+void delete_pipe_channel(int);
+void sort_pipe_channels();
+void init_pipe_channels();
+int evaluate_filters(struct aggregate_filter *, char *, struct pcap_pkthdr *);
+void recollect_pipe_memory(struct channels_list_entry *);
+void init_random_seed();
+void fill_pipe_buffer();
+int check_pipe_buffer_space(struct channels_list_entry *, struct pkt_vlen_hdr_primitives *, int);
+void return_pipe_buffer_space(struct channels_list_entry *, int);
+int check_shadow_status(struct packet_ptrs *, struct channels_list_entry *);
+int pkt_data_clean(void *, int);
+int pkt_payload_clean(void *, int);
+int pkt_msg_clean(void *, int);
+int pkt_extras_clean(void *, int);
+void evaluate_sampling(struct sampling *, pm_counter_t *, pm_counter_t *, pm_counter_t *);
+pm_counter_t take_simple_random_skip(pm_counter_t);
+pm_counter_t take_simple_systematic_skip(pm_counter_t);
+void plugin_pipe_zmq_compile_check();
+void plugin_pipe_check(struct configuration *);
 
 #if (defined __PLUGIN_HOOKS_C)
-#define EXT extern
 #else
-#define EXT
 #endif
-EXT void imt_plugin(int, struct configuration *, void *);
-EXT void print_plugin(int, struct configuration *, void *);
-EXT void nfprobe_plugin(int, struct configuration *, void *);
-EXT void sfprobe_plugin(int, struct configuration *, void *);
-EXT void tee_plugin(int, struct configuration *, void *);
+void imt_plugin(int, struct configuration *, void *);
+void print_plugin(int, struct configuration *, void *);
+void nfprobe_plugin(int, struct configuration *, void *);
+void sfprobe_plugin(int, struct configuration *, void *);
+void tee_plugin(int, struct configuration *, void *);
 
 #ifdef WITH_MYSQL
-EXT void mysql_plugin(int, struct configuration *, void *);
+void mysql_plugin(int, struct configuration *, void *);
 #endif
 
 #ifdef WITH_PGSQL
-EXT void pgsql_plugin(int, struct configuration *, void *);
+void pgsql_plugin(int, struct configuration *, void *);
 #endif
 
 #ifdef WITH_SQLITE3
-EXT void sqlite3_plugin(int, struct configuration *, void *);
+void sqlite3_plugin(int, struct configuration *, void *);
 #endif
 
 #ifdef WITH_MONGODB
-EXT void mongodb_plugin(int, struct configuration *, void *);
-EXT void mongodb_legacy_warning(int, struct configuration *, void *);
+void mongodb_plugin(int, struct configuration *, void *);
+void mongodb_legacy_warning(int, struct configuration *, void *);
 #endif
 
 #ifdef WITH_RABBITMQ
-EXT void amqp_plugin(int, struct configuration *, void *);
+void amqp_plugin(int, struct configuration *, void *);
 #endif
 
 #ifdef WITH_KAFKA
-EXT void kafka_plugin(int, struct configuration *, void *);
+void kafka_plugin(int, struct configuration *, void *);
 #endif
-#undef EXT

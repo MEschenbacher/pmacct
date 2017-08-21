@@ -69,16 +69,13 @@ struct isis_spftree {
 };
 
 #if (!defined __ISIS_SPF_C)
-#define EXT extern
 #else
-#define EXT
 #endif
-EXT void spftree_area_init (struct isis_area *);
-EXT int isis_spf_schedule (struct isis_area *, int);
-EXT int isis_run_spf (struct isis_area *, int, int);
+void spftree_area_init (struct isis_area *);
+int isis_spf_schedule (struct isis_area *, int);
+int isis_run_spf (struct isis_area *, int, int);
 #ifdef ENABLE_IPV6
-EXT int isis_spf_schedule6 (struct isis_area *, int);
+int isis_spf_schedule6 (struct isis_area *, int);
 #endif
-#undef EXT
 
 #endif /* _ISIS_SPF_H_ */

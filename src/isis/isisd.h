@@ -122,15 +122,12 @@ struct isis_area {
 };
 
 #if (!defined __ISISD_C)
-#define EXT extern
 #else
-#define EXT
 #endif
-EXT void isis_init (void);
-EXT struct isis_area *isis_area_lookup (const char *);
-EXT struct isis_area *isis_area_create ();
-EXT int area_net_title(struct isis_area *, const u_char *);
-#undef EXT
+void isis_init (void);
+struct isis_area *isis_area_lookup (const char *);
+struct isis_area *isis_area_create ();
+int area_net_title(struct isis_area *, const u_char *);
 
 #define DEBUG_ADJ_PACKETS                (1<<0)
 #define DEBUG_CHECKSUM_ERRORS            (1<<1)

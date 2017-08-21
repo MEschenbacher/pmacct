@@ -529,27 +529,24 @@ struct configuration {
 
 /* prototypes */
 #if (!defined __CFG_C)
-#define EXT extern
 #else
-#define EXT
 #endif
-EXT void evaluate_configuration(char *, int);
-EXT int parse_configuration_file(char *);
-EXT int parse_plugin_names(char *, int, int);
-EXT void parse_core_process_name(char *, int, int);
-EXT void compose_default_plugin_name(char *, int, char *);
-EXT int create_plugin(char *, char *, char *);
-EXT int delete_plugin_by_id(int);
-EXT struct plugins_list_entry *search_plugin_by_pipe(int);
-EXT struct plugins_list_entry *search_plugin_by_pid(pid_t);
-EXT void sanitize_cfg(int, char *);
-EXT void set_default_values();
+void evaluate_configuration(char *, int);
+int parse_configuration_file(char *);
+int parse_plugin_names(char *, int, int);
+void parse_core_process_name(char *, int, int);
+void compose_default_plugin_name(char *, int, char *);
+int create_plugin(char *, char *, char *);
+int delete_plugin_by_id(int);
+struct plugins_list_entry *search_plugin_by_pipe(int);
+struct plugins_list_entry *search_plugin_by_pid(pid_t);
+void sanitize_cfg(int, char *);
+void set_default_values();
 
 /* global vars */
-EXT char *cfg[SRVBUFLEN], *cfg_cmdline[SRVBUFLEN];
-EXT struct custom_primitives custom_primitives_registry;
-EXT pm_cfgreg_t custom_primitives_type;
-EXT int rows;
+char *cfg[SRVBUFLEN], *cfg_cmdline[SRVBUFLEN];
+struct custom_primitives custom_primitives_registry;
+pm_cfgreg_t custom_primitives_type;
+int rows;
 
 static char default_proc_name[] = "default";
-#undef EXT

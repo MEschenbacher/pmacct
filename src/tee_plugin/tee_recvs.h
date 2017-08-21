@@ -27,19 +27,16 @@
 
 /* prototypes */
 #if (!defined __TEE_RECVS_C)
-#define EXT extern
 #else
-#define EXT
 #endif
 
-EXT int tee_recvs_map_id_handler(char *, struct id_entry *, char *, struct plugin_requests *, int);
-EXT int tee_recvs_map_ip_handler(char *, struct id_entry *, char *, struct plugin_requests *, int);
-EXT int tee_recvs_map_tag_handler(char *, struct id_entry *, char *, struct plugin_requests *, int);
-EXT int tee_recvs_map_balance_alg_handler(char *, struct id_entry *, char *, struct plugin_requests *, int);
-EXT int tee_recvs_map_src_port_handler(char *, struct id_entry *, char *, struct plugin_requests *, int);
+int tee_recvs_map_id_handler(char *, struct id_entry *, char *, struct plugin_requests *, int);
+int tee_recvs_map_ip_handler(char *, struct id_entry *, char *, struct plugin_requests *, int);
+int tee_recvs_map_tag_handler(char *, struct id_entry *, char *, struct plugin_requests *, int);
+int tee_recvs_map_balance_alg_handler(char *, struct id_entry *, char *, struct plugin_requests *, int);
+int tee_recvs_map_src_port_handler(char *, struct id_entry *, char *, struct plugin_requests *, int);
 
-EXT void tee_recvs_map_validate(char *, struct plugin_requests *);
+void tee_recvs_map_validate(char *, struct plugin_requests *);
 
 /* global variables */
 
-#undef EXT

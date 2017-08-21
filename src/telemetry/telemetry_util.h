@@ -25,20 +25,17 @@
 
 /* prototypes */
 #if (!defined __TELEMETRY_UTIL_C)
-#define EXT extern
 #else
-#define EXT
 #endif
-EXT int telemetry_peer_init(telemetry_peer *, int);
-EXT int telemetry_peer_z_init(telemetry_peer_z *);
-EXT void telemetry_peer_close(telemetry_peer *, int);
-EXT void telemetry_peer_z_close(telemetry_peer_z *);
-EXT u_int32_t telemetry_cisco_hdr_get_len(telemetry_peer *);
-EXT u_int32_t telemetry_cisco_hdr_get_type(telemetry_peer *);
-EXT int telemetry_is_zjson(int);
-EXT void telemetry_link_misc_structs(telemetry_misc_structs *);
-EXT int telemetry_tpuc_addr_cmp(const void *, const void *);
-EXT int telemetry_validate_input_output_decoders(int, int);
-EXT void telemetry_log_peer_stats(telemetry_peer *, struct telemetry_data *);
-EXT void telemetry_log_global_stats(struct telemetry_data *);
-#undef EXT
+int telemetry_peer_init(telemetry_peer *, int);
+int telemetry_peer_z_init(telemetry_peer_z *);
+void telemetry_peer_close(telemetry_peer *, int);
+void telemetry_peer_z_close(telemetry_peer_z *);
+u_int32_t telemetry_cisco_hdr_get_len(telemetry_peer *);
+u_int32_t telemetry_cisco_hdr_get_type(telemetry_peer *);
+int telemetry_is_zjson(int);
+void telemetry_link_misc_structs(telemetry_misc_structs *);
+int telemetry_tpuc_addr_cmp(const void *, const void *);
+int telemetry_validate_input_output_decoders(int, int);
+void telemetry_log_peer_stats(telemetry_peer *, struct telemetry_data *);
+void telemetry_log_global_stats(struct telemetry_data *);

@@ -42,11 +42,8 @@
 #define IF_DOWN_FROM_Z 4
 
 #if (!defined __ISIS_CSM_C)
-#define EXT extern
 #else
-#define EXT
 #endif
-EXT struct isis_circuit *isis_csm_state_change (int, struct isis_circuit *, void *);
-#undef EXT
+struct isis_circuit *isis_csm_state_change (int, struct isis_circuit *, void *);
 
 #endif /* _ISIS_CSM_H_ */

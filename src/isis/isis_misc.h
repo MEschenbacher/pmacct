@@ -62,26 +62,23 @@ struct host {
 
 /* prototypes */
 #if (!defined __ISIS_MISC_C)
-#define EXT extern
 #else
-#define EXT
 #endif
-EXT int string2circuit_t (const u_char *);
-EXT const char *circuit_t2string (int);
-EXT const char *syst2string (int);
-EXT struct in_addr newprefix2inaddr (u_char *, u_char);
-EXT int dotformat2buff (u_char *, const u_char *);
-EXT int sysid2buff (u_char *, const u_char *);
-EXT const char *isonet_print (u_char *, int);
-EXT const char *sysid_print (u_char *);
-EXT const char *snpa_print (u_char *);
-EXT const char *rawlspid_print (u_char *);
-EXT const char *time2string (u_int32_t);
-EXT char *nlpid2string (struct nlpids *);
-EXT int speaks (struct nlpids *, int);
-EXT unsigned long isis_jitter (unsigned long, unsigned long);
-EXT const char *unix_hostname (void);
-#undef EXT
+int string2circuit_t (const u_char *);
+const char *circuit_t2string (int);
+const char *syst2string (int);
+struct in_addr newprefix2inaddr (u_char *, u_char);
+int dotformat2buff (u_char *, const u_char *);
+int sysid2buff (u_char *, const u_char *);
+const char *isonet_print (u_char *, int);
+const char *sysid_print (u_char *);
+const char *snpa_print (u_char *);
+const char *rawlspid_print (u_char *);
+const char *time2string (u_int32_t);
+char *nlpid2string (struct nlpids *);
+int speaks (struct nlpids *, int);
+unsigned long isis_jitter (unsigned long, unsigned long);
+const char *unix_hostname (void);
 
 /*
  * macros

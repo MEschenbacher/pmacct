@@ -222,21 +222,18 @@ struct isis_partial_seqnum_hdr {
 #define ISIS_SNP_CSNP_FLAG 1
 
 #if (!defined __ISIS_PDU_C)
-#define EXT extern
 #else
-#define EXT
 #endif
-EXT int send_p2p_hello (struct thread *);
-EXT int ack_lsp (struct isis_link_state_hdr *, struct isis_circuit *, int);
-EXT void fill_fixed_hdr (struct isis_fixed_hdr *, u_char);
-EXT int send_hello (struct isis_circuit *, int);
-EXT int authentication_check (struct isis_passwd *, struct isis_passwd *);
-EXT int isis_handle_pdu (struct isis_circuit *, u_char *);
-EXT int isis_send_pdu_p2p (struct isis_circuit *, int);
-EXT int build_psnp (int, struct isis_circuit *, struct list *);
-EXT int send_psnp (int, struct isis_circuit *);
-EXT int build_csnp (int, u_char *, u_char *, struct list *, struct isis_circuit *);
-EXT int send_csnp (struct isis_circuit *, int);
-#undef EXT
+int send_p2p_hello (struct thread *);
+int ack_lsp (struct isis_link_state_hdr *, struct isis_circuit *, int);
+void fill_fixed_hdr (struct isis_fixed_hdr *, u_char);
+int send_hello (struct isis_circuit *, int);
+int authentication_check (struct isis_passwd *, struct isis_passwd *);
+int isis_handle_pdu (struct isis_circuit *, u_char *);
+int isis_send_pdu_p2p (struct isis_circuit *, int);
+int build_psnp (int, struct isis_circuit *, struct list *);
+int send_psnp (int, struct isis_circuit *);
+int build_csnp (int, u_char *, u_char *, struct list *, struct isis_circuit *);
+int send_csnp (struct isis_circuit *, int);
 
 #endif /* _ISIS_PDU_H_ */

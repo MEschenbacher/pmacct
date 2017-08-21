@@ -23,15 +23,13 @@
 
 /* prototypes */
 #if (!defined __PLUGIN_CMN_AVRO_C)
-#define EXT extern
 #else
-#define EXT
 #endif
 
 #ifdef WITH_AVRO
-EXT avro_schema_t build_avro_schema(u_int64_t wtc, u_int64_t wtc_2);
-EXT void avro_schema_add_writer_id(avro_schema_t);
-EXT avro_value_t compose_avro(u_int64_t wtc, u_int64_t wtc_2, u_int8_t flow_type,
+avro_schema_t build_avro_schema(u_int64_t wtc, u_int64_t wtc_2);
+void avro_schema_add_writer_id(avro_schema_t);
+avro_value_t compose_avro(u_int64_t wtc, u_int64_t wtc_2, u_int8_t flow_type,
                               struct pkt_primitives *pbase, struct pkt_bgp_primitives *pbgp,
                               struct pkt_nat_primitives *pnat, struct pkt_mpls_primitives *pmpls,
                               struct pkt_tunnel_primitives *ptun, char *pcust,
@@ -39,6 +37,5 @@ EXT avro_value_t compose_avro(u_int64_t wtc, u_int64_t wtc_2, u_int8_t flow_type
                               pm_counter_t packet_counter, pm_counter_t flow_counter, u_int32_t tcp_flags,
                               struct timeval *basetime, struct pkt_stitching *stitch,
                               avro_value_iface_t *iface);
-EXT void add_writer_name_and_pid_avro(avro_value_t, char *, pid_t);
+void add_writer_name_and_pid_avro(avro_value_t, char *, pid_t);
 #endif
-#undef EXT

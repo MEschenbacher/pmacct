@@ -269,82 +269,79 @@ struct SF_dissect {
 };
 
 #if (!defined __SFACCTD_C)
-#define EXT extern
 #else
-#define EXT
 #endif
-EXT u_int8_t SF_evaluate_flow_type(struct packet_ptrs *);
-EXT void set_vector_sample_type(struct packet_ptrs_vector *, u_int32_t);
-EXT void reset_mac(struct packet_ptrs *);
-EXT void reset_mac_vlan(struct packet_ptrs *);
-EXT void reset_ip4(struct packet_ptrs *);
-EXT void reset_ip6(struct packet_ptrs *);
-EXT void SF_notify_malf_packet(short int, char *, struct sockaddr *);
-EXT int SF_find_id(struct id_table *, struct packet_ptrs *, pm_id_t *, pm_id_t *);
+u_int8_t SF_evaluate_flow_type(struct packet_ptrs *);
+void set_vector_sample_type(struct packet_ptrs_vector *, u_int32_t);
+void reset_mac(struct packet_ptrs *);
+void reset_mac_vlan(struct packet_ptrs *);
+void reset_ip4(struct packet_ptrs *);
+void reset_ip6(struct packet_ptrs *);
+void SF_notify_malf_packet(short int, char *, struct sockaddr *);
+int SF_find_id(struct id_table *, struct packet_ptrs *, pm_id_t *, pm_id_t *);
 
-EXT char *getPointer(SFSample *);
-EXT u_int32_t getData32(SFSample *);
-EXT u_int32_t getData32_nobswap(SFSample *);
-EXT u_int64_t getData64(SFSample *);
-EXT u_int32_t getAddress(SFSample *, SFLAddress *);
-EXT void skipBytes(SFSample *, int);
-EXT int skipBytesAndCheck(SFSample *, int);
-EXT int lengthCheck(SFSample *, u_char *, int);
+char *getPointer(SFSample *);
+u_int32_t getData32(SFSample *);
+u_int32_t getData32_nobswap(SFSample *);
+u_int64_t getData64(SFSample *);
+u_int32_t getAddress(SFSample *, SFLAddress *);
+void skipBytes(SFSample *, int);
+int skipBytesAndCheck(SFSample *, int);
+int lengthCheck(SFSample *, u_char *, int);
 
-EXT void process_SFv2v4_packet(SFSample *, struct packet_ptrs_vector *, struct plugin_requests *, struct sockaddr *);
-EXT void process_SFv5_packet(SFSample *, struct packet_ptrs_vector *, struct plugin_requests *, struct sockaddr *);
-EXT void process_SF_raw_packet(SFSample *, struct packet_ptrs_vector *, struct plugin_requests *, struct sockaddr *);
-EXT void readv2v4FlowSample(SFSample *, struct packet_ptrs_vector *, struct plugin_requests *);
-EXT void readv5FlowSample(SFSample *, int, struct packet_ptrs_vector *, struct plugin_requests *, int);
-EXT void readv2v4CountersSample(SFSample *, struct packet_ptrs_vector *);
-EXT void readv5CountersSample(SFSample *, int, struct packet_ptrs_vector *);
-EXT void finalizeSample(SFSample *, struct packet_ptrs_vector *, struct plugin_requests *);
-EXT void InterSampleCleanup(SFSample *);
-EXT void decodeMpls(SFSample *);
-EXT void decodePPP(SFSample *);
-EXT void decodeLinkLayer(SFSample *);
-EXT void decodeIPLayer4(SFSample *, u_char *, u_int32_t);
-EXT void decodeIPV4(SFSample *);
-EXT void decodeIPV6(SFSample *);
-EXT void decodeIPV4_inner(SFSample *, u_char *);
-EXT void readExtendedSwitch(SFSample *);
-EXT void readExtendedRouter(SFSample *);
-EXT void readExtendedGateway_v2(SFSample *);
-EXT void readExtendedGateway(SFSample *);
-EXT void readExtendedUser(SFSample *);
-EXT void readExtendedUrl(SFSample *);
-EXT void mplsLabelStack(SFSample *, char *);
-EXT void readExtendedMpls(SFSample *);
-EXT void readExtendedNat(SFSample *);
-EXT void readExtendedMplsTunnel(SFSample *);
-EXT void readExtendedMplsVC(SFSample *);
-EXT void readExtendedMplsFTN(SFSample *);
-EXT void readExtendedMplsLDP_FEC(SFSample *);
-EXT void readExtendedVlanTunnel(SFSample *);
-EXT void readExtendedProcess(SFSample *);
-EXT void readFlowSample_header(SFSample *);
-EXT void readFlowSample_ethernet(SFSample *);
-EXT void readFlowSample_IPv4(SFSample *);
-EXT void readFlowSample_IPv6(SFSample *);
+void process_SFv2v4_packet(SFSample *, struct packet_ptrs_vector *, struct plugin_requests *, struct sockaddr *);
+void process_SFv5_packet(SFSample *, struct packet_ptrs_vector *, struct plugin_requests *, struct sockaddr *);
+void process_SF_raw_packet(SFSample *, struct packet_ptrs_vector *, struct plugin_requests *, struct sockaddr *);
+void readv2v4FlowSample(SFSample *, struct packet_ptrs_vector *, struct plugin_requests *);
+void readv5FlowSample(SFSample *, int, struct packet_ptrs_vector *, struct plugin_requests *, int);
+void readv2v4CountersSample(SFSample *, struct packet_ptrs_vector *);
+void readv5CountersSample(SFSample *, int, struct packet_ptrs_vector *);
+void finalizeSample(SFSample *, struct packet_ptrs_vector *, struct plugin_requests *);
+void InterSampleCleanup(SFSample *);
+void decodeMpls(SFSample *);
+void decodePPP(SFSample *);
+void decodeLinkLayer(SFSample *);
+void decodeIPLayer4(SFSample *, u_char *, u_int32_t);
+void decodeIPV4(SFSample *);
+void decodeIPV6(SFSample *);
+void decodeIPV4_inner(SFSample *, u_char *);
+void readExtendedSwitch(SFSample *);
+void readExtendedRouter(SFSample *);
+void readExtendedGateway_v2(SFSample *);
+void readExtendedGateway(SFSample *);
+void readExtendedUser(SFSample *);
+void readExtendedUrl(SFSample *);
+void mplsLabelStack(SFSample *, char *);
+void readExtendedMpls(SFSample *);
+void readExtendedNat(SFSample *);
+void readExtendedMplsTunnel(SFSample *);
+void readExtendedMplsVC(SFSample *);
+void readExtendedMplsFTN(SFSample *);
+void readExtendedMplsLDP_FEC(SFSample *);
+void readExtendedVlanTunnel(SFSample *);
+void readExtendedProcess(SFSample *);
+void readFlowSample_header(SFSample *);
+void readFlowSample_ethernet(SFSample *);
+void readFlowSample_IPv4(SFSample *);
+void readFlowSample_IPv6(SFSample *);
 
-EXT int sf_cnt_log_msg(struct bgp_peer *, SFSample *, int, u_int32_t, char *, int, u_int32_t);
-EXT int readCounters_generic(struct bgp_peer *, SFSample *, char *, int, void *);
-EXT int readCounters_ethernet(struct bgp_peer *, SFSample *, char *, int, void *);
-EXT int readCounters_vlan(struct bgp_peer *, SFSample *, char *, int, void *);
-EXT void sfacctd_counter_init_amqp_host();
-EXT int sfacctd_counter_init_kafka_host();
-EXT void sf_cnt_link_misc_structs(struct bgp_misc_structs *);
+int sf_cnt_log_msg(struct bgp_peer *, SFSample *, int, u_int32_t, char *, int, u_int32_t);
+int readCounters_generic(struct bgp_peer *, SFSample *, char *, int, void *);
+int readCounters_ethernet(struct bgp_peer *, SFSample *, char *, int, void *);
+int readCounters_vlan(struct bgp_peer *, SFSample *, char *, int, void *);
+void sfacctd_counter_init_amqp_host();
+int sfacctd_counter_init_kafka_host();
+void sf_cnt_link_misc_structs(struct bgp_misc_structs *);
 
-EXT char *sfv245_check_status(SFSample *spp, struct sockaddr *);
-EXT void sfv245_check_counter_log_init(struct packet_ptrs *);
+char *sfv245_check_status(SFSample *spp, struct sockaddr *);
+void sfv245_check_counter_log_init(struct packet_ptrs *);
 
-EXT void usage_daemon(char *);
-EXT void compute_once();
+void usage_daemon(char *);
+void compute_once();
 
 /* global variables */
-EXT int sfacctd_counter_backend_methods;
-EXT struct bgp_misc_structs *sf_cnt_misc_db;
-EXT struct host_addr debug_a;
-EXT u_char debug_agent_addr[50];
-EXT u_int16_t debug_agent_port;
-#undef EXT
+int sfacctd_counter_backend_methods;
+struct bgp_misc_structs *sf_cnt_misc_db;
+struct host_addr debug_a;
+u_char debug_agent_addr[50];
+u_int16_t debug_agent_port;

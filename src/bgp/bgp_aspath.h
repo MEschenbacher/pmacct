@@ -66,31 +66,28 @@ struct aspath {
 
 /* Prototypes. */
 #if (!defined __BGP_ASPATH_C)
-#define EXT extern
 #else
-#define EXT
 #endif
-EXT void aspath_init (int, struct hash **);
-EXT struct aspath *aspath_parse (struct bgp_peer *, char *, size_t, int);
-EXT struct aspath *aspath_dup (struct aspath *);
-EXT int aspath_cmp_left (const struct aspath *, const struct aspath *);
-EXT int aspath_cmp_left_confed (const struct aspath *, const struct aspath *);
-EXT void aspath_free (struct aspath *);
-EXT struct aspath *aspath_intern (struct bgp_peer *, struct aspath *);
-EXT void aspath_unintern (struct bgp_peer *, struct aspath *);
-EXT const char *aspath_print (struct aspath *);
-EXT unsigned int aspath_key_make (void *);
-EXT int aspath_loop_check (struct aspath *, as_t);
-EXT int aspath_private_as_check (struct aspath *);
-EXT int aspath_firstas_check (struct aspath *, as_t);
-EXT unsigned int aspath_count_hops (struct aspath *);
-EXT unsigned int aspath_count_confeds (struct aspath *);
-EXT unsigned int aspath_size (struct aspath *);
-EXT as_t aspath_highest (struct aspath *);
+void aspath_init (int, struct hash **);
+struct aspath *aspath_parse (struct bgp_peer *, char *, size_t, int);
+struct aspath *aspath_dup (struct aspath *);
+int aspath_cmp_left (const struct aspath *, const struct aspath *);
+int aspath_cmp_left_confed (const struct aspath *, const struct aspath *);
+void aspath_free (struct aspath *);
+struct aspath *aspath_intern (struct bgp_peer *, struct aspath *);
+void aspath_unintern (struct bgp_peer *, struct aspath *);
+const char *aspath_print (struct aspath *);
+unsigned int aspath_key_make (void *);
+int aspath_loop_check (struct aspath *, as_t);
+int aspath_private_as_check (struct aspath *);
+int aspath_firstas_check (struct aspath *, as_t);
+unsigned int aspath_count_hops (struct aspath *);
+unsigned int aspath_count_confeds (struct aspath *);
+unsigned int aspath_size (struct aspath *);
+as_t aspath_highest (struct aspath *);
 
-EXT struct aspath *aspath_reconcile_as4 (struct bgp_peer *, struct aspath *, struct aspath *);
-EXT unsigned int aspath_has_as4 (struct aspath *);
-EXT unsigned int aspath_count_numas (struct aspath *);
+struct aspath *aspath_reconcile_as4 (struct bgp_peer *, struct aspath *, struct aspath *);
+unsigned int aspath_has_as4 (struct aspath *);
+unsigned int aspath_count_numas (struct aspath *);
 
-#undef EXT
 #endif

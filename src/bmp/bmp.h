@@ -181,25 +181,19 @@ struct bmp_data {
 
 /* prototypes */
 #if !defined(__BMP_C)
-#define EXT extern
 #else
-#define EXT
 #endif
-EXT void nfacctd_bmp_wrapper();
-EXT void skinny_bmp_daemon();
-EXT void bmp_prepare_thread();
-EXT void bmp_prepare_daemon();
-#undef EXT
+void nfacctd_bmp_wrapper();
+void skinny_bmp_daemon();
+void bmp_prepare_thread();
+void bmp_prepare_daemon();
 
 /* global variables */
 #if !defined(__BMP_C)
-#define EXT extern
 #else
-#define EXT
 #endif
-EXT struct bmp_peer *bmp_peers;
-EXT u_int32_t (*bmp_route_info_modulo)(struct bgp_peer *, path_id_t *, int);
+struct bmp_peer *bmp_peers;
+u_int32_t (*bmp_route_info_modulo)(struct bgp_peer *, path_id_t *, int);
 
-EXT struct bgp_rt_structs *bmp_routing_db;
-EXT struct bgp_misc_structs *bmp_misc_db;
-#undef EXT
+struct bgp_rt_structs *bmp_routing_db;
+struct bgp_misc_structs *bmp_misc_db;

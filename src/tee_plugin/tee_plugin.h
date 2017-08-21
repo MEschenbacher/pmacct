@@ -69,24 +69,21 @@ struct tee_receivers {
 
 /* prototypes */
 #if (!defined __TEE_PLUGIN_C)
-#define EXT extern
 #else
-#define EXT
 #endif
 
-EXT void Tee_exit_now(int);
-EXT void Tee_init_socks();
-EXT void Tee_destroy_recvs();
-EXT void Tee_send(struct pkt_msg *, struct sockaddr *, int);
-EXT int Tee_prepare_sock(struct sockaddr *, socklen_t, u_int16_t);
-EXT int Tee_parse_hostport(const char *, struct sockaddr *, socklen_t *);
-EXT struct tee_receiver *Tee_rr_balance(void *, struct pkt_msg *);
-EXT struct tee_receiver *Tee_hash_agent_balance(void *, struct pkt_msg *);
-EXT struct tee_receiver *Tee_hash_tag_balance(void *, struct pkt_msg *);
+void Tee_exit_now(int);
+void Tee_init_socks();
+void Tee_destroy_recvs();
+void Tee_send(struct pkt_msg *, struct sockaddr *, int);
+int Tee_prepare_sock(struct sockaddr *, socklen_t, u_int16_t);
+int Tee_parse_hostport(const char *, struct sockaddr *, socklen_t *);
+struct tee_receiver *Tee_rr_balance(void *, struct pkt_msg *);
+struct tee_receiver *Tee_hash_agent_balance(void *, struct pkt_msg *);
+struct tee_receiver *Tee_hash_tag_balance(void *, struct pkt_msg *);
 
 /* global variables */
-EXT char tee_send_buf[65535];
-EXT struct tee_receivers receivers;
-EXT int err_cant_bridge_af;
+char tee_send_buf[65535];
+struct tee_receivers receivers;
+int err_cant_bridge_af;
 
-#undef EXT

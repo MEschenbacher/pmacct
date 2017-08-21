@@ -102,67 +102,64 @@ struct p_broker_timers {
 
 /* prototypes */
 #if (!defined __PLUGIN_COMMON_C)
-#define EXT extern
 #else
-#define EXT
 #endif
-EXT void P_set_signals();
-EXT void P_init_default_values();
-EXT void P_config_checks();
-EXT struct chained_cache *P_cache_attach_new_node(struct chained_cache *);
-EXT unsigned int P_cache_modulo(struct primitives_ptrs *);
-EXT void P_sum_host_insert(struct primitives_ptrs *, struct insert_data *);
-EXT void P_sum_port_insert(struct primitives_ptrs *, struct insert_data *);
-EXT void P_sum_as_insert(struct primitives_ptrs *, struct insert_data *);
+void P_set_signals();
+void P_init_default_values();
+void P_config_checks();
+struct chained_cache *P_cache_attach_new_node(struct chained_cache *);
+unsigned int P_cache_modulo(struct primitives_ptrs *);
+void P_sum_host_insert(struct primitives_ptrs *, struct insert_data *);
+void P_sum_port_insert(struct primitives_ptrs *, struct insert_data *);
+void P_sum_as_insert(struct primitives_ptrs *, struct insert_data *);
 #if defined (HAVE_L2)
-EXT void P_sum_mac_insert(struct primitives_ptrs *, struct insert_data *);
+void P_sum_mac_insert(struct primitives_ptrs *, struct insert_data *);
 #endif
-EXT struct chained_cache *P_cache_search(struct primitives_ptrs *);
-EXT void P_cache_insert(struct primitives_ptrs *, struct insert_data *);
-EXT void P_cache_insert_pending(struct chained_cache *[], int, struct chained_cache *);
-EXT void P_cache_mark_flush(struct chained_cache *[], int, int);
-EXT void P_cache_flush(struct chained_cache *[], int);
-EXT void P_cache_handle_flush_event(struct ports_table *);
-EXT void P_exit_now(int);
-EXT int P_trigger_exec(char *);
-EXT void primptrs_set_all_from_chained_cache(struct primitives_ptrs *, struct chained_cache *);
-EXT void P_handle_table_dyn_rr(char *, int, char *, struct p_table_rr *);
-EXT void P_handle_table_dyn_strings(char *, int, char *, struct chained_cache *);
+struct chained_cache *P_cache_search(struct primitives_ptrs *);
+void P_cache_insert(struct primitives_ptrs *, struct insert_data *);
+void P_cache_insert_pending(struct chained_cache *[], int, struct chained_cache *);
+void P_cache_mark_flush(struct chained_cache *[], int, int);
+void P_cache_flush(struct chained_cache *[], int);
+void P_cache_handle_flush_event(struct ports_table *);
+void P_exit_now(int);
+int P_trigger_exec(char *);
+void primptrs_set_all_from_chained_cache(struct primitives_ptrs *, struct chained_cache *);
+void P_handle_table_dyn_rr(char *, int, char *, struct p_table_rr *);
+void P_handle_table_dyn_strings(char *, int, char *, struct chained_cache *);
 
-EXT void P_broker_timers_set_last_fail(struct p_broker_timers *, time_t);
-EXT void P_broker_timers_set_retry_interval(struct p_broker_timers *, int);
-EXT void P_broker_timers_unset_last_fail(struct p_broker_timers *);
-EXT time_t P_broker_timers_get_last_fail(struct p_broker_timers *);
-EXT int P_broker_timers_get_retry_interval(struct p_broker_timers *);
+void P_broker_timers_set_last_fail(struct p_broker_timers *, time_t);
+void P_broker_timers_set_retry_interval(struct p_broker_timers *, int);
+void P_broker_timers_unset_last_fail(struct p_broker_timers *);
+time_t P_broker_timers_get_last_fail(struct p_broker_timers *);
+int P_broker_timers_get_retry_interval(struct p_broker_timers *);
 
-EXT void P_init_historical_acct(time_t);
-EXT void P_init_refresh_deadline(time_t *, int, int, char *);
-EXT void P_eval_historical_acct(struct timeval *, struct timeval *, time_t);
-EXT int P_cmp_historical_acct(struct timeval *, struct timeval *);
-EXT void P_update_time_reference(struct insert_data *);
+void P_init_historical_acct(time_t);
+void P_init_refresh_deadline(time_t *, int, int, char *);
+void P_eval_historical_acct(struct timeval *, struct timeval *, time_t);
+int P_cmp_historical_acct(struct timeval *, struct timeval *);
+void P_update_time_reference(struct insert_data *);
 
-EXT int P_test_zero_elem(struct chained_cache *);
+int P_test_zero_elem(struct chained_cache *);
 
 /* global vars */
-EXT void (*insert_func)(struct primitives_ptrs *, struct insert_data *); /* pointer to INSERT function */
-EXT void (*purge_func)(struct chained_cache *[], int, int); /* pointer to purge function */
-EXT struct scratch_area sa;
-EXT struct chained_cache *cache;
-EXT struct chained_cache **queries_queue, **pending_queries_queue, *pqq_container;
-EXT struct timeval flushtime;
-EXT int qq_ptr, pqq_ptr, pp_size, pb_size, pn_size, pm_size, pt_size, pc_size;
-EXT int dbc_size, quit;
-EXT time_t refresh_deadline;
+void (*insert_func)(struct primitives_ptrs *, struct insert_data *); /* pointer to INSERT function */
+void (*purge_func)(struct chained_cache *[], int, int); /* pointer to purge function */
+struct scratch_area sa;
+struct chained_cache *cache;
+struct chained_cache **queries_queue, **pending_queries_queue, *pqq_container;
+struct timeval flushtime;
+int qq_ptr, pqq_ptr, pp_size, pb_size, pn_size, pm_size, pt_size, pc_size;
+int dbc_size, quit;
+time_t refresh_deadline;
 
-EXT void (*basetime_init)(time_t);
-EXT void (*basetime_eval)(struct timeval *, struct timeval *, time_t);
-EXT int (*basetime_cmp)(struct timeval *, struct timeval *);
-EXT struct timeval basetime, ibasetime, new_basetime;
-EXT time_t timeslot;
-EXT int dyn_table, dyn_table_time_only;
+void (*basetime_init)(time_t);
+void (*basetime_eval)(struct timeval *, struct timeval *, time_t);
+int (*basetime_cmp)(struct timeval *, struct timeval *);
+struct timeval basetime, ibasetime, new_basetime;
+time_t timeslot;
+int dyn_table, dyn_table_time_only;
 
 #ifdef WITH_AVRO
-EXT avro_schema_t avro_acct_schema;
+avro_schema_t avro_acct_schema;
 #endif
-#undef EXT
 #endif /* #if (!defined __PLUGIN_COMMON_EXPORT) */

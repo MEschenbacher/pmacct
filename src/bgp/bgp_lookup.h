@@ -24,17 +24,14 @@
 
 /* prototypes */
 #if (!defined __BGP_LOOKUP_C)
-#define EXT extern
 #else
-#define EXT
 #endif
-EXT void bgp_srcdst_lookup(struct packet_ptrs *, int);
-EXT void bgp_follow_nexthop_lookup(struct packet_ptrs *, int);
-EXT struct bgp_peer *bgp_lookup_find_bgp_peer(struct sockaddr *, struct xflow_status_entry *, u_int16_t, int);
-EXT u_int32_t bgp_route_info_modulo_pathid(struct bgp_peer *, path_id_t *, int);
-EXT int bgp_lookup_node_match_cmp_bgp(struct bgp_info *, struct node_match_cmp_term2 *);
-EXT void pkt_to_cache_legacy_bgp_primitives(struct cache_legacy_bgp_primitives *, struct pkt_legacy_bgp_primitives *, pm_cfgreg_t, pm_cfgreg_t);
-EXT void cache_to_pkt_legacy_bgp_primitives(struct pkt_legacy_bgp_primitives *, struct cache_legacy_bgp_primitives *);
-EXT void free_cache_legacy_bgp_primitives(struct cache_legacy_bgp_primitives **);
-#undef EXT
+void bgp_srcdst_lookup(struct packet_ptrs *, int);
+void bgp_follow_nexthop_lookup(struct packet_ptrs *, int);
+struct bgp_peer *bgp_lookup_find_bgp_peer(struct sockaddr *, struct xflow_status_entry *, u_int16_t, int);
+u_int32_t bgp_route_info_modulo_pathid(struct bgp_peer *, path_id_t *, int);
+int bgp_lookup_node_match_cmp_bgp(struct bgp_info *, struct node_match_cmp_term2 *);
+void pkt_to_cache_legacy_bgp_primitives(struct cache_legacy_bgp_primitives *, struct pkt_legacy_bgp_primitives *, pm_cfgreg_t, pm_cfgreg_t);
+void cache_to_pkt_legacy_bgp_primitives(struct pkt_legacy_bgp_primitives *, struct cache_legacy_bgp_primitives *);
+void free_cache_legacy_bgp_primitives(struct cache_legacy_bgp_primitives **);
 #endif

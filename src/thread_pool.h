@@ -63,14 +63,11 @@ typedef struct thread_pool {
 } thread_pool_t;
 
 #if (!defined __THREAD_POOL_C)
-#define EXT extern
 #else
-#define EXT
 #endif
-EXT thread_pool_t *allocate_thread_pool(int);
-EXT void deallocate_thread_pool(thread_pool_t **);
-EXT void send_to_pool(thread_pool_t *, void *, void *);
-EXT void *thread_runner(void *);
-#undef EXT
+thread_pool_t *allocate_thread_pool(int);
+void deallocate_thread_pool(thread_pool_t **);
+void send_to_pool(thread_pool_t *, void *, void *);
+void *thread_runner(void *);
 
 #endif /* _THREAD_POOL_H_ */

@@ -40,14 +40,11 @@ struct sfv5_modules_desc {
 
 /* functions */
 #if (!defined __SFV5_MODULE_C)
-#define EXT extern
 #else
-#define EXT
 #endif
-EXT void sfv5_modules_db_init();
-EXT struct sfv5_modules_db_field *sfv5_modules_db_get_ie(u_int32_t);
-EXT struct sfv5_modules_db_field *sfv5_modules_get_next_ie(u_int32_t);
-EXT struct sfv5_modules_db_field *sfv5_modules_db_get_next_ie(u_int32_t);
+void sfv5_modules_db_init();
+struct sfv5_modules_db_field *sfv5_modules_db_get_ie(u_int32_t);
+struct sfv5_modules_db_field *sfv5_modules_get_next_ie(u_int32_t);
+struct sfv5_modules_db_field *sfv5_modules_db_get_next_ie(u_int32_t);
 
-EXT struct sfv5_modules_desc sfv5_modules;
-#undef EXT
+struct sfv5_modules_desc sfv5_modules;

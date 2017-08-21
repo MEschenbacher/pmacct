@@ -28,13 +28,10 @@
 
 /* prototypes */
 #if (!defined __ISIS_C)
-#define EXT extern
 #else
-#define EXT
 #endif
-EXT void isis_sll_handler(const struct pcap_pkthdr *, register struct packet_ptrs *);
+void isis_sll_handler(const struct pcap_pkthdr *, register struct packet_ptrs *);
 
 /* global variables */
 
-#undef EXT
 #endif
