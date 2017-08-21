@@ -40,9 +40,10 @@
 #define PmLabelTSz (sizeof(pm_label_t))
 #define CharPtrSz (sizeof(char *))
 #define NfHdrV1Sz (sizeof(struct struct_header_v1))
+#define NfHdrV5Sz (sizeof(struct struct_header_v5))
 
 u_int32_t HostAddrSz;
-u_int32_t NfHdrV5Sz, NfHdrV7Sz, NfHdrV8Sz, NfHdrV9Sz;
+u_int32_t NfHdrV7Sz, NfHdrV8Sz, NfHdrV9Sz;
 u_int32_t IpFixHdrSz;
 u_int32_t NfDataHdrV9Sz, NfTplHdrV9Sz, NfOptTplHdrV9Sz;
 u_int32_t NfTplFieldV9Sz;
