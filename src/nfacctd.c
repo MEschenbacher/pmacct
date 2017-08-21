@@ -2147,7 +2147,6 @@ void compute_once()
 {
 	struct pkt_data dummy;
 
-	NfDataHdrV9Sz = sizeof(struct data_hdr_v9);
 	NfTplHdrV9Sz = sizeof(struct template_hdr_v9);
 	NfTplFieldV9Sz = sizeof(struct template_field_v9);
 	NfOptTplHdrV9Sz = sizeof(struct options_template_hdr_v9);
