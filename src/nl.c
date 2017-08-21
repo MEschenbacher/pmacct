@@ -401,7 +401,6 @@ void compute_once()
 	MyTCPHdrSz = TCPFlagOff+1;
 	UDPHdrSz = 8;
 	IpFlowCmnSz = sizeof(struct ip_flow_common);
-	HostAddrSz = sizeof(struct host_addr);
 #if defined ENABLE_IPV6
 	IP6HdrSz = sizeof(struct ip6_hdr);
 	IP6AddrSz = sizeof(struct in6_addr);
