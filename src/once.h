@@ -61,7 +61,7 @@
 
 u_int32_t IP6HdrSz, IP6AddrSz, IP6TlSz;
 u_int32_t MyTLHdrSz, TCPFlagOff;
-u_int32_t SFLAddressSz, SFrenormEntrySz;
+u_int32_t SFrenormEntrySz;
 u_int32_t MyTCPHdrSz, IpFlowCmnSz;
 
 
