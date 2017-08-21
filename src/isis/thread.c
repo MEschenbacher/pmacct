@@ -204,11 +204,9 @@ recent_relative_time (void)
 	return relative_time;
 }
 
-static unsigned int
-cpu_record_hash_key (struct cpu_thread_history *a)
+static int (*cpu_record_hash_key(struct cpu_thread_history *a))(struct thread *)
 {
-	/* XXX: uintptr_t not portable: changed to "unsigned int *" */
-	return (unsigned int) a->func;
+	return a->func;
 }
 
 static int
