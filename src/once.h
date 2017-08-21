@@ -35,6 +35,7 @@
 #define PlbgpSz (sizeof(struct pkt_legacy_bgp_primitives))
 #define PnatSz (sizeof(struct pkt_nat_primitives))
 #define PmplsSz (sizeof(struct pkt_mpls_primitives))
+#define PtunSz (sizeof(struct pkt_tunnel_primitives))
 
 u_int32_t CharPtrSz, HostAddrSz;
 u_int32_t PvhdrSz, PtLabelTSz;
@@ -48,7 +49,6 @@ u_int32_t IP4HdrSz, IP4TlSz, IP6HdrSz, IP6AddrSz, IP6TlSz;
 u_int32_t MyTLHdrSz, TCPFlagOff;
 u_int32_t SFSampleSz, SFLAddressSz, SFrenormEntrySz;
 u_int32_t PptrsSz, UDPHdrSz, CSSz, MyTCPHdrSz, IpFlowCmnSz;
-u_int16_t PtunSz;
 
 
 #endif /* _ONCE_H_ */

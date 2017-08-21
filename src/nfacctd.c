@@ -2147,7 +2147,6 @@ void compute_once()
 {
 	struct pkt_data dummy;
 
-	PtunSz = sizeof(struct pkt_tunnel_primitives);
 	PvhdrSz = sizeof(struct pkt_vlen_hdr_primitives);
 	PmLabelTSz = sizeof(pm_label_t);
 	PtLabelTSz = sizeof(pt_label_t);
