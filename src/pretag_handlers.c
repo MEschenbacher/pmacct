@@ -1290,45 +1290,45 @@ int pretag_input_handler(struct packet_ptrs *pptrs, void *unused, void *e)
 		} else if (tpl->tpl[NF9_INPUT_PHYSINT].len == 4) {
 			if (!memcmp(&input32, pptrs->f_data+tpl->tpl[NF9_INPUT_PHYSINT].off, tpl->tpl[NF9_INPUT_PHYSINT].len))
 				return (neg);
-		} else return (true ^ neg);
+		} else return (!neg);
 	case 8:
 		switch(hdr->aggregation) {
 		case 1:
 			if (input16 == ((struct struct_export_v8_1 *)pptrs->f_data)->input) return (neg);
-			else return (true ^ neg);
+			else return (!neg);
 		case 3:
 			if (input16 == ((struct struct_export_v8_3 *)pptrs->f_data)->input) return (neg);
-			else return (true ^ neg);
+			else return (!neg);
 		case 5:
 			if (input16 == ((struct struct_export_v8_5 *)pptrs->f_data)->input) return (neg);
-			else return (true ^ neg);
+			else return (!neg);
 		case 7:
 			if (input16 == ((struct struct_export_v8_7 *)pptrs->f_data)->input) return (neg);
-			else return (true ^ neg);
+			else return (!neg);
 		case 8:
 			if (input16 == ((struct struct_export_v8_8 *)pptrs->f_data)->input) return (neg);
-			else return (true ^ neg);
+			else return (!neg);
 		case 9:
 			if (input16 == ((struct struct_export_v8_9 *)pptrs->f_data)->input) return (neg);
-			else return (true ^ neg);
+			else return (!neg);
 		case 10:
 			if (input16 == ((struct struct_export_v8_10 *)pptrs->f_data)->input) return (neg);
-			else return (true ^ neg);
+			else return (!neg);
 		case 11:
 			if (input16 == ((struct struct_export_v8_11 *)pptrs->f_data)->input) return (neg);
-			else return (true ^ neg);
+			else return (!neg);
 		case 13:
 			if (input16 == ((struct struct_export_v8_13 *)pptrs->f_data)->input) return (neg);
-			else return (true ^ neg);
+			else return (!neg);
 		case 14:
 			if (input16 == ((struct struct_export_v8_14 *)pptrs->f_data)->input) return (neg);
-			else return (true ^ neg);
+			else return (!neg);
 		default:
-			return (true ^ neg);
+			return (!neg);
 		}
 	default:
 		if (input16 == ((struct struct_export_v5 *)pptrs->f_data)->input) return (neg);
-		else return (true ^ neg);
+		else return (!neg);
 	}
 }
 
@@ -1353,48 +1353,48 @@ int pretag_output_handler(struct packet_ptrs *pptrs, void *unused, void *e)
 		} else if (tpl->tpl[NF9_OUTPUT_PHYSINT].len == 4) {
 			if (!memcmp(&output32, pptrs->f_data+tpl->tpl[NF9_OUTPUT_PHYSINT].off, tpl->tpl[NF9_OUTPUT_PHYSINT].len))
 				return (neg);
-		} else return (true ^ neg);
+		} else return (!neg);
 	case 8:
 		switch(hdr->aggregation) {
 		case 1:
 			if (output16 == ((struct struct_export_v8_1 *)pptrs->f_data)->output) return (neg);
-			else return (true ^ neg);
+			else return (!neg);
 		case 4:
 			if (output16 == ((struct struct_export_v8_4 *)pptrs->f_data)->output) return (neg);
-			else return (true ^ neg);
+			else return (!neg);
 		case 5:
 			if (output16 == ((struct struct_export_v8_5 *)pptrs->f_data)->output) return (neg);
-			else return (true ^ neg);
+			else return (!neg);
 		case 6:
 			if (output16 == ((struct struct_export_v8_6 *)pptrs->f_data)->output) return (neg);
-			else return (true ^ neg);
+			else return (!neg);
 		case 7:
 			if (output16 == ((struct struct_export_v8_7 *)pptrs->f_data)->output) return (neg);
-			else return (true ^ neg);
+			else return (!neg);
 		case 8:
 			if (output16 == ((struct struct_export_v8_8 *)pptrs->f_data)->output) return (neg);
-			else return (true ^ neg);
+			else return (!neg);
 		case 9:
 			if (output16 == ((struct struct_export_v8_9 *)pptrs->f_data)->output) return (neg);
-			else return (true ^ neg);
+			else return (!neg);
 		case 10:
 			if (output16 == ((struct struct_export_v8_10 *)pptrs->f_data)->output) return (neg);
-			else return (true ^ neg);
+			else return (!neg);
 		case 12:
 			if (output16 == ((struct struct_export_v8_12 *)pptrs->f_data)->output) return (neg);
-			else return (true ^ neg);
+			else return (!neg);
 		case 13:
 			if (output16 == ((struct struct_export_v8_13 *)pptrs->f_data)->output) return (neg);
-			else return (true ^ neg);
+			else return (!neg);
 		case 14:
 			if (output16 == ((struct struct_export_v8_14 *)pptrs->f_data)->output) return (neg);
-			else return (true ^ neg);
+			else return (!neg);
 		default:
-			return (true ^ neg);
+			return (!neg);
 		}
 	default:
 		if (output16 == ((struct struct_export_v5 *)pptrs->f_data)->output) return (neg);
-		else return (true ^ neg);
+		else return (!neg);
 	}
 }
 
@@ -1417,13 +1417,13 @@ int pretag_nexthop_handler(struct packet_ptrs *pptrs, void *unused, void *e)
 				return (entry->key.nexthop.neg);
 		}
 #endif
-		else return (true ^ entry->key.nexthop.neg);
+		else return (!entry->key.nexthop.neg);
 	case 8:
 		/* NetFlow v8 does not seem to contain any nexthop field */
 		return true;
 	default:
 		if (entry->key.nexthop.a.address.ipv4.s_addr == ((struct struct_export_v5 *)pptrs->f_data)->nexthop.s_addr) return (entry->key.nexthop.neg);
-		else return (true ^ entry->key.nexthop.neg);
+		else return (!entry->key.nexthop.neg);
 	}
 }
 
@@ -1464,13 +1464,13 @@ int pretag_bgp_nexthop_handler(struct packet_ptrs *pptrs, void *unused, void *e)
 			}
 		}
 #endif
-		else return (true ^ entry->key.bgp_nexthop.neg);
+		else return (!entry->key.bgp_nexthop.neg);
 	case 8:
 		/* NetFlow v8 does not seem to contain any nexthop field */
 		return true;
 	default:
 		if (entry->key.bgp_nexthop.a.address.ipv4.s_addr == ((struct struct_export_v5 *)pptrs->f_data)->nexthop.s_addr) return (entry->key.bgp_nexthop.neg);
-		else return (true ^ entry->key.bgp_nexthop.neg);
+		else return (!entry->key.bgp_nexthop.neg);
 	}
 }
 
@@ -1512,7 +1512,7 @@ way_out:
 		entry->last_matched = PRETAG_BGP_NEXTHOP;
 		return (entry->key.bgp_nexthop.neg);
 	} else if (config.nfacctd_net & NF_NET_KEEP) return false;
-	else return (true ^ entry->key.bgp_nexthop.neg);
+	else return (!entry->key.bgp_nexthop.neg);
 }
 
 int pretag_engine_type_handler(struct packet_ptrs *pptrs, void *unused, void *e)
@@ -1524,10 +1524,10 @@ int pretag_engine_type_handler(struct packet_ptrs *pptrs, void *unused, void *e)
 	switch(hdr->version) {
 	case 8:
 		if (entry->key.engine_type.n == ((struct struct_header_v8 *)pptrs->f_header)->engine_type) return (entry->key.engine_type.neg);
-		else return (true ^ entry->key.engine_type.neg);
+		else return (!entry->key.engine_type.neg);
 	case 5:
 		if (entry->key.engine_type.n == ((struct struct_header_v5 *)pptrs->f_header)->engine_type) return (entry->key.engine_type.neg);
-		else return (true ^ entry->key.engine_type.neg);
+		else return (!entry->key.engine_type.neg);
 	default:
 		return true; /* this field does not exist: condition is always true */
 	}
@@ -1546,21 +1546,21 @@ int pretag_engine_id_handler(struct packet_ptrs *pptrs, void *unused, void *e)
 
 		value = ntohl(hdr->source_id);
 		if (entry->key.engine_id.n == value) return (entry->key.engine_id.neg);
-		else return (true ^ entry->key.engine_id.neg);
+		else return (!entry->key.engine_id.neg);
 	}
 	case 9: {
 		struct struct_header_v9 *hdr = (struct struct_header_v9 *) pptrs->f_header;
 
 		value = ntohl(hdr->source_id);
 		if (entry->key.engine_id.n == value) return (entry->key.engine_id.neg);
-		else return (true ^ entry->key.engine_id.neg);
+		else return (!entry->key.engine_id.neg);
 	}
 	case 8:
 		if (entry->key.engine_id.n == ((struct struct_header_v8 *)pptrs->f_header)->engine_id) return (entry->key.engine_id.neg);
-		else return (true ^ entry->key.engine_id.neg);
+		else return (!entry->key.engine_id.neg);
 	case 5:
 		if (entry->key.engine_id.n == ((struct struct_header_v5 *)pptrs->f_header)->engine_id) return (entry->key.engine_id.neg);
-		else return (true ^ entry->key.engine_id.neg);
+		else return (!entry->key.engine_id.neg);
 	default:
 		return true; /* this field does not exist: condition is always true */
 	}
@@ -1577,7 +1577,7 @@ int pretag_flowset_id_handler(struct packet_ptrs *pptrs, void *unused, void *e)
 	case 9:
 		if (tpl) {
 			if (entry->key.flowset_id.n == tpl->template_id) return (entry->key.flowset_id.neg);
-			else return (true ^ entry->key.flowset_id.neg);
+			else return (!entry->key.flowset_id.neg);
 		} else return true; /* template not received yet */
 	default:
 		return true; /* this field does not exist: condition is always true */
@@ -1601,7 +1601,7 @@ int pretag_v8agg_handler(struct packet_ptrs *pptrs, void *unused, void *e)
 	switch(hdr->version) {
 	case 8:
 		if (entry->key.v8agg.n == ((struct struct_header_v8 *)pptrs->f_header)->aggregation) return (entry->key.v8agg.neg);
-		else return (true ^ entry->key.v8agg.neg);
+		else return (!entry->key.v8agg.neg);
 	default:
 		return true; /* this field does not exist: condition is always true */
 	}
@@ -1658,7 +1658,7 @@ int pretag_src_as_handler(struct packet_ptrs *pptrs, void *unused, void *e)
 	}
 
 	if (entry->key.src_as.n == asn32) return (entry->key.src_as.neg);
-	else return (true ^ entry->key.src_as.neg);
+	else return (!entry->key.src_as.neg);
 }
 
 int pretag_bgp_src_as_handler(struct packet_ptrs *pptrs, void *unused, void *e)
@@ -1682,7 +1682,7 @@ int pretag_bgp_src_as_handler(struct packet_ptrs *pptrs, void *unused, void *e)
 		entry->last_matched = PRETAG_SRC_AS;
 		return (entry->key.src_as.neg);
 	} else if (config.nfacctd_as & NF_AS_KEEP) return false;
-	else return (true ^ entry->key.src_as.neg);
+	else return (!entry->key.src_as.neg);
 }
 
 int pretag_dst_as_handler(struct packet_ptrs *pptrs, void *unused, void *e)
@@ -1736,7 +1736,7 @@ int pretag_dst_as_handler(struct packet_ptrs *pptrs, void *unused, void *e)
 	}
 
 	if (entry->key.dst_as.n == asn32) return (entry->key.dst_as.neg);
-	else return (true ^ entry->key.dst_as.neg);
+	else return (!entry->key.dst_as.neg);
 }
 
 int pretag_bgp_dst_as_handler(struct packet_ptrs *pptrs, void *unused, void *e)
@@ -1760,7 +1760,7 @@ int pretag_bgp_dst_as_handler(struct packet_ptrs *pptrs, void *unused, void *e)
 		entry->last_matched = PRETAG_DST_AS;
 		return (entry->key.dst_as.neg);
 	} else if (config.nfacctd_as & NF_AS_KEEP) return false;
-	else return (true ^ entry->key.dst_as.neg);
+	else return (!entry->key.dst_as.neg);
 }
 
 int pretag_peer_src_as_handler(struct packet_ptrs *pptrs, void *unused, void *e)
@@ -1785,7 +1785,7 @@ int pretag_peer_src_as_handler(struct packet_ptrs *pptrs, void *unused, void *e)
 	}
 
 	if (entry->key.peer_src_as.n == asn) return (entry->key.peer_src_as.neg);
-	else return (true ^ entry->key.peer_src_as.neg);
+	else return (!entry->key.peer_src_as.neg);
 }
 
 int pretag_peer_dst_as_handler(struct packet_ptrs *pptrs, void *unused, void *e)
@@ -1806,7 +1806,7 @@ int pretag_peer_dst_as_handler(struct packet_ptrs *pptrs, void *unused, void *e)
 	}
 
 	if (entry->key.peer_dst_as.n == asn) return (entry->key.peer_dst_as.neg);
-	else return (true ^ entry->key.peer_dst_as.neg);
+	else return (!entry->key.peer_dst_as.neg);
 }
 
 int pretag_src_local_pref_handler(struct packet_ptrs *pptrs, void *unused, void *e)
@@ -1829,7 +1829,7 @@ int pretag_src_local_pref_handler(struct packet_ptrs *pptrs, void *unused, void 
 	}
 
 	if (entry->key.src_local_pref.n == local_pref) return (entry->key.src_local_pref.neg);
-	else return (true ^ entry->key.src_local_pref.neg);
+	else return (!entry->key.src_local_pref.neg);
 }
 
 int pretag_local_pref_handler(struct packet_ptrs *pptrs, void *unused, void *e)
@@ -1848,7 +1848,7 @@ int pretag_local_pref_handler(struct packet_ptrs *pptrs, void *unused, void *e)
 	}
 
 	if (entry->key.local_pref.n == local_pref) return (entry->key.local_pref.neg);
-	else return (true ^ entry->key.local_pref.neg);
+	else return (!entry->key.local_pref.neg);
 }
 
 int pretag_src_comms_handler(struct packet_ptrs *pptrs, void *unused, void *e)
@@ -1901,7 +1901,7 @@ int pretag_sample_type_handler(struct packet_ptrs *pptrs, void *unused, void *e)
 	struct template_cache_entry *tpl = (struct template_cache_entry *) pptrs->f_tpl;
 
 	if (entry->key.sample_type.n == pptrs->flow_type) return (entry->key.sample_type.neg);
-	else return (true ^ entry->key.sample_type.neg);
+	else return (!entry->key.sample_type.neg);
 }
 
 int pretag_sampling_rate_handler(struct packet_ptrs *pptrs, void *unused, void *e)
@@ -1917,7 +1917,7 @@ int pretag_sampling_rate_handler(struct packet_ptrs *pptrs, void *unused, void *
 		hdr5 = (struct struct_header_v5 *) pptrs->f_header;
 		srate = ( ntohs(hdr5->sampling) & 0x3FFF );
 		if (entry->key.sampling_rate.n == srate) return (entry->key.sampling_rate.neg);
-		else return (true ^ entry->key.sampling_rate.neg);
+		else return (!entry->key.sampling_rate.neg);
 	default:
 		return true; /* this field might not apply: condition is always true */
 	}
@@ -1937,7 +1937,7 @@ int pretag_direction_handler(struct packet_ptrs *pptrs, void *unused, void *e)
 			memcpy(&direction, pptrs->f_data+tpl->tpl[NF9_DIRECTION].off, 1);
 		}
 		if (entry->key.direction.n == direction) return (entry->key.direction.neg);
-		else return (true ^ entry->key.direction.neg);
+		else return (!entry->key.direction.neg);
 	default:
 		return true; /* this field does not exist: condition is always true */
 	}
@@ -1961,7 +1961,7 @@ int pretag_mpls_vpn_rd_handler(struct packet_ptrs *pptrs, void *unused, void *e)
 	}
 
 	if (!ret) return (entry->key.mpls_vpn_rd.neg);
-	else return (true ^ entry->key.mpls_vpn_rd.neg);
+	else return (!entry->key.mpls_vpn_rd.neg);
 }
 
 int pretag_src_mac_handler(struct packet_ptrs *pptrs, void *unused, void *e)
@@ -1976,7 +1976,7 @@ int pretag_src_mac_handler(struct packet_ptrs *pptrs, void *unused, void *e)
 		if (tpl->tpl[NF9_IN_SRC_MAC].len) {
 			if (!memcmp(&entry->key.src_mac.a, pptrs->f_data+tpl->tpl[NF9_IN_SRC_MAC].off, MIN(tpl->tpl[NF9_IN_SRC_MAC].len, 6)))
 				return (entry->key.src_mac.neg);
-			else return (true ^ entry->key.src_mac.neg);
+			else return (!entry->key.src_mac.neg);
 		}
 	default:
 		return true; /* this field does not exist: condition is always true */
@@ -1995,7 +1995,7 @@ int pretag_dst_mac_handler(struct packet_ptrs *pptrs, void *unused, void *e)
 		if (tpl->tpl[NF9_IN_DST_MAC].len) {
 			if (!memcmp(&entry->key.dst_mac.a, pptrs->f_data+tpl->tpl[NF9_IN_DST_MAC].off, MIN(tpl->tpl[NF9_IN_DST_MAC].len, 6)))
 				return (entry->key.dst_mac.neg);
-			else return (true ^ entry->key.dst_mac.neg);
+			else return (!entry->key.dst_mac.neg);
 		}
 	default:
 		return true; /* this field does not exist: condition is always true */
@@ -2019,7 +2019,7 @@ int pretag_vlan_id_handler(struct packet_ptrs *pptrs, void *unused, void *e)
 		}
 		vlan_id = ntohs(tmp16);
 		if (entry->key.vlan_id.n == vlan_id) return (entry->key.vlan_id.neg);
-		else return (true ^ entry->key.vlan_id.neg);
+		else return (!entry->key.vlan_id.neg);
 	default:
 		return true; /* this field does not exist: condition is always true */
 	}
@@ -2049,12 +2049,12 @@ int pretag_forwarding_status_handler(struct packet_ptrs *pptrs, void *unused, vo
 			if ( comp == base )
 				return (entry->key.fwdstatus.neg);
 			else
-				return (true ^ entry->key.fwdstatus.neg);
+				return (!entry->key.fwdstatus.neg);
 		} else { /* We have a specific code so lets handle that. */
 			if (entry->key.fwdstatus.n == fwdstatus)
 				return (entry->key.fwdstatus.neg);
 			else
-				return (true ^ entry->key.fwdstatus.neg);
+				return (!entry->key.fwdstatus.neg);
 		}
 	default:
 		return true; /* this field does not exist: condition is always true */
@@ -2077,7 +2077,7 @@ int pretag_cvlan_id_handler(struct packet_ptrs *pptrs, void *unused, void *e)
 		}
 		cvlan_id = ntohs(tmp16);
 		if (entry->key.cvlan_id.n == cvlan_id) return (entry->key.cvlan_id.neg);
-		else return (true ^ entry->key.cvlan_id.neg);
+		else return (!entry->key.cvlan_id.neg);
 	default:
 		return true; /* this field does not exist: condition is always true */
 	}
@@ -2169,7 +2169,7 @@ int SF_pretag_input_handler(struct packet_ptrs *pptrs, void *unused, void *e)
 	SFSample *sample = (SFSample *) pptrs->f_data;
 
 	if (entry->key.input.n == sample->inputPort) return (entry->key.input.neg);
-	else return (true ^ entry->key.input.neg);
+	else return (!entry->key.input.neg);
 }
 
 int SF_pretag_output_handler(struct packet_ptrs *pptrs, void *unused, void *e)
@@ -2178,7 +2178,7 @@ int SF_pretag_output_handler(struct packet_ptrs *pptrs, void *unused, void *e)
 	SFSample *sample = (SFSample *) pptrs->f_data;
 
 	if (entry->key.output.n == sample->outputPort) return (entry->key.output.neg);
-	else return (true ^ entry->key.output.neg);
+	else return (!entry->key.output.neg);
 }
 
 int SF_pretag_nexthop_handler(struct packet_ptrs *pptrs, void *unused, void *e)
@@ -2195,7 +2195,7 @@ int SF_pretag_nexthop_handler(struct packet_ptrs *pptrs, void *unused, void *e)
 	}
 #endif
 
-	return (true ^ entry->key.nexthop.neg);
+	return (!entry->key.nexthop.neg);
 }
 
 int SF_pretag_bgp_nexthop_handler(struct packet_ptrs *pptrs, void *unused, void *e)
@@ -2217,7 +2217,7 @@ int SF_pretag_bgp_nexthop_handler(struct packet_ptrs *pptrs, void *unused, void 
 	}
 #endif
 
-	return (true ^ entry->key.bgp_nexthop.neg);
+	return (!entry->key.bgp_nexthop.neg);
 }
 
 int SF_pretag_agent_id_handler(struct packet_ptrs *pptrs, void *unused, void *e)
@@ -2226,7 +2226,7 @@ int SF_pretag_agent_id_handler(struct packet_ptrs *pptrs, void *unused, void *e)
 	SFSample *sample = (SFSample *) pptrs->f_data;
 
 	if (entry->key.agent_id.n == sample->agentSubId) return (entry->key.agent_id.neg);
-	else return (true ^ entry->key.agent_id.neg);
+	else return (!entry->key.agent_id.neg);
 }
 
 int SF_pretag_sampling_rate_handler(struct packet_ptrs *pptrs, void *unused, void *e)
@@ -2235,7 +2235,7 @@ int SF_pretag_sampling_rate_handler(struct packet_ptrs *pptrs, void *unused, voi
 	SFSample *sample = (SFSample *) pptrs->f_data;
 
 	if (entry->key.sampling_rate.n == sample->meanSkipCount) return (entry->key.sampling_rate.neg);
-	else return (true ^ entry->key.sampling_rate.neg);
+	else return (!entry->key.sampling_rate.neg);
 }
 
 int SF_pretag_sample_type_handler(struct packet_ptrs *pptrs, void *unused, void *e)
@@ -2244,7 +2244,7 @@ int SF_pretag_sample_type_handler(struct packet_ptrs *pptrs, void *unused, void 
 	SFSample *sample = (SFSample *) pptrs->f_data;
 
 	if (entry->key.sample_type.n == pptrs->sample_type) return (entry->key.sample_type.neg);
-	else return (true ^ entry->key.sample_type.neg);
+	else return (!entry->key.sample_type.neg);
 }
 
 int SF_pretag_direction_handler(struct packet_ptrs *pptrs, void *unused, void *e)
@@ -2255,7 +2255,7 @@ int SF_pretag_direction_handler(struct packet_ptrs *pptrs, void *unused, void *e
 	if ((sample->inputPort == sample->ds_index && entry->key.direction.n == 0) ||
 	    (sample->outputPort == sample->ds_index && entry->key.direction.n == 1)) {
 		return (entry->key.direction.neg);
-	} else return (true ^ entry->key.direction.neg);
+	} else return (!entry->key.direction.neg);
 }
 
 int SF_pretag_src_as_handler(struct packet_ptrs *pptrs, void *unused, void *e)
@@ -2267,7 +2267,7 @@ int SF_pretag_src_as_handler(struct packet_ptrs *pptrs, void *unused, void *e)
 	if (config.nfacctd_as & NF_AS_BGP && pptrs->bgp_src) return false;
 
 	if (entry->key.src_as.n == sample->src_as) return (entry->key.src_as.neg);
-	else return (true ^ entry->key.src_as.neg);
+	else return (!entry->key.src_as.neg);
 }
 
 int SF_pretag_dst_as_handler(struct packet_ptrs *pptrs, void *unused, void *e)
@@ -2279,7 +2279,7 @@ int SF_pretag_dst_as_handler(struct packet_ptrs *pptrs, void *unused, void *e)
 	if (config.nfacctd_as & NF_AS_BGP && pptrs->bgp_dst) return false;
 
 	if (entry->key.dst_as.n == sample->dst_as) return (entry->key.dst_as.neg);
-	else return (true ^ entry->key.dst_as.neg);
+	else return (!entry->key.dst_as.neg);
 }
 
 int SF_pretag_src_mac_handler(struct packet_ptrs *pptrs, void *unused, void *e)
@@ -2288,7 +2288,7 @@ int SF_pretag_src_mac_handler(struct packet_ptrs *pptrs, void *unused, void *e)
 	SFSample *sample = (SFSample *) pptrs->f_data;
 
 	if (!memcmp(entry->key.src_mac.a, sample->eth_src, ETH_ADDR_LEN)) return (entry->key.src_mac.neg);
-	else return (true ^ entry->key.src_mac.neg);
+	else return (!entry->key.src_mac.neg);
 }
 
 int SF_pretag_dst_mac_handler(struct packet_ptrs *pptrs, void *unused, void *e)
@@ -2297,7 +2297,7 @@ int SF_pretag_dst_mac_handler(struct packet_ptrs *pptrs, void *unused, void *e)
 	SFSample *sample = (SFSample *) pptrs->f_data;
 
 	if (!memcmp(entry->key.dst_mac.a, sample->eth_dst, ETH_ADDR_LEN)) return (entry->key.dst_mac.neg);
-	else return (true ^ entry->key.dst_mac.neg);
+	else return (!entry->key.dst_mac.neg);
 }
 
 int SF_pretag_vlan_id_handler(struct packet_ptrs *pptrs, void *unused, void *e)
@@ -2307,7 +2307,7 @@ int SF_pretag_vlan_id_handler(struct packet_ptrs *pptrs, void *unused, void *e)
 
 	if (entry->key.vlan_id.n == sample->in_vlan ||
 	    entry->key.vlan_id.n == sample->out_vlan) return (entry->key.vlan_id.neg);
-	else return (true ^ entry->key.vlan_id.neg);
+	else return (!entry->key.vlan_id.neg);
 }
 
 int PM_pretag_src_as_handler(struct packet_ptrs *pptrs, void *unused, void *e)
@@ -2316,7 +2316,7 @@ int PM_pretag_src_as_handler(struct packet_ptrs *pptrs, void *unused, void *e)
 	as_t res = search_pretag_src_as(&nt, &nc, pptrs);
 
 	if (entry->key.src_as.n == res) return (entry->key.src_as.neg);
-	else return (true ^ entry->key.src_as.neg);
+	else return (!entry->key.src_as.neg);
 }
 
 int PM_pretag_dst_as_handler(struct packet_ptrs *pptrs, void *unused, void *e)
@@ -2325,7 +2325,7 @@ int PM_pretag_dst_as_handler(struct packet_ptrs *pptrs, void *unused, void *e)
 	as_t res = search_pretag_dst_as(&nt, &nc, pptrs);
 
 	if (entry->key.dst_as.n == res) return (entry->key.dst_as.neg);
-	else return (true ^ entry->key.dst_as.neg);
+	else return (!entry->key.dst_as.neg);
 }
 
 int PM_pretag_input_handler(struct packet_ptrs *pptrs, void *unused, void *e)
@@ -2333,7 +2333,7 @@ int PM_pretag_input_handler(struct packet_ptrs *pptrs, void *unused, void *e)
 	struct id_entry *entry = e;
 
 	if (entry->key.input.n == pptrs->ifindex_in) return (entry->key.input.neg);
-	else return (true ^ entry->key.input.neg);
+	else return (!entry->key.input.neg);
 }
 
 int PM_pretag_output_handler(struct packet_ptrs *pptrs, void *unused, void *e)
@@ -2341,7 +2341,7 @@ int PM_pretag_output_handler(struct packet_ptrs *pptrs, void *unused, void *e)
 	struct id_entry *entry = e;
 
 	if (entry->key.output.n == pptrs->ifindex_out) return (entry->key.output.neg);
-	else return (true ^ entry->key.output.neg);
+	else return (!entry->key.output.neg);
 }
 
 pm_id_t PT_stack_sum(pm_id_t tag, pm_id_t pre)
@@ -2382,7 +2382,7 @@ int BPAS_bgp_nexthop_handler(struct packet_ptrs *pptrs, void *unused, void *e)
 		}
 	}
 
-	return (true ^ entry->key.bgp_nexthop.neg);
+	return (!entry->key.bgp_nexthop.neg);
 }
 
 int BPAS_bgp_peer_dst_as_handler(struct packet_ptrs *pptrs, void *unused, void *e)
@@ -2412,7 +2412,7 @@ int BPAS_bgp_peer_dst_as_handler(struct packet_ptrs *pptrs, void *unused, void *
 	}
 
 	if (entry->key.peer_dst_as.n == asn) return (entry->key.peer_dst_as.neg);
-	else return (true ^ entry->key.peer_dst_as.neg);
+	else return (!entry->key.peer_dst_as.neg);
 }
 
 int BITR_mpls_label_bottom_handler(struct packet_ptrs *pptrs, void *unused, void *e)
@@ -2432,10 +2432,10 @@ int BITR_mpls_label_bottom_handler(struct packet_ptrs *pptrs, void *unused, void
 				if (entry->key.mpls_label_bottom.n == label) return (entry->key.mpls_label_bottom.neg);
 			}
 		}
-		return (true ^ entry->key.mpls_label_bottom.neg);
+		return (!entry->key.mpls_label_bottom.neg);
 		break;
 	default:
-		return (true ^ entry->key.mpls_label_bottom.neg);
+		return (!entry->key.mpls_label_bottom.neg);
 		break;
 	}
 }
@@ -2466,10 +2466,10 @@ int BITR_mpls_vpn_id_handler(struct packet_ptrs *pptrs, void *unused, void *e)
 				return (entry->key.mpls_vpn_id.neg);
 		}
 
-		return (true ^ entry->key.mpls_vpn_id.neg);
+		return (!entry->key.mpls_vpn_id.neg);
 		break;
 	default:
-		return (true ^ entry->key.mpls_vpn_id.neg);
+		return (!entry->key.mpls_vpn_id.neg);
 		break;
 	}
 }
