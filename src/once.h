@@ -39,9 +39,10 @@
 #define PvhdrSz (sizeof(struct pkt_vlen_hdr_primitives))
 #define PmLabelTSz (sizeof(pm_label_t))
 #define CharPtrSz (sizeof(char *))
+#define NfHdrV1Sz (sizeof(struct struct_header_v1))
 
 u_int32_t HostAddrSz;
-u_int32_t NfHdrV5Sz, NfHdrV1Sz, NfHdrV7Sz, NfHdrV8Sz, NfHdrV9Sz;
+u_int32_t NfHdrV5Sz, NfHdrV7Sz, NfHdrV8Sz, NfHdrV9Sz;
 u_int32_t IpFixHdrSz;
 u_int32_t NfDataHdrV9Sz, NfTplHdrV9Sz, NfOptTplHdrV9Sz;
 u_int32_t NfTplFieldV9Sz;

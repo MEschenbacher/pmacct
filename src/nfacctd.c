@@ -2147,7 +2147,6 @@ void compute_once()
 {
 	struct pkt_data dummy;
 
-	NfHdrV1Sz = sizeof(struct struct_header_v1);
 	NfHdrV5Sz = sizeof(struct struct_header_v5);
 	NfHdrV7Sz = sizeof(struct struct_header_v7);
 	NfHdrV8Sz = sizeof(struct struct_header_v8);
