@@ -36,9 +36,10 @@
 #define PnatSz (sizeof(struct pkt_nat_primitives))
 #define PmplsSz (sizeof(struct pkt_mpls_primitives))
 #define PtunSz (sizeof(struct pkt_tunnel_primitives))
+#define PvhdrSz (sizeof(struct pkt_vlen_hdr_primitives))
 
 u_int32_t CharPtrSz, HostAddrSz;
-u_int32_t PvhdrSz, PtLabelTSz;
+u_int32_t PtLabelTSz;
 u_int32_t PmLabelTSz;
 u_int32_t NfHdrV5Sz, NfHdrV1Sz, NfHdrV7Sz, NfHdrV8Sz, NfHdrV9Sz;
 u_int32_t IpFixHdrSz;

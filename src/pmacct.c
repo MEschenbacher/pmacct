@@ -764,7 +764,6 @@ int main(int argc,char **argv)
 	is_event = false;
 	want_tstamp_since_epoch = false;
 
-	PvhdrSz = sizeof(struct pkt_vlen_hdr_primitives);
 	PmLabelTSz = sizeof(pm_label_t);
 	PtLabelTSz = sizeof(pt_label_t);
 

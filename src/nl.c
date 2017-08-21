@@ -396,7 +396,6 @@ void compute_once()
 {
 	struct pkt_data dummy;
 
-	PvhdrSz = sizeof(struct pkt_vlen_hdr_primitives);
 	PmLabelTSz = sizeof(pm_label_t);
 	PtLabelTSz = sizeof(pt_label_t);
 	CharPtrSz = sizeof(char *);
