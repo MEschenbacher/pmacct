@@ -2147,7 +2147,6 @@ void compute_once()
 {
 	struct pkt_data dummy;
 
-	NfDataV5Sz = sizeof(struct struct_export_v5);
 	NfDataV7Sz = sizeof(struct struct_export_v7);
 	IP4HdrSz = sizeof(struct pm_iphdr);
 	IP4TlSz = sizeof(struct pm_iphdr)+sizeof(struct pm_tlhdr);
