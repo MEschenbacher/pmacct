@@ -396,7 +396,6 @@ void compute_once()
 {
 	struct pkt_data dummy;
 
-	PpayloadSz = sizeof(struct pkt_payload);
 	PextrasSz = sizeof(struct pkt_extras);
 	PbgpSz = sizeof(struct pkt_bgp_primitives);
 	PlbgpSz = sizeof(struct pkt_legacy_bgp_primitives);
