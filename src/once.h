@@ -60,9 +60,10 @@
 #define SFSampleSz (sizeof(SFSample))
 #define MyTLHdrSz (sizeof(struct pm_tlhdr))
 #define TCPFlagOff (13)
+#define MyTCPHdrSz (TCPFlagOff + 1)
 
 u_int32_t IP6HdrSz, IP6AddrSz, IP6TlSz;
-u_int32_t MyTCPHdrSz, IpFlowCmnSz;
+u_int32_t IpFlowCmnSz;
 
 
 #endif /* _ONCE_H_ */

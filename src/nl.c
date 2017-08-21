@@ -396,7 +396,6 @@ void compute_once()
 {
 	struct pkt_data dummy;
 
-	MyTCPHdrSz = TCPFlagOff+1;
 	IpFlowCmnSz = sizeof(struct ip_flow_common);
 #if defined ENABLE_IPV6
 	IP6HdrSz = sizeof(struct ip6_hdr);
