@@ -1014,7 +1014,7 @@ void exit_all(int status)
 #endif
 
 	while (list) {
-		if (memcmp(list->type.string, "core", sizeof("core"))) kill(list->pid, SIGKILL);
+		if (strcmp(list->type.string, "core")) kill(list->pid, SIGKILL);
 		list = list->next;
 	}
 
