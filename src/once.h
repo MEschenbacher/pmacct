@@ -59,7 +59,7 @@ u_int32_t IpFixHdrSz;
 u_int32_t IP6HdrSz, IP6AddrSz, IP6TlSz;
 u_int32_t MyTLHdrSz, TCPFlagOff;
 u_int32_t SFSampleSz, SFLAddressSz, SFrenormEntrySz;
-u_int32_t PptrsSz, UDPHdrSz, CSSz, MyTCPHdrSz, IpFlowCmnSz;
+u_int32_t UDPHdrSz, CSSz, MyTCPHdrSz, IpFlowCmnSz;
 
 
 #endif /* _ONCE_H_ */

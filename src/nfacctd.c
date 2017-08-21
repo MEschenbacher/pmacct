@@ -2147,7 +2147,6 @@ void compute_once()
 {
 	struct pkt_data dummy;
 
-	PptrsSz = sizeof(struct packet_ptrs);
 	CSSz = sizeof(struct class_st);
 	HostAddrSz = sizeof(struct host_addr);
 	UDPHdrSz = sizeof(struct pm_udphdr);

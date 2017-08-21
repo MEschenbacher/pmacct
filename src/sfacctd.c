@@ -1353,7 +1353,6 @@ void compute_once()
 	SFSampleSz = sizeof(SFSample);
 	SFLAddressSz = sizeof(SFLAddress);
 	SFrenormEntrySz = sizeof(struct xflow_status_entry_sampling);
-	PptrsSz = sizeof(struct packet_ptrs);
 	CSSz = sizeof(struct class_st);
 	HostAddrSz = sizeof(struct host_addr);
 	UDPHdrSz = sizeof(struct pm_udphdr);
