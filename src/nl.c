@@ -395,10 +395,6 @@ int PM_find_id(struct id_table *t, struct packet_ptrs *pptrs, pm_id_t *tag, pm_i
 void compute_once()
 {
 	struct pkt_data dummy;
-
-#if defined ENABLE_IPV6
-	IP6AddrSz = sizeof(struct in6_addr);
-#endif
 }
 
 void tunnel_registry_init()

@@ -1351,7 +1351,6 @@ void compute_once()
 	struct pkt_data dummy;
 
 #if defined ENABLE_IPV6
-	IP6AddrSz = sizeof(struct in6_addr);
 	IP6TlSz = sizeof(struct ip6_hdr)+sizeof(struct pm_tlhdr);
 #endif
 }
