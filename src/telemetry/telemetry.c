@@ -552,9 +552,9 @@ select_again:
 				fd = accept(config.telemetry_sock, (struct sockaddr *) &client, &clen);
 				if (fd == ERR) goto read_data;
 			} else if (config.telemetry_port_udp) {
-				char dummy_local_buf[true];
+				char dummy_local_buf[1];
 
-				ret = recvfrom(config.telemetry_sock, dummy_local_buf, true, MSG_PEEK, (struct sockaddr *) &client, &clen);
+				ret = recvfrom(config.telemetry_sock, dummy_local_buf, 1, MSG_PEEK, (struct sockaddr *) &client, &clen);
 				if (ret <= 0) goto select_again;
 				else fd = config.telemetry_sock;
 			}
