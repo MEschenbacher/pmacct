@@ -1350,8 +1350,6 @@ void compute_once()
 {
 	struct pkt_data dummy;
 
-	SFrenormEntrySz = sizeof(struct xflow_status_entry_sampling);
-
 #if defined ENABLE_IPV6
 	IP6HdrSz = sizeof(struct ip6_hdr);
 	IP6AddrSz = sizeof(struct in6_addr);
