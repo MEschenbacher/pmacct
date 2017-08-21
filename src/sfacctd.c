@@ -1350,7 +1350,6 @@ void compute_once()
 {
 	struct pkt_data dummy;
 
-	IP4HdrSz = sizeof(struct pm_iphdr);
 	IP4TlSz = sizeof(struct pm_iphdr)+sizeof(struct pm_tlhdr);
 	SFSampleSz = sizeof(SFSample);
 	SFLAddressSz = sizeof(SFLAddress);

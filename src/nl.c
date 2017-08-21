@@ -396,7 +396,6 @@ void compute_once()
 {
 	struct pkt_data dummy;
 
-	IP4HdrSz = sizeof(struct pm_iphdr);
 	MyTLHdrSz = sizeof(struct pm_tlhdr);
 	TCPFlagOff = 13;
 	MyTCPHdrSz = TCPFlagOff+1;
