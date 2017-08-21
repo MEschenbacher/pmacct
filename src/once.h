@@ -57,10 +57,11 @@
 #define HostAddrSz (sizeof(struct host_addr))
 #define UDPHdrSz (sizeof(struct pm_udphdr))
 #define IpFixHdrSz (sizeof(struct struct_header_ipfix))
+#define SFSampleSz (sizeof(SFSample))
 
 u_int32_t IP6HdrSz, IP6AddrSz, IP6TlSz;
 u_int32_t MyTLHdrSz, TCPFlagOff;
-u_int32_t SFSampleSz, SFLAddressSz, SFrenormEntrySz;
+u_int32_t SFLAddressSz, SFrenormEntrySz;
 u_int32_t MyTCPHdrSz, IpFlowCmnSz;
 
 
