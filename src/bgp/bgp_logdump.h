@@ -1,4 +1,4 @@
-/*  
+/*
     pmacct (Promiscuous mode IP Accounting package)
     pmacct is Copyright (C) 2003-2016 by Paolo Lucente
 */
@@ -35,16 +35,16 @@
 #define BGP_LOG_TYPE_CLOSE	5
 
 struct bgp_peer_log {
-  FILE *fd;
-  int refcnt;
-  char filename[SRVBUFLEN];
-  void *amqp_host;
-  void *kafka_host;
+	FILE *fd;
+	int refcnt;
+	char filename[SRVBUFLEN];
+	void *amqp_host;
+	void *kafka_host;
 };
 
 struct bgp_dump_stats {
-  u_int64_t entries;
-  u_int32_t tables;
+	u_int64_t entries;
+	u_int32_t tables;
 };
 
 /* prototypes */
@@ -67,4 +67,4 @@ EXT void bgp_table_dump_init_amqp_host();
 EXT int bgp_daemon_msglog_init_kafka_host();
 EXT int bgp_table_dump_init_kafka_host();
 #undef EXT
-#endif 
+#endif

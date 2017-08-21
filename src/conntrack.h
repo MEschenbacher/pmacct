@@ -20,7 +20,7 @@
 */
 
 /* defines */
-#define CONNTRACK_GENERIC_LIFETIME 20 
+#define CONNTRACK_GENERIC_LIFETIME 20
 #define DEFAULT_CONNTRACK_BUFFER_SIZE 8192000 /* 8 Mb */
 #define MAX_CONNTRACKS 256
 
@@ -28,37 +28,37 @@
 typedef void (*conntrack_helper)(time_t, struct packet_ptrs *);
 
 struct conntrack_helper_entry {
-  char protocol[MAX_PROTOCOL_LEN];
-  conntrack_helper ct_helper;
+	char protocol[MAX_PROTOCOL_LEN];
+	conntrack_helper ct_helper;
 };
 
 struct conntrack_ipv4 {
-  u_int32_t ip_src;
-  u_int32_t ip_dst;
-  u_int16_t port_src;
-  u_int16_t port_dst;
-  u_int8_t proto;
-  pm_class_t class;
-  /* timestamp renewal flag ? */
-  time_t stamp;
-  time_t expiration;
-  conntrack_helper helper;
-  struct conntrack_ipv4 *next;
+	u_int32_t ip_src;
+	u_int32_t ip_dst;
+	u_int16_t port_src;
+	u_int16_t port_dst;
+	u_int8_t proto;
+	pm_class_t class;
+	/* timestamp renewal flag ? */
+	time_t stamp;
+	time_t expiration;
+	conntrack_helper helper;
+	struct conntrack_ipv4 *next;
 };
 
 #if defined ENABLE_IPV6
 struct conntrack_ipv6 {
-  u_int32_t ip_src[4];
-  u_int32_t ip_dst[4];
-  u_int16_t port_src;
-  u_int16_t port_dst;
-  u_int8_t proto;
-  pm_class_t class;
-  /* timestamp renewal flag ? */
-  time_t stamp;
-  time_t expiration;
-  conntrack_helper helper;
-  struct conntrack_ipv6 *next;
+	u_int32_t ip_src[4];
+	u_int32_t ip_dst[4];
+	u_int16_t port_src;
+	u_int16_t port_dst;
+	u_int8_t proto;
+	pm_class_t class;
+	/* timestamp renewal flag ? */
+	time_t stamp;
+	time_t expiration;
+	conntrack_helper helper;
+	struct conntrack_ipv6 *next;
 };
 #endif
 
@@ -85,10 +85,10 @@ EXT struct conntrack_ipv6 *conntrack_ipv6_table;
 
 #if defined __CONNTRACK_C || defined __CLASSIFIER_C
 static struct conntrack_helper_entry conntrack_helper_list[] = {
-  { "ftp", conntrack_ftp_helper },
-  { "sip", conntrack_sip_helper },
+	{ "ftp", conntrack_ftp_helper },
+	{ "sip", conntrack_sip_helper },
 //  { "irc", conntrack_irc_helper },
-  { "rtsp", conntrack_rtsp_helper },
-  { "", NULL },
+	{ "rtsp", conntrack_rtsp_helper },
+	{ "", NULL },
 };
 #endif

@@ -27,29 +27,29 @@
 #define MAX_SUBDIRS 128
 #define MAX_CLASSIFIERS 256
 #define MAX_PATTERN_LEN 2048
-#define DEFAULT_TENTATIVES 5 
+#define DEFAULT_TENTATIVES 5
 
 /* data structures */
 struct pkt_classifier_data {
-  struct timeval stamp;
-  u_char *packet_ptr;
-  u_char *l3_ptr;
-  u_char *l4_ptr;
-  u_char *payload_ptr;
-  u_int16_t l3_proto;
-  u_int16_t l4_proto;
-  u_int16_t plen;
-  u_int8_t tentatives;
-  u_int16_t sampling_rate;
+	struct timeval stamp;
+	u_char *packet_ptr;
+	u_char *l3_ptr;
+	u_char *l4_ptr;
+	u_char *payload_ptr;
+	u_int16_t l3_proto;
+	u_int16_t l4_proto;
+	u_int16_t plen;
+	u_int8_t tentatives;
+	u_int16_t sampling_rate;
 };
 
 struct pkt_classifier {
-  pm_class_t id;
-  char protocol[MAX_PROTOCOL_LEN];
-  regexp *pattern;
-  pm_class_t (*func)(struct pkt_classifier_data *, int, void **, void **, void **);
-  conntrack_helper ct_helper;
-  void *extra;
+	pm_class_t id;
+	char protocol[MAX_PROTOCOL_LEN];
+	regexp *pattern;
+	pm_class_t (*func)(struct pkt_classifier_data *, int, void **, void **, void **);
+	conntrack_helper ct_helper;
+	void *extra;
 };
 
 /* All but __CLASSIFIER_C are dummy entries. They are required to export locally

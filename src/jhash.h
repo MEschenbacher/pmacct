@@ -63,17 +63,28 @@ Inline u_int32_t jhash(void *key, u_int32_t length, u_int32_t initval)
 
 	c += length;
 	switch (len) {
-	case 11: c += ((u_int32_t)k[10]<<24);
-	case 10: c += ((u_int32_t)k[9]<<16);
-	case 9 : c += ((u_int32_t)k[8]<<8);
-	case 8 : b += ((u_int32_t)k[7]<<24);
-	case 7 : b += ((u_int32_t)k[6]<<16);
-	case 6 : b += ((u_int32_t)k[5]<<8);
-	case 5 : b += k[4];
-	case 4 : a += ((u_int32_t)k[3]<<24);
-	case 3 : a += ((u_int32_t)k[2]<<16);
-	case 2 : a += ((u_int32_t)k[1]<<8);
-	case 1 : a += k[0];
+	case 11:
+		c += ((u_int32_t)k[10]<<24);
+	case 10:
+		c += ((u_int32_t)k[9]<<16);
+	case 9 :
+		c += ((u_int32_t)k[8]<<8);
+	case 8 :
+		b += ((u_int32_t)k[7]<<24);
+	case 7 :
+		b += ((u_int32_t)k[6]<<16);
+	case 6 :
+		b += ((u_int32_t)k[5]<<8);
+	case 5 :
+		b += k[4];
+	case 4 :
+		a += ((u_int32_t)k[3]<<24);
+	case 3 :
+		a += ((u_int32_t)k[2]<<16);
+	case 2 :
+		a += ((u_int32_t)k[1]<<8);
+	case 1 :
+		a += k[0];
 	};
 
 	__jhash_mix(a,b,c);
@@ -97,14 +108,17 @@ Inline u_int32_t jhash2(u_int32_t *k, u_int32_t length, u_int32_t initval)
 		b += k[1];
 		c += k[2];
 		__jhash_mix(a, b, c);
-		k += 3; len -= 3;
+		k += 3;
+		len -= 3;
 	}
 
 	c += length * 4;
 
 	switch (len) {
-	case 2 : b += k[1];
-	case 1 : a += k[0];
+	case 2 :
+		b += k[1];
+	case 1 :
+		a += k[0];
 	};
 
 	__jhash_mix(a,b,c);

@@ -1,4 +1,4 @@
-/*  
+/*
     pmacct (Promiscuous mode IP Accounting package)
     pmacct is Copyright (C) 2003-2017 by Paolo Lucente
 */
@@ -53,4 +53,4 @@ EXT int bgp_nlri_parse(struct bgp_msg_data *, void *, struct bgp_nlri *);
 EXT int bgp_process_update(struct bgp_msg_data *, struct prefix *, void *, afi_t, safi_t, rd_t *, path_id_t *, char *);
 EXT int bgp_process_withdraw(struct bgp_msg_data *, struct prefix *, void *, afi_t, safi_t, rd_t *, path_id_t *, char *);
 #undef EXT
-#endif 
+#endif

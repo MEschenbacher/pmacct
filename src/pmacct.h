@@ -1,4 +1,4 @@
-/*  
+/*
     pmacct (Promiscuous mode IP Accounting package)
     pmacct is Copyright (C) 2003-2017 by Paolo Lucente
 */
@@ -38,7 +38,7 @@
 #include <assert.h>
 
 #ifdef HAVE_GETOPT_H
-#include <getopt.h> 
+#include <getopt.h>
 #endif
 
 #if defined HAVE_MALLOPT
@@ -102,7 +102,7 @@
 #if !defined ETHER_ADDRSTRLEN
 #define ETHER_ADDRSTRLEN 18
 #endif
-#if !defined INET_ADDRSTRLEN 
+#if !defined INET_ADDRSTRLEN
 #define INET_ADDRSTRLEN 16
 #endif
 #if !defined INET6_ADDRSTRLEN
@@ -114,7 +114,7 @@
 #define htonl(x) (x)
 #endif
 
-#if (!defined HAVE_U_INT8_T) && (defined HAVE_UINT8_T) 
+#if (!defined HAVE_U_INT8_T) && (defined HAVE_UINT8_T)
 #define u_int8_t uint8_t
 #endif
 #if (!defined HAVE_U_INT16_T) && (defined HAVE_UINT16_T)
@@ -192,31 +192,31 @@
    name outdated at this point .. */
 
 struct ptm_complex {
-  int load_ptm_plugin;		/* load_pre_tag_map(): input plugin type ID */
-  int load_ptm_res;		/* load_pre_tag_map(): result */
-  int exec_ptm_dissect;		/* exec_plugins(): TRUE if at least one plugin returned load_ptm_res == TRUE */
-  int exec_ptm_res;		/* exec_plugins(): input to be matched against list->cfg.ptm_complex */ 
+	int load_ptm_plugin;		/* load_pre_tag_map(): input plugin type ID */
+	int load_ptm_res;		/* load_pre_tag_map(): result */
+	int exec_ptm_dissect;		/* exec_plugins(): TRUE if at least one plugin returned load_ptm_res == TRUE */
+	int exec_ptm_res;		/* exec_plugins(): input to be matched against list->cfg.ptm_complex */
 };
 
 struct plugin_requests {
-  u_int8_t bpf_filter;		/* On-request packet copy for BPF purposes */
+	u_int8_t bpf_filter;		/* On-request packet copy for BPF purposes */
 
-  /* load_id_file() stuff */
-  void *key_value_table;	/* table to be filled in from key-value files */
-  int line_num;			/* line number being processed */
-  int map_entries;		/* number of map entries: wins over global setting */
-  int map_row_len;		/* map row length: wins over global setting */
-  struct ptm_complex ptm_c;	/* flags a map that requires parsing of the records (ie. tee plugin) */
+	/* load_id_file() stuff */
+	void *key_value_table;	/* table to be filled in from key-value files */
+	int line_num;			/* line number being processed */
+	int map_entries;		/* number of map entries: wins over global setting */
+	int map_row_len;		/* map row length: wins over global setting */
+	struct ptm_complex ptm_c;	/* flags a map that requires parsing of the records (ie. tee plugin) */
 };
 
 typedef struct {
-  char *val;
-  u_int16_t len;
+	char *val;
+	u_int16_t len;
 } pm_hash_key_t;
 
 typedef struct {
-  pm_hash_key_t key;
-  u_int16_t off;
+	pm_hash_key_t key;
+	u_int16_t off;
 } pm_hash_serial_t;
 
 #if (defined WITH_JANSSON)
@@ -256,63 +256,63 @@ typedef struct {
 
 /* structures */
 struct pcap_device {
-  pcap_t *dev_desc;
-  int link_type;
-  int active;
-  struct _devices_struct *data; 
+	pcap_t *dev_desc;
+	int link_type;
+	int active;
+	struct _devices_struct *data;
 };
 
 struct pcap_callback_data {
-  u_char * f_agent; 
-  u_char * bta_table;
-  u_char * bpas_table; 
-  u_char * blp_table; 
-  u_char * bmed_table; 
-  u_char * biss_table; 
-  struct pcap_device *device;
-  u_int32_t ifindex_in;
-  u_int32_t ifindex_out;
+	u_char * f_agent;
+	u_char * bta_table;
+	u_char * bpas_table;
+	u_char * blp_table;
+	u_char * bmed_table;
+	u_char * biss_table;
+	struct pcap_device *device;
+	u_int32_t ifindex_in;
+	u_int32_t ifindex_out;
 };
 
 struct _protocols_struct {
-  char name[PROTO_LEN];
-  int number;
+	char name[PROTO_LEN];
+	int number;
 };
 
 struct _devices_struct {
-  void (*handler)(const struct pcap_pkthdr *, register struct packet_ptrs *);
-  int link_type;
+	void (*handler)(const struct pcap_pkthdr *, register struct packet_ptrs *);
+	int link_type;
 };
 
 struct _primitives_matrix_struct {
-  char name[PRIMITIVE_LEN];
-  u_int8_t pmacctd;
-  u_int8_t uacctd;
-  u_int8_t nfacctd;
-  u_int8_t sfacctd;
-  u_int8_t pmtelemetryd;
-  u_int8_t pmbgpd;
-  u_int8_t pmbmpd;
-  char desc[PRIMITIVE_DESC_LEN];
+	char name[PRIMITIVE_LEN];
+	u_int8_t pmacctd;
+	u_int8_t uacctd;
+	u_int8_t nfacctd;
+	u_int8_t sfacctd;
+	u_int8_t pmtelemetryd;
+	u_int8_t pmbgpd;
+	u_int8_t pmbmpd;
+	char desc[PRIMITIVE_DESC_LEN];
 };
 
 struct smallbuf {
-  u_char base[SRVBUFLEN];
-  u_char *end;
-  u_char *ptr;
-};	
+	u_char base[SRVBUFLEN];
+	u_char *end;
+	u_char *ptr;
+};
 
 struct largebuf {
-  u_char base[LARGEBUFLEN];
-  u_char *end;
-  u_char *ptr;
+	u_char base[LARGEBUFLEN];
+	u_char *end;
+	u_char *ptr;
 };
 
 struct child_ctl2 {
-  pid_t *list;
-  u_int16_t active;
-  u_int16_t max;
-  u_int32_t flags;
+	pid_t *list;
+	u_int16_t active;
+	u_int16_t max;
+	u_int32_t flags;
 };
 
 #define INIT_BUF(x) \

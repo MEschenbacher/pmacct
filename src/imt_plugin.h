@@ -24,101 +24,101 @@
 /* defines */
 #define NUM_MEMORY_POOLS 16
 #define MEMORY_POOL_SIZE 8192
-#define MAX_HOSTS 32771 
+#define MAX_HOSTS 32771
 #define MAX_QUERIES 4096
 
 /* Structures */
 struct acc {
-  struct pkt_primitives primitives;
-  pm_counter_t bytes_counter;
-  pm_counter_t packet_counter;
-  pm_counter_t flow_counter;
-  u_int8_t flow_type; 
-  u_int32_t tcp_flags; 
-  unsigned int signature;
-  u_int8_t reset_flag;
-  struct timeval rstamp;	/* classifiers: reset timestamp */
-  struct pkt_bgp_primitives *pbgp;
-  struct cache_legacy_bgp_primitives *clbgp;
-  struct pkt_nat_primitives *pnat;
-  struct pkt_mpls_primitives *pmpls;
-  struct pkt_tunnel_primitives *ptun;
-  char *pcust;
-  struct pkt_vlen_hdr_primitives *pvlen;
-  struct acc *next;
+	struct pkt_primitives primitives;
+	pm_counter_t bytes_counter;
+	pm_counter_t packet_counter;
+	pm_counter_t flow_counter;
+	u_int8_t flow_type;
+	u_int32_t tcp_flags;
+	unsigned int signature;
+	u_int8_t reset_flag;
+	struct timeval rstamp;	/* classifiers: reset timestamp */
+	struct pkt_bgp_primitives *pbgp;
+	struct cache_legacy_bgp_primitives *clbgp;
+	struct pkt_nat_primitives *pnat;
+	struct pkt_mpls_primitives *pmpls;
+	struct pkt_tunnel_primitives *ptun;
+	char *pcust;
+	struct pkt_vlen_hdr_primitives *pvlen;
+	struct acc *next;
 };
 
 struct bucket_desc {
-  unsigned int num;
-  unsigned short int howmany;
+	unsigned int num;
+	unsigned short int howmany;
 };
 
 struct memory_pool_desc {
-  int id;
-  unsigned char *base_ptr;
-  unsigned char *ptr;
-  int space_left;
-  int len;
-  struct memory_pool_desc *next;
+	int id;
+	unsigned char *base_ptr;
+	unsigned char *ptr;
+	int space_left;
+	int len;
+	struct memory_pool_desc *next;
 };
 
 struct query_header {
-  int type;				/* type of query */
-  pm_cfgreg_t what_to_count;		/* aggregation */
-  pm_cfgreg_t what_to_count_2;		/* aggregation */
-  unsigned int num;			/* number of queries */
-  unsigned int ip_sz;			/* IP addresses size (in bytes) */
-  unsigned int cnt_sz;			/* counters size (in bytes) */
-  struct extra_primitives extras;	/* offsets for non-standard aggregation primitives structures */
-  int datasize;				/* total length of aggregation primitives structures */
-  char passwd[12];			/* OBSOLETED: password */
+	int type;				/* type of query */
+	pm_cfgreg_t what_to_count;		/* aggregation */
+	pm_cfgreg_t what_to_count_2;		/* aggregation */
+	unsigned int num;			/* number of queries */
+	unsigned int ip_sz;			/* IP addresses size (in bytes) */
+	unsigned int cnt_sz;			/* counters size (in bytes) */
+	struct extra_primitives extras;	/* offsets for non-standard aggregation primitives structures */
+	int datasize;				/* total length of aggregation primitives structures */
+	char passwd[12];			/* OBSOLETED: password */
 };
 
 struct query_entry {
-  pm_cfgreg_t what_to_count;			/* aggregation */
-  pm_cfgreg_t what_to_count_2;			/* aggregation */
-  struct pkt_primitives data;			/* actual data */
-  struct pkt_bgp_primitives pbgp;		/* extended BGP data */
-  struct pkt_legacy_bgp_primitives plbgp;	/* extended BGP data */
-  struct pkt_nat_primitives pnat;		/* extended NAT + timestamp data */
-  struct pkt_mpls_primitives pmpls;		/* extended MPLS data */
-  struct pkt_tunnel_primitives ptun;		/* extended tunnel data */
-  char *pcust;					/* custom-defined data */
-  struct pkt_vlen_hdr_primitives *pvlen;	/* variable-length data */
+	pm_cfgreg_t what_to_count;			/* aggregation */
+	pm_cfgreg_t what_to_count_2;			/* aggregation */
+	struct pkt_primitives data;			/* actual data */
+	struct pkt_bgp_primitives pbgp;		/* extended BGP data */
+	struct pkt_legacy_bgp_primitives plbgp;	/* extended BGP data */
+	struct pkt_nat_primitives pnat;		/* extended NAT + timestamp data */
+	struct pkt_mpls_primitives pmpls;		/* extended MPLS data */
+	struct pkt_tunnel_primitives ptun;		/* extended tunnel data */
+	char *pcust;					/* custom-defined data */
+	struct pkt_vlen_hdr_primitives *pvlen;	/* variable-length data */
 };
 
 struct reply_buffer {
-  unsigned char buf[LARGEBUFLEN];
-  unsigned char *ptr;
-  int len;
-  int packed; 
+	unsigned char buf[LARGEBUFLEN];
+	unsigned char *ptr;
+	int len;
+	int packed;
 };
 
 struct stripped_class {
-  pm_class_t id;
-  char protocol[MAX_PROTOCOL_LEN];
+	pm_class_t id;
+	char protocol[MAX_PROTOCOL_LEN];
 };
 
 struct stripped_pkt_len_distrib {
-  char str[MAX_PKT_LEN_DISTRIB_LEN];
+	char str[MAX_PKT_LEN_DISTRIB_LEN];
 };
 
 struct imt_custom_primitive_entry {
-  /* compiled from map */
-  u_char name[MAX_CUSTOM_PRIMITIVE_NAMELEN];
-  u_int16_t field_type;
-  u_int16_t len;
-  u_int8_t semantics;
+	/* compiled from map */
+	u_char name[MAX_CUSTOM_PRIMITIVE_NAMELEN];
+	u_int16_t field_type;
+	u_int16_t len;
+	u_int8_t semantics;
 
-  /* compiled internally */
-  u_int16_t off;
-  pm_cfgreg_t type;
+	/* compiled internally */
+	u_int16_t off;
+	pm_cfgreg_t type;
 };
 
 struct imt_custom_primitives {
-  struct imt_custom_primitive_entry primitive[MAX_CUSTOM_PRIMITIVES];
-  int len;
-  int num;
+	struct imt_custom_primitive_entry primitive[MAX_CUSTOM_PRIMITIVES];
+	int len;
+	int num;
 };
 
 /* prototypes */
@@ -152,8 +152,8 @@ EXT void reset_counters(struct acc *);
 EXT int build_query_server(char *);
 EXT void process_query_data(int, unsigned char *, int, struct extra_primitives *, int, int);
 EXT void mask_elem(struct pkt_primitives *, struct pkt_bgp_primitives *, struct pkt_legacy_bgp_primitives *,
-			struct pkt_nat_primitives *, struct pkt_mpls_primitives *, struct pkt_tunnel_primitives *,
-			struct acc *, u_int64_t, u_int64_t, struct extra_primitives *);
+                   struct pkt_nat_primitives *, struct pkt_mpls_primitives *, struct pkt_tunnel_primitives *,
+                   struct acc *, u_int64_t, u_int64_t, struct extra_primitives *);
 EXT void enQueue_elem(int, struct reply_buffer *, void *, int, int);
 EXT void Accumulate_Counters(struct pkt_data *, struct acc *);
 EXT int test_zero_elem(struct acc *);

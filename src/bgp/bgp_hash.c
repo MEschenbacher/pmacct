@@ -3,7 +3,7 @@
     pmacct is Copyright (C) 2003-2016 by Paolo Lucente
 */
 
-/* 
+/*
  * Originally based on Quagga hash routine which is:
  *
  * Copyright (C) 1998 Kunihiro Ishiguro
@@ -32,36 +32,36 @@
 /* Allocate a new hash.  */
 struct hash *
 hash_create_size (unsigned int size, unsigned int (*hash_key) (void *),
-                                     int (*hash_cmp) (const void *, const void *))
+                  int (*hash_cmp) (const void *, const void *))
 {
-  struct hash *hash;
+	struct hash *hash;
 
-  hash = malloc(sizeof (struct hash));
-  if (!hash) {
-    Log(LOG_ERR, "ERROR ( %s/core/BGP ): malloc() failed (hash_create_size). Exiting ..\n", config.name); // XXX
-    exit_all(1);
-  }
-  memset (hash, 0, sizeof (struct hash));
-  hash->index = malloc(sizeof (struct hash_backet *) * size);
-  if (!hash->index) {
-    Log(LOG_ERR, "ERROR ( %s/core/BGP ): malloc() failed (hash_create_size). Exiting ..\n", config.name); // XXX
-    exit_all(1);
-  }
-  memset (hash->index, 0, sizeof (struct hash_backet *) * size);
-  hash->size = size;
-  hash->hash_key = hash_key;
-  hash->hash_cmp = hash_cmp;
-  hash->count = 0;
+	hash = malloc(sizeof (struct hash));
+	if (!hash) {
+		Log(LOG_ERR, "ERROR ( %s/core/BGP ): malloc() failed (hash_create_size). Exiting ..\n", config.name); // XXX
+		exit_all(1);
+	}
+	memset (hash, 0, sizeof (struct hash));
+	hash->index = malloc(sizeof (struct hash_backet *) * size);
+	if (!hash->index) {
+		Log(LOG_ERR, "ERROR ( %s/core/BGP ): malloc() failed (hash_create_size). Exiting ..\n", config.name); // XXX
+		exit_all(1);
+	}
+	memset (hash->index, 0, sizeof (struct hash_backet *) * size);
+	hash->size = size;
+	hash->hash_key = hash_key;
+	hash->hash_cmp = hash_cmp;
+	hash->count = 0;
 
-  return hash;
+	return hash;
 }
 
 /* Allocate a new hash with default hash size.  */
 struct hash *
-hash_create (int buckets, unsigned int (*hash_key) (void *), 
+hash_create (int buckets, unsigned int (*hash_key) (void *),
              int (*hash_cmp) (const void *, const void *))
 {
-  return hash_create_size (buckets, hash_key, hash_cmp);
+	return hash_create_size (buckets, hash_key, hash_cmp);
 }
 
 /* Utility function for hash_get().  When this function is specified
@@ -70,7 +70,7 @@ hash_create (int buckets, unsigned int (*hash_key) (void *),
 void *
 hash_alloc_intern (void *arg)
 {
-  return arg;
+	return arg;
 }
 
 /* Lookup and return hash backet in hash.  If there is no
@@ -79,48 +79,47 @@ hash_alloc_intern (void *arg)
 void *
 hash_get (struct bgp_peer *peer, struct hash *hash, void *data, void * (*alloc_func) (void *))
 {
-  struct bgp_misc_structs *bms;
-  unsigned int key;
-  unsigned int index;
-  void *newdata;
-  struct hash_backet *backet;
+	struct bgp_misc_structs *bms;
+	unsigned int key;
+	unsigned int index;
+	void *newdata;
+	struct hash_backet *backet;
 
-  if (!peer) return NULL;
+	if (!peer) return NULL;
 
-  bms = bgp_select_misc_db(peer->type);
+	bms = bgp_select_misc_db(peer->type);
 
-  if (!bms) return NULL;
+	if (!bms) return NULL;
 
-  key = (*hash->hash_key) (data);
-  index = key % hash->size;
+	key = (*hash->hash_key) (data);
+	index = key % hash->size;
 
-  for (backet = hash->index[index]; backet != NULL; backet = backet->next) 
-    if (backet->key == key && (*hash->hash_cmp) (backet->data, data))
-      return backet->data;
+	for (backet = hash->index[index]; backet != NULL; backet = backet->next)
+		if (backet->key == key && (*hash->hash_cmp) (backet->data, data))
+			return backet->data;
 
-  if (alloc_func)
-    {
-      newdata = (*alloc_func) (data);
-      if (!newdata) {
-        Log(LOG_ERR, "ERROR ( %s/%s ): alloc_func failed (hash_get). Exiting ..\n", config.name, bms->log_str);
-        exit_all(1);
-      }
+	if (alloc_func) {
+		newdata = (*alloc_func) (data);
+		if (!newdata) {
+			Log(LOG_ERR, "ERROR ( %s/%s ): alloc_func failed (hash_get). Exiting ..\n", config.name, bms->log_str);
+			exit_all(1);
+		}
 
-      backet = malloc(sizeof (struct hash_backet));
-      if (!backet) {
-        Log(LOG_ERR, "ERROR ( %s/%s ): malloc() failed (hash_get). Exiting ..\n", config.name, bms->log_str);
-        exit_all(1);
-      }
-      memset(backet, 0, sizeof (struct hash_backet));
-      backet->data = newdata;
-      backet->key = key;
-      backet->next = hash->index[index];
-      hash->index[index] = backet;
-      hash->count++;
-      return backet->data;
-    }
+		backet = malloc(sizeof (struct hash_backet));
+		if (!backet) {
+			Log(LOG_ERR, "ERROR ( %s/%s ): malloc() failed (hash_get). Exiting ..\n", config.name, bms->log_str);
+			exit_all(1);
+		}
+		memset(backet, 0, sizeof (struct hash_backet));
+		backet->data = newdata;
+		backet->key = key;
+		backet->next = hash->index[index];
+		hash->index[index] = backet;
+		hash->count++;
+		return backet->data;
+	}
 
-  return NULL;
+	return NULL;
 }
 
 /* This function release registered value from specified hash.  When
@@ -129,76 +128,71 @@ hash_get (struct bgp_peer *peer, struct hash *hash, void *data, void * (*alloc_f
 void *
 hash_release (struct hash *hash, void *data)
 {
-  void *ret;
-  unsigned int key;
-  unsigned int index;
-  struct hash_backet *backet;
-  struct hash_backet *pp;
+	void *ret;
+	unsigned int key;
+	unsigned int index;
+	struct hash_backet *backet;
+	struct hash_backet *pp;
 
-  key = (*hash->hash_key) (data);
-  index = key % hash->size;
+	key = (*hash->hash_key) (data);
+	index = key % hash->size;
 
-  for (backet = pp = hash->index[index]; backet; backet = backet->next)
-    {
-      if (backet->key == key && (*hash->hash_cmp) (backet->data, data)) 
-	{
-	  if (backet == pp) 
-	    hash->index[index] = backet->next;
-	  else 
-	    pp->next = backet->next;
+	for (backet = pp = hash->index[index]; backet; backet = backet->next) {
+		if (backet->key == key && (*hash->hash_cmp) (backet->data, data)) {
+			if (backet == pp)
+				hash->index[index] = backet->next;
+			else
+				pp->next = backet->next;
 
-	  ret = backet->data;
-	  free(backet);
-	  hash->count--;
-	  return ret;
+			ret = backet->data;
+			free(backet);
+			hash->count--;
+			return ret;
+		}
+		pp = backet;
 	}
-      pp = backet;
-    }
-  return NULL;
+	return NULL;
 }
 
 /* Iterator function for hash.  */
 void
-hash_iterate (struct hash *hash, 
-	      void (*func) (struct hash_backet *, void *), void *arg)
+hash_iterate (struct hash *hash,
+              void (*func) (struct hash_backet *, void *), void *arg)
 {
-  unsigned int i;
-  struct hash_backet *hb;
-  struct hash_backet *hbnext;
+	unsigned int i;
+	struct hash_backet *hb;
+	struct hash_backet *hbnext;
 
-  for (i = 0; i < hash->size; i++)
-    for (hb = hash->index[i]; hb; hb = hbnext)
-      {
-	/* get pointer to next hash backet here, in case (*func)
-	 * decides to delete hb by calling hash_release
-	 */
-	hbnext = hb->next;
-	(*func) (hb, arg);
-      }
+	for (i = 0; i < hash->size; i++)
+		for (hb = hash->index[i]; hb; hb = hbnext) {
+			/* get pointer to next hash backet here, in case (*func)
+			 * decides to delete hb by calling hash_release
+			 */
+			hbnext = hb->next;
+			(*func) (hb, arg);
+		}
 }
 
 /* Clean up hash.  */
 void
 hash_clean (struct hash *hash, void (*free_func) (void *))
 {
-  unsigned int i;
-  struct hash_backet *hb;
-  struct hash_backet *next;
+	unsigned int i;
+	struct hash_backet *hb;
+	struct hash_backet *next;
 
-  for (i = 0; i < hash->size; i++)
-    {
-      for (hb = hash->index[i]; hb; hb = next)
-	{
-	  next = hb->next;
-	      
-	  if (free_func)
-	    (*free_func) (hb->data);
+	for (i = 0; i < hash->size; i++) {
+		for (hb = hash->index[i]; hb; hb = next) {
+			next = hb->next;
 
-	  free(hb);
-	  hash->count--;
+			if (free_func)
+				(*free_func) (hb->data);
+
+			free(hb);
+			hash->count--;
+		}
+		hash->index[i] = NULL;
 	}
-      hash->index[i] = NULL;
-    }
 }
 
 /* Free hash memory.  You may call hash_clean before call this
@@ -206,6 +200,6 @@ hash_clean (struct hash *hash, void (*free_func) (void *))
 void
 hash_free (struct hash *hash)
 {
-  free(hash->index);
-  free(hash);
+	free(hash->index);
+	free(hash);
 }

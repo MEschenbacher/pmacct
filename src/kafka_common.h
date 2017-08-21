@@ -35,21 +35,21 @@
 
 /* structures */
 struct p_kafka_host {
-  char broker[SRVBUFLEN];
-  char errstr[PM_KAFKA_ERRSTR_LEN];
-  u_int8_t content_type;
+	char broker[SRVBUFLEN];
+	char errstr[PM_KAFKA_ERRSTR_LEN];
+	u_int8_t content_type;
 
-  rd_kafka_t *rk;
-  rd_kafka_conf_t *cfg;
-  rd_kafka_topic_t *topic;
-  rd_kafka_topic_conf_t *topic_cfg;
-  char *config_file;
-  int partition;
-  char *key;
-  int key_len;
-  struct p_table_rr topic_rr;
+	rd_kafka_t *rk;
+	rd_kafka_conf_t *cfg;
+	rd_kafka_topic_t *topic;
+	rd_kafka_topic_conf_t *topic_cfg;
+	char *config_file;
+	int partition;
+	char *key;
+	int key_len;
+	struct p_table_rr topic_rr;
 
-  struct p_broker_timers btimers;
+	struct p_broker_timers btimers;
 };
 
 /* prototypes */

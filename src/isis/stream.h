@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with GNU Zebra; see the file COPYING.  If not, write to the Free
  * Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
- * 02111-1307, USA.  
+ * 02111-1307, USA.
  */
 
 #ifndef _STREAM_H_
@@ -78,7 +78,7 @@
  * The stream is empty from endp to size. Without adjusting getp, there are
  * still endp-getp bytes of valid data to be read from the stream.
  *
- * Methods are provided to get and put to/from the stream, as well as 
+ * Methods are provided to get and put to/from the stream, as well as
  * retrieve the values of the 3 markers and manipulate the getp marker.
  *
  * Note:
@@ -92,19 +92,18 @@
  */
 
 /* Stream buffer. */
-struct stream
-{
-  size_t getp; 		/* next get position */
-  size_t endp;		/* last valid data position */
-  size_t size;		/* size of data segment */
-  unsigned char *data; /* data pointer */
+struct stream {
+	size_t getp; 		/* next get position */
+	size_t endp;		/* last valid data position */
+	size_t size;		/* size of data segment */
+	unsigned char *data; /* data pointer */
 };
 
 /* Utility macros. */
 #define STREAM_SIZE(S)  ((S)->size)
-  /* number of bytes which can still be written */
+/* number of bytes which can still be written */
 #define STREAM_WRITEABLE(S) ((S)->size - (S)->endp)
-  /* number of bytes still to be read */
+/* number of bytes still to be read */
 #define STREAM_READABLE(S) ((S)->endp - (S)->getp)
 
 /* deprecated macros - do not use in new code */
@@ -112,7 +111,7 @@ struct stream
 #define STREAM_DATA(S)  ((S)->data)
 #define STREAM_REMAIN(S) STREAM_WRITEABLE((S))
 
-/* Stream prototypes. 
+/* Stream prototypes.
  * For stream_{put,get}S, the S suffix mean:
  *
  * c: character (unsigned byte)
@@ -163,7 +162,7 @@ EXT u_int32_t stream_get_ipv4 (struct stream *);
 #undef stream_read
 #undef stream_write
 
-/* Deprecated: assumes blocking I/O.  Will be removed. 
+/* Deprecated: assumes blocking I/O.  Will be removed.
    Use stream_read_try instead.  */
 EXT int stream_read (struct stream *, int, size_t);
 

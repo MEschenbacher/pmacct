@@ -35,7 +35,7 @@ int MY_compose_static_queries();
 void MY_Lock(struct DBdesc *);
 void MY_Unlock(struct BE_descs *);
 void MY_DB_Connect(struct DBdesc *, char *);
-void MY_DB_Close(struct BE_descs *); 
+void MY_DB_Close(struct BE_descs *);
 void MY_create_dyn_table(struct DBdesc *, char *);
 void MY_get_errmsg(struct DBdesc *);
 void MY_create_backend(struct DBdesc *);

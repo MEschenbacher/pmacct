@@ -50,7 +50,7 @@ struct NF1_FLOW {
 	u_int8_t pad2, pad3, pad4;
 	u_int32_t reserved1;
 #if 0
- 	u_int8_t reserved2; /* XXX: no longer used */
+	u_int8_t reserved2; /* XXX: no longer used */
 #endif
 };
 /* Maximum of 24 flows per packet */
@@ -64,8 +64,8 @@ struct NF1_FLOW {
  */
 int
 send_netflow_v1(struct FLOW **flows, int num_flows, int nfsock,
-    u_int64_t *flows_exported, struct timeval *system_boot_time, 
-    int verbose_flag, u_int8_t engine_type, u_int8_t engine_id)
+                u_int64_t *flows_exported, struct timeval *system_boot_time,
+                int verbose_flag, u_int8_t engine_type, u_int8_t engine_id)
 {
 	struct timeval now;
 	u_int32_t uptime_ms;
@@ -74,7 +74,7 @@ send_netflow_v1(struct FLOW **flows, int num_flows, int nfsock,
 	struct NF1_FLOW *flw = NULL;
 	int i, j, offset, num_packets, err;
 	socklen_t errsz;
-	
+
 	gettimeofday(&now, NULL);
 	uptime_ms = timeval_sub_ms(&now, system_boot_time);
 
@@ -86,10 +86,10 @@ send_netflow_v1(struct FLOW **flows, int num_flows, int nfsock,
 			hdr->flows = htons(hdr->flows);
 			errsz = sizeof(err);
 			getsockopt(nfsock, SOL_SOCKET, SO_ERROR,
-			    &err, &errsz); /* Clear ICMP errors */
+			           &err, &errsz); /* Clear ICMP errors */
 			if (send(nfsock, packet, (size_t)offset, 0) == -1) {
-			  Log(LOG_WARNING, "WARN ( %s/%s ): send() failed: %s\n", config.name, config.type, strerror(errno));
-			  return (-1);
+				Log(LOG_WARNING, "WARN ( %s/%s ): send() failed: %s\n", config.name, config.type, strerror(errno));
+				return (-1);
 			}
 			*flows_exported += j;
 			j = 0;
@@ -103,9 +103,9 @@ send_netflow_v1(struct FLOW **flows, int num_flows, int nfsock,
 			hdr->time_sec = htonl(now.tv_sec);
 			hdr->time_nanosec = htonl(now.tv_usec * 1000);
 			offset = sizeof(*hdr);
-		}		
+		}
 		flw = (struct NF1_FLOW *)(packet + offset);
-		
+
 		/* NetFlow v.1 doesn't do IPv6 */
 		if (flows[i]->af != AF_INET)
 			continue;
@@ -114,16 +114,16 @@ send_netflow_v1(struct FLOW **flows, int num_flows, int nfsock,
 			flw->dest_ip = flows[i]->addr[1].v4.s_addr;
 			flw->src_port = flows[i]->port[0];
 			flw->dest_port = flows[i]->port[1];
-                        flw->if_index_in = htons(flows[i]->ifindex[0]);
-                        flw->if_index_out = htons(flows[i]->ifindex[1]);
+			flw->if_index_in = htons(flows[i]->ifindex[0]);
+			flw->if_index_out = htons(flows[i]->ifindex[1]);
 			flw->flow_packets = htonl(flows[i]->packets[0]);
 			flw->flow_octets = htonl(flows[i]->octets[0]);
 			flw->flow_start =
 			    htonl(timeval_sub_ms(&flows[i]->flow_start,
-			    system_boot_time));
-			flw->flow_finish = 
+			                         system_boot_time));
+			flw->flow_finish =
 			    htonl(timeval_sub_ms(&flows[i]->flow_last,
-			    system_boot_time));
+			                         system_boot_time));
 			flw->protocol = flows[i]->protocol;
 			flw->tos = flows[i]->tos[0];
 			flw->tcp_flags = flows[i]->tcp_flags[0];
@@ -138,16 +138,16 @@ send_netflow_v1(struct FLOW **flows, int num_flows, int nfsock,
 			flw->dest_ip = flows[i]->addr[0].v4.s_addr;
 			flw->src_port = flows[i]->port[1];
 			flw->dest_port = flows[i]->port[0];
-                        flw->if_index_in = htons(flows[i]->ifindex[1]);
-                        flw->if_index_out = htons(flows[i]->ifindex[0]);
+			flw->if_index_in = htons(flows[i]->ifindex[1]);
+			flw->if_index_out = htons(flows[i]->ifindex[0]);
 			flw->flow_packets = htonl(flows[i]->packets[1]);
 			flw->flow_octets = htonl(flows[i]->octets[1]);
 			flw->flow_start =
 			    htonl(timeval_sub_ms(&flows[i]->flow_start,
-			    system_boot_time));
+			                         system_boot_time));
 			flw->flow_finish =
 			    htonl(timeval_sub_ms(&flows[i]->flow_last,
-			    system_boot_time));
+			                         system_boot_time));
 			flw->protocol = flows[i]->protocol;
 			flw->tos = flows[i]->tos[1];
 			flw->tcp_flags = flows[i]->tcp_flags[1];
@@ -164,10 +164,10 @@ send_netflow_v1(struct FLOW **flows, int num_flows, int nfsock,
 		hdr->flows = htons(hdr->flows);
 		errsz = sizeof(err);
 		getsockopt(nfsock, SOL_SOCKET, SO_ERROR,
-		    &err, &errsz); /* Clear ICMP errors */
+		           &err, &errsz); /* Clear ICMP errors */
 		if (send(nfsock, packet, (size_t)offset, 0) == -1) {
-		  Log(LOG_WARNING, "WARN ( %s/%s ): send() failed: %s\n", config.name, config.type, strerror(errno));
-		  return (-1);
+			Log(LOG_WARNING, "WARN ( %s/%s ): send() failed: %s\n", config.name, config.type, strerror(errno));
+			return (-1);
 		}
 		num_packets++;
 	}

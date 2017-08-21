@@ -44,7 +44,7 @@
 #define PRIVDROP_CHROOT_DIR	"/var/empty"
 
 /*
- * Capture length for libpcap: Must fit the link layer header, plus 
+ * Capture length for libpcap: Must fit the link layer header, plus
  * a maximally sized ip/ipv6 header and most of a TCP header
  */
 #define LIBPCAP_SNAPLEN_V4		96
@@ -63,7 +63,7 @@
 #define DEFAULT_EXPIRY_INTERVAL		60
 
 /*
- * Default maximum number of flow to track simultaneously 
+ * Default maximum number of flow to track simultaneously
  * 8192 corresponds to just under 1Mb of flow data
  */
 #define DEFAULT_MAX_FLOWS	8192
@@ -94,7 +94,7 @@ struct FLOWTRACK {
 
 	/* Stuff related to flow export */
 	struct timeval system_boot_time;	/* SysUptime */
-	
+
 	/* Flow timeouts */
 	int tcp_timeout;			/* Open TCP connections */
 	int tcp_rst_timeout;			/* TCP flows after RST */
@@ -103,7 +103,7 @@ struct FLOWTRACK {
 	int icmp_timeout;			/* ICMP flows */
 	int general_timeout;			/* Everything else */
 	int maximum_lifetime;			/* Maximum life for flows */
-	int expiry_interval;			/* Interval between expiries */ 
+	int expiry_interval;			/* Interval between expiries */
 
 	/* Statistics */
 	u_int64_t total_packets;		/* # of good packets */
@@ -139,8 +139,8 @@ struct FLOWTRACK {
 };
 
 /*
- * This structure is an entry in the tree of flows that we are 
- * currently tracking. 
+ * This structure is an entry in the tree of flows that we are
+ * currently tracking.
  *
  * Because flows are matched _bi-directionally_, they must be stored in
  * a canonical format: the numerically lowest address and port number must
@@ -167,16 +167,16 @@ struct FLOW {
 
 	/* ASN/BGP stuff */
 	as_t as[2];				/* Autonomous System numbers */
-        union {
-                struct in_addr v4;
-                struct in6_addr v6;
-        } bgp_next_hop[2];
+	union {
+		struct in_addr v4;
+		struct in6_addr v6;
+	} bgp_next_hop[2];
 
 	/* L2 stuff */
 	u_int8_t mac[2][6];			/* Endpoint L2/Ethernet MAC addresses */
 	u_int16_t vlan;				/* VLAN ID */
 	u_int32_t mpls_label[2];		/* MPLS top label */
-        u_int16_t ifindex[2];			/* input/output ifindex */
+	u_int16_t ifindex[2];			/* input/output ifindex */
 
 	/* classification stuff */
 	pm_class_t class;			/* Classification internal ID */
@@ -207,26 +207,26 @@ struct FLOW {
 };
 
 /*
- * This is an entry in the tree of expiry events. The tree is used to 
+ * This is an entry in the tree of expiry events. The tree is used to
  * avoid traversion the whole tree of active flows looking for ones to
  * expire. "expires_at" is the time at which the flow should be discarded,
- * or zero if it is scheduled for immediate disposal. 
+ * or zero if it is scheduled for immediate disposal.
  *
- * When a flow which hasn't been scheduled for immediate expiry registers 
- * traffic, it is deleted from its current position in the tree and 
+ * When a flow which hasn't been scheduled for immediate expiry registers
+ * traffic, it is deleted from its current position in the tree and
  * re-inserted (subject to its updated timeout).
  *
  * Expiry scans operate by starting at the head of the tree and expiring
  * each entry with expires_at < now
- * 
+ *
  */
 struct EXPIRY {
 	EXPIRY_ENTRY(EXPIRY) trp;		/* Tree pointer */
 	struct FLOW *flow;			/* pointer to flow */
 
 	u_int32_t expires_at;			/* time_t */
-	enum { 
-		R_GENERAL, R_TCP, R_TCP_RST, R_TCP_FIN, R_UDP, R_ICMP, 
+	enum {
+		R_GENERAL, R_TCP, R_TCP_RST, R_TCP_FIN, R_UDP, R_ICMP,
 		R_MAXLIFE, R_OVERBYTES, R_OVERFLOWS, R_FLUSH
 	} reason;
 };
@@ -236,13 +236,13 @@ u_int32_t timeval_sub_ms(const struct timeval *t1, const struct timeval *t2);
 
 /* Prototypes for functions to send NetFlow packets, from netflow*.c */
 int send_netflow_v1(struct FLOW **flows, int num_flows, int nfsock,
-    u_int64_t *flows_exported, struct timeval *system_boot_time, 
-    int verbose_flag, u_int8_t engine_type, u_int8_t engine_id);
+                    u_int64_t *flows_exported, struct timeval *system_boot_time,
+                    int verbose_flag, u_int8_t engine_type, u_int8_t engine_id);
 int send_netflow_v5(struct FLOW **flows, int num_flows, int nfsock,
-    u_int64_t *flows_exported, struct timeval *system_boot_time,
-    int verbose_flag, u_int8_t engine_type, u_int8_t engine_id);
+                    u_int64_t *flows_exported, struct timeval *system_boot_time,
+                    int verbose_flag, u_int8_t engine_type, u_int8_t engine_id);
 int send_netflow_v9(struct FLOW **flows, int num_flows, int nfsock,
-    u_int64_t *flows_exported, struct timeval *system_boot_time,
-    int verbose_flag, u_int8_t engine_type, u_int8_t engine_id);
+                    u_int64_t *flows_exported, struct timeval *system_boot_time,
+                    int verbose_flag, u_int8_t engine_type, u_int8_t engine_id);
 
 #endif /* _SOFTFLOWD_H */

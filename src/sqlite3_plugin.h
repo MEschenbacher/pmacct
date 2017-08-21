@@ -31,7 +31,7 @@ int SQLI_compose_static_queries();
 void SQLI_Lock(struct DBdesc *);
 void SQLI_Unlock(struct BE_descs *);
 void SQLI_DB_Connect(struct DBdesc *, char *);
-void SQLI_DB_Close(struct BE_descs *); 
+void SQLI_DB_Close(struct BE_descs *);
 void SQLI_create_dyn_table(struct DBdesc *, char *);
 void SQLI_get_errmsg(struct DBdesc *);
 void SQLI_create_backend(struct DBdesc *);

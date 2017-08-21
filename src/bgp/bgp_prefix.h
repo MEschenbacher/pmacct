@@ -21,7 +21,7 @@
  * You should have received a copy of the GNU General Public License
  * along with GNU Zebra; see the file COPYING.  If not, write to the Free
  * Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
- * 02111-1307, USA.  
+ * 02111-1307, USA.
  */
 
 #ifndef _BGP_PREFIX_H_
@@ -37,58 +37,51 @@
  */
 
 /* IPv4 and IPv6 unified prefix structure. */
-struct prefix
-{
-  u_char family;
-  u_char prefixlen;
-  union 
-  {
-    u_char prefix;
-    struct in_addr prefix4;
+struct prefix {
+	u_char family;
+	u_char prefixlen;
+	union {
+		u_char prefix;
+		struct in_addr prefix4;
 #ifdef ENABLE_IPV6
-    struct in6_addr prefix6;
+		struct in6_addr prefix6;
 #endif /* ENABLE_IPV6 */
-    struct 
-    {
-      struct in_addr id;
-      struct in_addr adv_router;
-    } lp;
-    u_char val[8];
-  } u __attribute__ ((aligned (8)));
+		struct {
+			struct in_addr id;
+			struct in_addr adv_router;
+		} lp;
+		u_char val[8];
+	} u __attribute__ ((aligned (8)));
 };
 
 /* IPv4 prefix structure. */
-struct prefix_ipv4
-{
-  u_char family;
-  u_char prefixlen;
-  struct in_addr prefix __attribute__ ((aligned (8)));
+struct prefix_ipv4 {
+	u_char family;
+	u_char prefixlen;
+	struct in_addr prefix __attribute__ ((aligned (8)));
 };
 
 /* IPv6 prefix structure. */
 #ifdef ENABLE_IPV6
-struct prefix_ipv6
-{
-  u_char family;
-  u_char prefixlen;
-  struct in6_addr prefix __attribute__ ((aligned (8)));
+struct prefix_ipv6 {
+	u_char family;
+	u_char prefixlen;
+	struct in6_addr prefix __attribute__ ((aligned (8)));
 };
 #endif /* ENABLE_IPV6 */
 
-struct prefix_ls
-{
-  u_char family;
-  u_char prefixlen;
-  struct in_addr id __attribute__ ((aligned (8)));
-  struct in_addr adv_router;
+struct prefix_ls {
+	u_char family;
+	u_char prefixlen;
+	struct in_addr id __attribute__ ((aligned (8)));
+	struct in_addr adv_router;
 };
 
 /* Prefix for routing distinguisher. */
-struct prefix_rd
-{
-  u_char family;
-  u_char prefixlen;
-  u_char val[8] __attribute__ ((aligned (8)));
+struct prefix_rd {
+	u_char family;
+	u_char prefixlen;
+	u_char val[8] __attribute__ ((aligned (8)));
 };
 
 #ifndef INET_ADDRSTRLEN

@@ -3,7 +3,7 @@
     pmacct is Copyright (C) 2003-2017 by Paolo Lucente
 */
 
-/* 
+/*
  * Definitions for BGP packet disassembly structures and routine
  *
  * Baselined from:
@@ -68,22 +68,22 @@
 #define SAFI_MAX                  129
 
 struct bgp_header {
-    u_int8_t bgpo_marker[BGP_MARKER_SIZE];
-    u_int16_t bgpo_len;
-    u_int8_t bgpo_type;
+	u_int8_t bgpo_marker[BGP_MARKER_SIZE];
+	u_int16_t bgpo_len;
+	u_int8_t bgpo_type;
 };
 
 /* BGP OPEN message */
 struct bgp_open {
-    u_int8_t bgpo_marker[BGP_MARKER_SIZE];
-    u_int16_t bgpo_len;
-    u_int8_t bgpo_type;
-    u_int8_t bgpo_version;
-    u_int16_t bgpo_myas;
-    u_int16_t bgpo_holdtime;
-    u_int32_t bgpo_id;
-    u_int8_t bgpo_optlen;
-    /* options should follow */
+	u_int8_t bgpo_marker[BGP_MARKER_SIZE];
+	u_int16_t bgpo_len;
+	u_int8_t bgpo_type;
+	u_int8_t bgpo_version;
+	u_int16_t bgpo_myas;
+	u_int16_t bgpo_holdtime;
+	u_int32_t bgpo_id;
+	u_int8_t bgpo_optlen;
+	/* options should follow */
 };
 
 /* BGP NOTIFICATION message */
@@ -108,52 +108,49 @@ struct bgp_open {
 #define BGP_NOTIFY_CEASE_CONFIG_CHANGE		6
 #define BGP_NOTIFY_CEASE_COLLISION_RESOLUTION	7
 #define BGP_NOTIFY_CEASE_OUT_OF_RESOURCE	8
-#define BGP_NOTIFY_CEASE_MAX			9 
+#define BGP_NOTIFY_CEASE_MAX			9
 
 struct bgp_notification {
-    u_int8_t bgpn_marker[BGP_MARKER_SIZE];
-    u_int16_t bgpn_len;
-    u_int8_t bgpn_type;
-    u_int8_t bgpn_major;
-    u_int8_t bgpn_minor;
-    /* data should follow */
+	u_int8_t bgpn_marker[BGP_MARKER_SIZE];
+	u_int16_t bgpn_len;
+	u_int8_t bgpn_type;
+	u_int8_t bgpn_major;
+	u_int8_t bgpn_minor;
+	/* data should follow */
 };
 
 /* based on: rfc8203 (draft-ietf-idr-shutdown) */
 #define BGP_NOTIFY_CEASE_SM_LEN			128
 
 struct bgp_notification_shutdown_msg {
-    u_int8_t bgpnsm_len;
-    u_int8_t bgpnsm_data[BGP_NOTIFY_CEASE_SM_LEN];
+	u_int8_t bgpnsm_len;
+	u_int8_t bgpnsm_data[BGP_NOTIFY_CEASE_SM_LEN];
 };
 
 /* BGP ROUTE-REFRESH message */
 struct bgp_route_refresh {
-    u_int8_t bgpr_marker[BGP_MARKER_SIZE];
-    u_int16_t bgpr_len;
-    u_int8_t bgpr_type;
-    u_int16_t bgpr_afi;
-    u_int8_t bgpr_reserved;
-    u_int8_t bgpr_safi;
+	u_int8_t bgpr_marker[BGP_MARKER_SIZE];
+	u_int16_t bgpr_len;
+	u_int8_t bgpr_type;
+	u_int16_t bgpr_afi;
+	u_int8_t bgpr_reserved;
+	u_int8_t bgpr_safi;
 };
 
-struct capability_mp_data
-{
-  u_int16_t afi;
-  u_char reserved;
-  u_char safi;
+struct capability_mp_data {
+	u_int16_t afi;
+	u_char reserved;
+	u_char safi;
 };
 
-struct capability_as4
-{
-  uint32_t as4;
+struct capability_as4 {
+	uint32_t as4;
 };
 
-struct capability_add_paths
-{
-  u_int16_t afi;
-  u_char safi;
-  u_char sndrcv;
+struct capability_add_paths {
+	u_int16_t afi;
+	u_char safi;
+	u_char sndrcv;
 };
 
 /* attribute flags, from RFC1771 */
@@ -190,7 +187,7 @@ struct capability_add_paths
 #define BGP_CAPABILITY_GRACEFUL_RESTART         0x40   /* draft-ietf-idr-restart-05  */
 #define BGP_CAPABILITY_4_OCTET_AS_NUMBER	0x41   /* draft-ietf-idr-as4bytes-06 */
 #define BGP_CAPABILITY_DYNAMIC_CAPABILITY	0x42   /* draft-ietf-idr-dynamic-cap-03 */
-#define BGP_CAPABILITY_ADD_PATHS		0x45   /* draft-ietf-idr-add-paths-09 */ 
+#define BGP_CAPABILITY_ADD_PATHS		0x45   /* draft-ietf-idr-add-paths-09 */
 #define BGP_CAPABILITY_ORF_CISCO	        0x82   /* Cisco */
 #define BGP_CAPABILITY_ROUTE_REFRESH_CISCO      0x80   /* Cisco */
 
@@ -239,7 +236,7 @@ struct capability_add_paths
 #define BGPTYPE_SAFI_SPECIFIC_ATTR 19 /* draft-kapoor-nalawade-idr-bgp-ssa-00.txt */
 
 /* Extended community type */
-                                        /* draft-ietf-idr-bgp-ext-communities */
+/* draft-ietf-idr-bgp-ext-communities */
 #define BGP_EXT_COM_RT_0        0x0002  /* Route Target,Format AS(2bytes):AN(4bytes) */
 #define BGP_EXT_COM_RT_1        0x0102  /* Route Target,Format IP address:AN(2bytes) */
 #define BGP_EXT_COM_RT_2        0x0202  /* Route Target,Format AS(2bytes):AN(4bytes) */
@@ -247,9 +244,9 @@ struct capability_add_paths
 #define BGP_EXT_COM_RO_1        0x0103  /* Route Origin,Format IP address:AN(2bytes) */
 #define BGP_EXT_COM_RO_2        0x0203  /* Route Origin,Format AS(2bytes):AN(4bytes) */
 #define BGP_EXT_COM_LINKBAND    0x0004  /* Link Bandwidth,Format AS(2B):Bandwidth(4B) */
-                                        /* -2 version of the draft */
+/* -2 version of the draft */
 #define BGP_EXT_COM_VPN_ORIGIN  0x0005  /* OSPF Domin ID / VPN of Origin  */
-                                        /* draft-rosen-vpns-ospf-bgp-mpls */
+/* draft-rosen-vpns-ospf-bgp-mpls */
 #define BGP_EXT_COM_OSPF_RTYPE  0X8000  /* OSPF Route Type,Format Area(4B):RouteType(1B):Options(1B) */
 #define BGP_EXT_COM_OSPF_RID    0x8001  /* OSPF Router ID,Format RouterID(4B):Unused(2B) */
 #define BGP_EXT_COM_L2INFO      0x800a  /* draft-kompella-ppvpn-l2vpn */

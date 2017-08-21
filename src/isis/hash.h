@@ -21,37 +21,35 @@ Boston, MA 02111-1307, USA.  */
 #ifndef _HASH_H_
 #define _HASH_H_
 
-/* Default hash table size.  */ 
+/* Default hash table size.  */
 #define HASHTABSIZE     1024
 
-struct hash_backet
-{
-  /* Linked list.  */
-  struct hash_backet *next;
+struct hash_backet {
+	/* Linked list.  */
+	struct hash_backet *next;
 
-  /* Hash key. */
-  unsigned int key;
+	/* Hash key. */
+	unsigned int key;
 
-  /* Data.  */
-  void *data;
+	/* Data.  */
+	void *data;
 };
 
-struct hash
-{
-  /* Hash backet. */
-  struct hash_backet **index;
+struct hash {
+	/* Hash backet. */
+	struct hash_backet **index;
 
-  /* Hash table size. */
-  unsigned int size;
+	/* Hash table size. */
+	unsigned int size;
 
-  /* Key make function. */
-  unsigned int (*hash_key) (void *);
+	/* Key make function. */
+	unsigned int (*hash_key) (void *);
 
-  /* Data compare function. */
-  int (*hash_cmp) (const void *, const void *);
+	/* Data compare function. */
+	int (*hash_cmp) (const void *, const void *);
 
-  /* Backet alloc. */
-  unsigned long count;
+	/* Backet alloc. */
+	unsigned long count;
 };
 
 #if (!defined __HASH_C)

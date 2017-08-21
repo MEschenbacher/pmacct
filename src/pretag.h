@@ -23,7 +23,7 @@
 #define N_MAP_HANDLERS N_PRIMITIVES
 #define MAX_LABEL_LEN 32
 #define MAX_BITMAP_ENTRIES 64 /* pt_bitmap_t -> u_int64_t */
-#define MAX_PRETAG_MAP_ENTRIES 384 
+#define MAX_PRETAG_MAP_ENTRIES 384
 
 #define MAX_ID_TABLE_INDEXES 8
 #define ID_TABLE_INDEX_DEPTH 8
@@ -84,169 +84,169 @@ typedef pm_id_t (*pretag_stack_handler) (pm_id_t, pm_id_t);
 typedef u_int64_t pt_bitmap_t;
 
 typedef struct {
-  u_int8_t neg;
-  u_int8_t n;
+	u_int8_t neg;
+	u_int8_t n;
 } pt_uint8_t;
 
 typedef struct {
-  u_int8_t neg;
-  u_int16_t n;
+	u_int8_t neg;
+	u_int16_t n;
 } pt_uint16_t;
 
 typedef struct {
-  u_int8_t neg;
-  u_int32_t n;
+	u_int8_t neg;
+	u_int32_t n;
 } pt_uint32_t;
 
 typedef struct {
-  u_int8_t neg;
-  struct host_addr a;
+	u_int8_t neg;
+	struct host_addr a;
 } pt_hostaddr_t;
 
 typedef struct host_mask pt_hostmask_t;
 
 typedef struct {
-  u_int8_t neg;
-  char a[ETH_ADDR_LEN]; 
+	u_int8_t neg;
+	char a[ETH_ADDR_LEN];
 } pt_etheraddr_t;
 
 typedef struct {
-  u_int8_t neg;
-  rd_t rd;
+	u_int8_t neg;
+	rd_t rd;
 } pt_rd_t;
 
 typedef struct {
-  char *label;
-  struct id_entry *ptr;
+	char *label;
+	struct id_entry *ptr;
 } pt_jeq_t;
 
 typedef struct {
-  pretag_stack_handler func; 
+	pretag_stack_handler func;
 } pt_stack_t;
 
 /* Pre-Tag table (ptt) element definition */
 typedef struct {
-  u_int8_t neg;
-  pm_id_t n;
-  pm_id_t r;
+	u_int8_t neg;
+	pm_id_t n;
+	pm_id_t r;
 } ptt_t;
 
 /* Pre-Tag label table (ptlt) element definition */
 typedef struct {
-  u_int8_t neg;
-  u_int32_t len;
-  char *v;
+	u_int8_t neg;
+	u_int32_t len;
+	char *v;
 } ptlt_t;
 
 struct id_entry_key {
-  pt_hostaddr_t agent_ip;
-  pt_hostmask_t agent_mask;
-  pt_hostaddr_t nexthop;
-  pt_hostaddr_t bgp_nexthop;
-  pt_uint32_t input; /* input interface index */
-  pt_uint32_t output; /* output interface index */
-  pt_uint8_t engine_type;
-  pt_uint32_t engine_id;
-  pt_uint16_t flowset_id; /* applies to NetFlow v9/IPFIX flowset ID */
-  pt_uint32_t agent_id; /* applies to sFlow agentSubId */
-  pt_uint32_t sampling_rate; /* applies to sFlow sampling rate */
-  pt_uint32_t sample_type; /* applies to sFlow sample type */
-  pt_uint8_t direction;
-  pt_uint32_t src_as;
-  pt_uint32_t dst_as;
-  pt_uint32_t peer_src_as;
-  pt_uint32_t peer_dst_as;
-  pt_uint32_t src_local_pref;
-  pt_uint32_t local_pref;
-  pt_uint32_t mpls_label_bottom;
-  pt_etheraddr_t src_mac;
-  pt_etheraddr_t dst_mac;
-  pt_uint16_t vlan_id;
-  pt_uint16_t cvlan_id;
-  s_uint16_t lookup_bgp_port;
-  char *src_comms[16]; /* XXX: MAX_BGP_COMM_PATTERNS = 16 */
-  char *comms[16]; /* XXX: MAX_BGP_COMM_PATTERNS = 16 */
-  pt_uint32_t mpls_vpn_id;
-  pt_rd_t mpls_vpn_rd;
-  pt_uint32_t fwdstatus;
-  struct bpf_program filter;
-  pt_uint8_t v8agg;
+	pt_hostaddr_t agent_ip;
+	pt_hostmask_t agent_mask;
+	pt_hostaddr_t nexthop;
+	pt_hostaddr_t bgp_nexthop;
+	pt_uint32_t input; /* input interface index */
+	pt_uint32_t output; /* output interface index */
+	pt_uint8_t engine_type;
+	pt_uint32_t engine_id;
+	pt_uint16_t flowset_id; /* applies to NetFlow v9/IPFIX flowset ID */
+	pt_uint32_t agent_id; /* applies to sFlow agentSubId */
+	pt_uint32_t sampling_rate; /* applies to sFlow sampling rate */
+	pt_uint32_t sample_type; /* applies to sFlow sample type */
+	pt_uint8_t direction;
+	pt_uint32_t src_as;
+	pt_uint32_t dst_as;
+	pt_uint32_t peer_src_as;
+	pt_uint32_t peer_dst_as;
+	pt_uint32_t src_local_pref;
+	pt_uint32_t local_pref;
+	pt_uint32_t mpls_label_bottom;
+	pt_etheraddr_t src_mac;
+	pt_etheraddr_t dst_mac;
+	pt_uint16_t vlan_id;
+	pt_uint16_t cvlan_id;
+	s_uint16_t lookup_bgp_port;
+	char *src_comms[16]; /* XXX: MAX_BGP_COMM_PATTERNS = 16 */
+	char *comms[16]; /* XXX: MAX_BGP_COMM_PATTERNS = 16 */
+	pt_uint32_t mpls_vpn_id;
+	pt_rd_t mpls_vpn_rd;
+	pt_uint32_t fwdstatus;
+	struct bpf_program filter;
+	pt_uint8_t v8agg;
 };
 
 struct id_entry {
-  pm_id_t id;
-  pm_id_t id2;
-  pt_label_t label;
-  pm_id_t flags;
-  pm_id_t pos;
-  s_uint8_t set_tos;
-  struct id_entry_key key;
-  pretag_handler func[N_MAP_HANDLERS];
-  pt_bitmap_t func_type[N_MAP_HANDLERS];
-  pretag_handler set_func[N_MAP_HANDLERS];
-  pt_bitmap_t set_func_type[N_MAP_HANDLERS];
-  char entry_label[MAX_LABEL_LEN];
-  pt_jeq_t jeq;
-  u_int8_t ret;
-  pt_stack_t stack;
-  pt_bitmap_t last_matched;
-  u_int8_t id_inc;
-  u_int8_t id2_inc;
+	pm_id_t id;
+	pm_id_t id2;
+	pt_label_t label;
+	pm_id_t flags;
+	pm_id_t pos;
+	s_uint8_t set_tos;
+	struct id_entry_key key;
+	pretag_handler func[N_MAP_HANDLERS];
+	pt_bitmap_t func_type[N_MAP_HANDLERS];
+	pretag_handler set_func[N_MAP_HANDLERS];
+	pt_bitmap_t set_func_type[N_MAP_HANDLERS];
+	char entry_label[MAX_LABEL_LEN];
+	pt_jeq_t jeq;
+	u_int8_t ret;
+	pt_stack_t stack;
+	pt_bitmap_t last_matched;
+	u_int8_t id_inc;
+	u_int8_t id2_inc;
 };
 
 typedef int (*pretag_copier)(struct id_entry *, pm_hash_serial_t *, void *);
 
 struct id_index_entry {
-  u_int16_t depth;
-  pm_hash_key_t hash_key[ID_TABLE_INDEX_DEPTH];
-  struct id_entry_key key[ID_TABLE_INDEX_DEPTH]; /* XXX: to be removed */
-  struct id_entry *result[ID_TABLE_INDEX_DEPTH];
+	u_int16_t depth;
+	pm_hash_key_t hash_key[ID_TABLE_INDEX_DEPTH];
+	struct id_entry_key key[ID_TABLE_INDEX_DEPTH]; /* XXX: to be removed */
+	struct id_entry *result[ID_TABLE_INDEX_DEPTH];
 };
 
 struct id_table_index {
-  pt_bitmap_t bitmap; 
-  int entries;
-  pretag_copier idt_handler[MAX_BITMAP_ENTRIES];
-  pretag_copier fdata_handler[MAX_BITMAP_ENTRIES];
-  pm_hash_serial_t hash_serializer;
-  struct id_index_entry *idx_t;
+	pt_bitmap_t bitmap;
+	int entries;
+	pretag_copier idt_handler[MAX_BITMAP_ENTRIES];
+	pretag_copier fdata_handler[MAX_BITMAP_ENTRIES];
+	pm_hash_serial_t hash_serializer;
+	struct id_index_entry *idx_t;
 };
 
 struct id_table {
-  char *filename;
-  int type;
-  unsigned int num;
-  struct id_entry *ipv4_base;
-  unsigned int ipv4_num;
+	char *filename;
+	int type;
+	unsigned int num;
+	struct id_entry *ipv4_base;
+	unsigned int ipv4_num;
 #if defined ENABLE_IPV6
-  struct id_entry *ipv6_base;
-  unsigned int ipv6_num;
+	struct id_entry *ipv6_base;
+	unsigned int ipv6_num;
 #endif
-  struct id_entry *e;
-  struct id_table_index index[MAX_ID_TABLE_INDEXES];
-  unsigned int index_num;
-  time_t timestamp;
-  u_int32_t flags;
+	struct id_entry *e;
+	struct id_table_index index[MAX_ID_TABLE_INDEXES];
+	unsigned int index_num;
+	time_t timestamp;
+	u_int32_t flags;
 };
 
 struct _map_dictionary_line {
-  char key[SRVBUFLEN];
-  int (*func)(char *, struct id_entry *, char *, struct plugin_requests *, int);
+	char key[SRVBUFLEN];
+	int (*func)(char *, struct id_entry *, char *, struct plugin_requests *, int);
 };
 
 struct _map_index_dictionary_line {
-  pt_bitmap_t key;
-  pretag_copier func;
+	pt_bitmap_t key;
+	pretag_copier func;
 };
 
 struct pretag_filter {
-  u_int16_t num;
-  ptt_t table[MAX_PRETAG_MAP_ENTRIES/4];
+	u_int16_t num;
+	ptt_t table[MAX_PRETAG_MAP_ENTRIES/4];
 };
 
 struct pretag_label_filter {
-  u_int16_t num;
-  ptlt_t table[MAX_PRETAG_MAP_ENTRIES/4];
+	u_int16_t num;
+	ptlt_t table[MAX_PRETAG_MAP_ENTRIES/4];
 };
 
 /* prototypes */
@@ -288,8 +288,8 @@ EXT int bitr_map_allocated;
 EXT int sampling_map_allocated;
 EXT int custom_primitives_allocated;
 
-EXT int bta_map_caching; 
-EXT int sampling_map_caching; 
+EXT int bta_map_caching;
+EXT int sampling_map_caching;
 
 EXT int (*find_id_func)(struct id_table *, struct packet_ptrs *, pm_id_t *, pm_id_t *);
 #undef EXT

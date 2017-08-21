@@ -24,11 +24,11 @@
 #include <sys/stat.h>
 
 /* defines */
-#define LOGSTRLEN LONGSRVBUFLEN 
+#define LOGSTRLEN LONGSRVBUFLEN
 
 struct _facility_map {
-  char string[10];
-  int num;
+	char string[10];
+	int num;
 };
 
 static const struct _facility_map facility_map[] = {
@@ -49,20 +49,20 @@ static const struct _facility_map facility_map[] = {
 };
 
 struct log_notification {
-  time_t stamp;
-  u_int8_t knob;
-  int timeout;
+	time_t stamp;
+	u_int8_t knob;
+	int timeout;
 };
 
 struct _log_notifications {
-  struct log_notification max_classifiers;
-  struct log_notification bgp_peers_throttling;
-  struct log_notification bmp_peers_throttling;
-  struct log_notification geoip_ipv4_file_null;
-  struct log_notification geoip_ipv6_file_null;
+	struct log_notification max_classifiers;
+	struct log_notification bgp_peers_throttling;
+	struct log_notification bmp_peers_throttling;
+	struct log_notification geoip_ipv4_file_null;
+	struct log_notification geoip_ipv6_file_null;
 #if defined (WITH_NDPI)
-  struct log_notification ndpi_cache_full;
-  struct log_notification ndpi_tmp_frag_warn;
+	struct log_notification ndpi_cache_full;
+	struct log_notification ndpi_tmp_frag_warn;
 #endif
 };
 

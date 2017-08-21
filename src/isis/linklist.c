@@ -30,50 +30,50 @@
 struct list *
 isis_list_new (void)
 {
-  return calloc(1, sizeof (struct list));
+	return calloc(1, sizeof (struct list));
 }
 
 /* Free list. */
 void
 isis_list_free (struct list *l)
 {
-  free(l);
+	free(l);
 }
 
 /* Allocate new listnode.  Internal use only. */
 static struct listnode *
 isis_listnode_new (void)
 {
-  return calloc(1, sizeof (struct listnode));
+	return calloc(1, sizeof (struct listnode));
 }
 
 /* Free listnode. */
 static void
 isis_listnode_free (struct listnode *node)
 {
-  free(node);
+	free(node);
 }
 
 /* Add new data to the list. */
 void
 isis_listnode_add (struct list *list, void *val)
 {
-  struct listnode *node;
-  
-  assert (val != NULL);
-  
-  node = isis_listnode_new ();
+	struct listnode *node;
 
-  node->prev = list->tail;
-  node->data = val;
+	assert (val != NULL);
 
-  if (list->head == NULL)
-    list->head = node;
-  else
-    list->tail->next = node;
-  list->tail = node;
+	node = isis_listnode_new ();
 
-  list->count++;
+	node->prev = list->tail;
+	node->data = val;
+
+	if (list->head == NULL)
+		list->head = node;
+	else
+		list->tail->next = node;
+	list->tail = node;
+
+	list->count++;
 }
 
 /*
@@ -85,80 +85,74 @@ isis_listnode_add (struct list *list, void *val)
 void
 isis_listnode_add_sort (struct list *list, void *val)
 {
-  struct listnode *n;
-  struct listnode *new;
-  
-  assert (val != NULL);
-  
-  new = isis_listnode_new ();
-  new->data = val;
+	struct listnode *n;
+	struct listnode *new;
 
-  if (list->cmp)
-    {
-      for (n = list->head; n; n = n->next)
-	{
-	  if ((*list->cmp) (val, n->data) < 0)
-	    {	    
-	      new->next = n;
-	      new->prev = n->prev;
+	assert (val != NULL);
 
-	      if (n->prev)
-		n->prev->next = new;
-	      else
-		list->head = new;
-	      n->prev = new;
-	      list->count++;
-	      return;
-	    }
+	new = isis_listnode_new ();
+	new->data = val;
+
+	if (list->cmp) {
+		for (n = list->head; n; n = n->next) {
+			if ((*list->cmp) (val, n->data) < 0) {
+				new->next = n;
+				new->prev = n->prev;
+
+				if (n->prev)
+					n->prev->next = new;
+				else
+					list->head = new;
+				n->prev = new;
+				list->count++;
+				return;
+			}
+		}
 	}
-    }
 
-  new->prev = list->tail;
+	new->prev = list->tail;
 
-  if (list->tail)
-    list->tail->next = new;
-  else
-    list->head = new;
+	if (list->tail)
+		list->tail->next = new;
+	else
+		list->head = new;
 
-  list->tail = new;
-  list->count++;
+	list->tail = new;
+	list->count++;
 }
 
 void
 isis_listnode_add_after (struct list *list, struct listnode *pp, void *val)
 {
-  struct listnode *nn;
-  
-  assert (val != NULL);
-  
-  nn = isis_listnode_new ();
-  nn->data = val;
+	struct listnode *nn;
 
-  if (pp == NULL)
-    {
-      if (list->head)
-	list->head->prev = nn;
-      else
-	list->tail = nn;
+	assert (val != NULL);
 
-      nn->next = list->head;
-      nn->prev = pp;
+	nn = isis_listnode_new ();
+	nn->data = val;
 
-      list->head = nn;
-    }
-  else
-    {
-      if (pp->next)
-	pp->next->prev = nn;
-      else
-	list->tail = nn;
+	if (pp == NULL) {
+		if (list->head)
+			list->head->prev = nn;
+		else
+			list->tail = nn;
 
-      nn->next = pp->next;
-      nn->prev = pp;
+		nn->next = list->head;
+		nn->prev = pp;
 
-      pp->next = nn;
-    }
-  list->count++;
+		list->head = nn;
+	} else {
+		if (pp->next)
+			pp->next->prev = nn;
+		else
+			list->tail = nn;
+
+		nn->next = pp->next;
+		nn->prev = pp;
+
+		pp->next = nn;
+	}
+	list->count++;
 }
 
 
@@ -166,153 +160,150 @@ isis_listnode_add_after (struct list *list, struct listnode *pp, void *val)
 void
 isis_listnode_delete (struct list *list, void *val)
 {
-  struct listnode *node;
+	struct listnode *node;
 
-  assert(list);
-  for (node = list->head; node; node = node->next)
-    {
-      if (node->data == val)
-	{
-	  if (node->prev)
-	    node->prev->next = node->next;
-	  else
-	    list->head = node->next;
+	assert(list);
+	for (node = list->head; node; node = node->next) {
+		if (node->data == val) {
+			if (node->prev)
+				node->prev->next = node->next;
+			else
+				list->head = node->next;
 
-	  if (node->next)
-	    node->next->prev = node->prev;
-	  else
-	    list->tail = node->prev;
+			if (node->next)
+				node->next->prev = node->prev;
+			else
+				list->tail = node->prev;
 
-	  list->count--;
-	  isis_listnode_free (node);
-	  return;
+			list->count--;
+			isis_listnode_free (node);
+			return;
+		}
 	}
-    }
 }
 
 /* Return first node's data if it is there.  */
 void *
 isis_listnode_head (struct list *list)
 {
-  struct listnode *node;
+	struct listnode *node;
 
-  assert(list);
-  node = list->head;
+	assert(list);
+	node = list->head;
 
-  if (node)
-    return node->data;
-  return NULL;
+	if (node)
+		return node->data;
+	return NULL;
 }
 
 /* Delete all listnode from the list. */
 void
 isis_list_delete_all_node (struct list *list)
 {
-  struct listnode *node;
-  struct listnode *next;
+	struct listnode *node;
+	struct listnode *next;
 
-  assert(list);
-  for (node = list->head; node; node = next)
-    {
-      next = node->next;
-      if (list->del)
-	(*list->del) (node->data);
-      isis_listnode_free (node);
-    }
-  list->head = list->tail = NULL;
-  list->count = 0;
+	assert(list);
+	for (node = list->head; node; node = next) {
+		next = node->next;
+		if (list->del)
+			(*list->del) (node->data);
+		isis_listnode_free (node);
+	}
+	list->head = list->tail = NULL;
+	list->count = 0;
 }
 
 /* Delete all listnode then free list itself. */
 void
 isis_list_delete (struct list *list)
 {
-  assert(list);
-  isis_list_delete_all_node (list);
-  isis_list_free (list);
+	assert(list);
+	isis_list_delete_all_node (list);
+	isis_list_free (list);
 }
 
 /* Lookup the node which has given data. */
 struct listnode *
 isis_listnode_lookup (struct list *list, void *data)
 {
-  struct listnode *node;
+	struct listnode *node;
 
-  assert(list);
-  for (node = listhead(list); node; node = listnextnode (node))
-    if (data == listgetdata (node))
-      return node;
-  return NULL;
+	assert(list);
+	for (node = listhead(list); node; node = listnextnode (node))
+		if (data == listgetdata (node))
+			return node;
+	return NULL;
 }
 
 /* Delete the node from list.  For ospfd and ospf6d. */
 void
 isis_list_delete_node (struct list *list, struct listnode *node)
 {
-  if (node->prev)
-    node->prev->next = node->next;
-  else
-    list->head = node->next;
-  if (node->next)
-    node->next->prev = node->prev;
-  else
-    list->tail = node->prev;
-  list->count--;
-  isis_listnode_free (node);
+	if (node->prev)
+		node->prev->next = node->next;
+	else
+		list->head = node->next;
+	if (node->next)
+		node->next->prev = node->prev;
+	else
+		list->tail = node->prev;
+	list->count--;
+	isis_listnode_free (node);
 }
 
 /* ospf_spf.c */
 void
 isis_list_add_node_prev (struct list *list, struct listnode *current, void *val)
 {
-  struct listnode *node;
-  
-  assert (val != NULL);
-  
-  node = isis_listnode_new ();
-  node->next = current;
-  node->data = val;
+	struct listnode *node;
 
-  if (current->prev == NULL)
-    list->head = node;
-  else
-    current->prev->next = node;
+	assert (val != NULL);
 
-  node->prev = current->prev;
-  current->prev = node;
+	node = isis_listnode_new ();
+	node->next = current;
+	node->data = val;
 
-  list->count++;
+	if (current->prev == NULL)
+		list->head = node;
+	else
+		current->prev->next = node;
+
+	node->prev = current->prev;
+	current->prev = node;
+
+	list->count++;
 }
 
 /* ospf_spf.c */
 void
 isis_list_add_node_next (struct list *list, struct listnode *current, void *val)
 {
-  struct listnode *node;
-  
-  assert (val != NULL);
-  
-  node = isis_listnode_new ();
-  node->prev = current;
-  node->data = val;
+	struct listnode *node;
 
-  if (current->next == NULL)
-    list->tail = node;
-  else
-    current->next->prev = node;
+	assert (val != NULL);
 
-  node->next = current->next;
-  current->next = node;
+	node = isis_listnode_new ();
+	node->prev = current;
+	node->data = val;
 
-  list->count++;
+	if (current->next == NULL)
+		list->tail = node;
+	else
+		current->next->prev = node;
+
+	node->next = current->next;
+	current->next = node;
+
+	list->count++;
 }
 
 /* ospf_spf.c */
 void
 isis_list_add_list (struct list *l, struct list *m)
 {
-  struct listnode *n;
+	struct listnode *n;
 
-  for (n = listhead (m); n; n = listnextnode (n))
-    isis_listnode_add (l, n->data);
+	for (n = listhead (m); n; n = listnextnode (n))
+		isis_listnode_add (l, n->data);
 }

@@ -24,18 +24,18 @@
 
 /* structures */
 struct sfv5_modules_db_field {
-  u_int32_t type;
-  u_char *ptr;
-  u_int32_t len;
+	u_int32_t type;
+	u_char *ptr;
+	u_int32_t len;
 };
 
 struct sfv5_modules_db {
-  struct sfv5_modules_db_field ie[IES_PER_SFV5_MODULES_DB_ENTRY];
+	struct sfv5_modules_db_field ie[IES_PER_SFV5_MODULES_DB_ENTRY];
 };
 
 struct sfv5_modules_desc {
-  u_int32_t type; /* ie. flow, counter, etc. */
-  struct sfv5_modules_db db[SFV5_MODULES_DB_ENTRIES];
+	u_int32_t type; /* ie. flow, counter, etc. */
+	struct sfv5_modules_db db[SFV5_MODULES_DB_ENTRIES];
 };
 
 /* functions */

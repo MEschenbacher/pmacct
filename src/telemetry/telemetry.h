@@ -1,4 +1,4 @@
-/*  
+/*
     pmacct (Promiscuous mode IP Accounting package)
     pmacct is Copyright (C) 2003-2017 by Paolo Lucente
 */
@@ -30,7 +30,7 @@
 #define TELEMETRY_UDP_TIMEOUT_INTERVAL	60
 #define TELEMETRY_UDP_MAXMSG		65535
 #define TELEMETRY_CISCO_HDR_LEN		12
-#define TELEMETRY_LOG_STATS_INTERVAL	120	
+#define TELEMETRY_LOG_STATS_INTERVAL	120
 
 #define TELEMETRY_DECODER_UNKNOWN	0
 #define TELEMETRY_DECODER_JSON		1
@@ -57,44 +57,44 @@
 typedef struct bgp_peer_stats telemetry_stats;
 
 struct telemetry_data {
-  int is_thread;
-  char *log_str;
+	int is_thread;
+	char *log_str;
 
-  telemetry_stats global_stats;
-  time_t now;
+	telemetry_stats global_stats;
+	time_t now;
 };
 
 struct _telemetry_peer_z {
-  char inflate_buf[BGP_BUFFER_SIZE];
+	char inflate_buf[BGP_BUFFER_SIZE];
 #if defined (HAVE_ZLIB)
-  z_stream stm;
+	z_stream stm;
 #endif
 };
 
 struct _telemetry_peer_udp_cache {
-  struct host_addr addr;
-  int index;
+	struct host_addr addr;
+	int index;
 };
 
 struct _telemetry_peer_udp_timeout {
-  time_t last_msg;
+	time_t last_msg;
 };
 
 struct _telemetry_dump_se {
-  int decoder;
-  u_int32_t len;
-  u_int64_t seq;
-  void *data;
+	int decoder;
+	u_int32_t len;
+	u_int64_t seq;
+	void *data;
 };
 
 struct _telemetry_dump_se_ll_elem {
-  struct _telemetry_dump_se rec;
-  struct _telemetry_dump_se_ll_elem *next;
+	struct _telemetry_dump_se rec;
+	struct _telemetry_dump_se_ll_elem *next;
 };
 
 struct _telemetry_dump_se_ll {
-  struct _telemetry_dump_se_ll_elem *start;
-  struct _telemetry_dump_se_ll_elem *last;
+	struct _telemetry_dump_se_ll_elem *start;
+	struct _telemetry_dump_se_ll_elem *last;
 };
 
 typedef struct bgp_peer telemetry_peer;
@@ -129,10 +129,10 @@ EXT void telemetry_prepare_daemon(struct telemetry_data *);
 #else
 #define EXT
 #endif
-EXT telemetry_misc_structs *telemetry_misc_db; 
+EXT telemetry_misc_structs *telemetry_misc_db;
 
 EXT telemetry_peer *telemetry_peers;
 EXT telemetry_peer_z *telemetry_peers_z;
 EXT void *telemetry_peers_udp_cache;
-EXT telemetry_peer_udp_timeout *telemetry_peers_udp_timeout; 
+EXT telemetry_peer_udp_timeout *telemetry_peers_udp_timeout;
 #undef EXT

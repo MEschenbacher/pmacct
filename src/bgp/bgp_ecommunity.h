@@ -45,28 +45,26 @@ Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 #define ECOMMUNITY_SIZE                        8
 
 /* Extended Communities type flag.  */
-#define ECOMMUNITY_FLAG_NON_TRANSITIVE      0x40  
+#define ECOMMUNITY_FLAG_NON_TRANSITIVE      0x40
 
 /* Extended Communities attribute.  */
-struct ecommunity
-{
-  /* Reference counter.  */
-  unsigned long refcnt;
+struct ecommunity {
+	/* Reference counter.  */
+	unsigned long refcnt;
 
-  /* Size of Extended Communities attribute.  */
-  int size;
+	/* Size of Extended Communities attribute.  */
+	int size;
 
-  /* Extended Communities value.  */
-  u_int8_t *val;
+	/* Extended Communities value.  */
+	u_int8_t *val;
 
-  /* Human readable format string.  */
-  char *str;
+	/* Human readable format string.  */
+	char *str;
 };
 
 /* Extended community value is eight octet.  */
-struct ecommunity_val
-{
-  char val[ECOMMUNITY_SIZE];
+struct ecommunity_val {
+	char val[ECOMMUNITY_SIZE];
 };
 
 #define ecom_length(X)    ((X)->size * ECOMMUNITY_SIZE)

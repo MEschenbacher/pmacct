@@ -32,7 +32,7 @@ extern "C" {
     __________________________________
    | cls|  index     |   instance     |
     ----------------------------------
- 
+
    but now is opened up to a 12-byte struct to ensure
    that ds_index has a full 32-bit field, and to make
    accessing the components simpler. The macros have
@@ -43,9 +43,9 @@ extern "C" {
 */
 
 typedef struct _SFLDataSource_instance {
-  u_int32_t ds_class;
-  u_int32_t ds_index;
-  u_int32_t ds_instance;
+	u_int32_t ds_class;
+	u_int32_t ds_index;
+	u_int32_t ds_instance;
 } SFLDataSource_instance;
 
 #ifdef SFL_USE_32BIT_INDEX
@@ -54,8 +54,8 @@ typedef struct _SFLDataSource_instance {
 #else
 #define SFL_FLOW_SAMPLE_TYPE SFLFlow_sample
 #define SFL_COUNTERS_SAMPLE_TYPE SFLCounters_sample
-  /* if index numbers are not going to use all 32 bits, then we can use
-     the more compact encoding, with the dataSource class and index merged */
+/* if index numbers are not going to use all 32 bits, then we can use
+   the more compact encoding, with the dataSource class and index merged */
 #define SFL_DS_DATASOURCE(dsi) (((dsi).ds_class << 24) + (dsi).ds_index)
 #endif
 
@@ -70,137 +70,137 @@ typedef struct _SFLDataSource_instance {
  } while(0)
 
 typedef struct _SFLSampleCollector {
-  u_int32_t data[(SFL_MAX_DATAGRAM_SIZE + SFL_DATA_PAD) / sizeof(u_int32_t)];
-  u_int32_t *datap; /* packet fill pointer */
-  u_int32_t pktlen; /* accumulated size */
-  u_int32_t packetSeqNo;
-  u_int32_t numSamples;
+	u_int32_t data[(SFL_MAX_DATAGRAM_SIZE + SFL_DATA_PAD) / sizeof(u_int32_t)];
+	u_int32_t *datap; /* packet fill pointer */
+	u_int32_t pktlen; /* accumulated size */
+	u_int32_t packetSeqNo;
+	u_int32_t numSamples;
 } SFLSampleCollector;
 
 struct _SFLAgent;  /* forward decl */
 
 typedef struct _SFLReceiver {
-  struct _SFLReceiver *nxt;
-  /* MIB fields */
-  char *sFlowRcvrOwner;
-  time_t sFlowRcvrTimeout;
-  u_int32_t sFlowRcvrMaximumDatagramSize;
-  SFLAddress sFlowRcvrAddress;
-  u_int32_t sFlowRcvrPort;
-  u_int32_t sFlowRcvrDatagramVersion;
-  /* public fields */
-  struct _SFLAgent *agent;    /* pointer to my agent */
-  /* private fields */
-  SFLSampleCollector sampleCollector;
-  struct sockaddr_in receiver;
+	struct _SFLReceiver *nxt;
+	/* MIB fields */
+	char *sFlowRcvrOwner;
+	time_t sFlowRcvrTimeout;
+	u_int32_t sFlowRcvrMaximumDatagramSize;
+	SFLAddress sFlowRcvrAddress;
+	u_int32_t sFlowRcvrPort;
+	u_int32_t sFlowRcvrDatagramVersion;
+	/* public fields */
+	struct _SFLAgent *agent;    /* pointer to my agent */
+	/* private fields */
+	SFLSampleCollector sampleCollector;
+	struct sockaddr_in receiver;
 } SFLReceiver;
 
 typedef struct _SFLSampler {
-  /* for linked list */
-  struct _SFLSampler *nxt;
-  /* for hash lookup table */
-  struct _SFLSampler *hash_nxt;
-  /* MIB fields */
-  SFLDataSource_instance dsi;
-  u_int32_t sFlowFsReceiver;
-  u_int32_t sFlowFsPacketSamplingRate;
-  u_int32_t sFlowFsMaximumHeaderSize;
-  /* public fields */
-  struct _SFLAgent *agent; /* pointer to my agent */
-  /* private fields */
-  SFLReceiver *myReceiver;
-  u_int32_t skip;
-  u_int32_t samplePool;
-  u_int32_t flowSampleSeqNo;
-  /* rate checking */
-  u_int32_t samplesThisTick;
-  u_int32_t samplesLastTick;
-  u_int32_t backoffThreshold;
+	/* for linked list */
+	struct _SFLSampler *nxt;
+	/* for hash lookup table */
+	struct _SFLSampler *hash_nxt;
+	/* MIB fields */
+	SFLDataSource_instance dsi;
+	u_int32_t sFlowFsReceiver;
+	u_int32_t sFlowFsPacketSamplingRate;
+	u_int32_t sFlowFsMaximumHeaderSize;
+	/* public fields */
+	struct _SFLAgent *agent; /* pointer to my agent */
+	/* private fields */
+	SFLReceiver *myReceiver;
+	u_int32_t skip;
+	u_int32_t samplePool;
+	u_int32_t flowSampleSeqNo;
+	/* rate checking */
+	u_int32_t samplesThisTick;
+	u_int32_t samplesLastTick;
+	u_int32_t backoffThreshold;
 } SFLSampler;
 
 /* declare */
 struct _SFLPoller;
 
 typedef void (*getCountersFn_t)(void *magic,                   /* callback to get counters */
-				struct _SFLPoller *sampler,    /* called with self */
-				SFL_COUNTERS_SAMPLE_TYPE *cs); /* struct to fill in */
+                                struct _SFLPoller *sampler,    /* called with self */
+                                SFL_COUNTERS_SAMPLE_TYPE *cs); /* struct to fill in */
 
 typedef struct _SFLPoller {
-  /* for linked list */
-  struct _SFLPoller *nxt;
-  /* MIB fields */
-  SFLDataSource_instance dsi;
-  u_int32_t sFlowCpReceiver;
-  time_t sFlowCpInterval;
-  /* public fields */
-  struct _SFLAgent *agent; /* pointer to my agent */
-  void *magic;             /* ptr to pass back in getCountersFn() */
-  getCountersFn_t getCountersFn;
-  /* private fields */
-  SFLReceiver *myReceiver;
-  time_t countersCountdown;
-  u_int32_t countersSampleSeqNo;
+	/* for linked list */
+	struct _SFLPoller *nxt;
+	/* MIB fields */
+	SFLDataSource_instance dsi;
+	u_int32_t sFlowCpReceiver;
+	time_t sFlowCpInterval;
+	/* public fields */
+	struct _SFLAgent *agent; /* pointer to my agent */
+	void *magic;             /* ptr to pass back in getCountersFn() */
+	getCountersFn_t getCountersFn;
+	/* private fields */
+	SFLReceiver *myReceiver;
+	time_t countersCountdown;
+	u_int32_t countersSampleSeqNo;
 } SFLPoller;
 
 typedef void *(*allocFn_t)(void *magic,               /* callback to allocate space on heap */
-			   struct _SFLAgent *agent,   /* called with self */
-			   size_t bytes);             /* bytes requested */
+                           struct _SFLAgent *agent,   /* called with self */
+                           size_t bytes);             /* bytes requested */
 
 typedef int (*freeFn_t)(void *magic,                  /* callback to free space on heap */
-			struct _SFLAgent *agent,      /* called with self */
-			void *obj);                   /* obj to free */
+                        struct _SFLAgent *agent,      /* called with self */
+                        void *obj);                   /* obj to free */
 
 typedef void (*errorFn_t)(void *magic,                /* callback to log error message */
-			  struct _SFLAgent *agent,    /* called with self */
-			  char *msg);                 /* error message */
+                          struct _SFLAgent *agent,    /* called with self */
+                          char *msg);                 /* error message */
 
 typedef void (*sendFn_t)(void *magic,                 /* optional override fn to send packet */
-			 struct _SFLAgent *agent,
-			 SFLReceiver *receiver,
-			 u_char *pkt,
-			 u_int32_t pktLen);
+                         struct _SFLAgent *agent,
+                         SFLReceiver *receiver,
+                         u_char *pkt,
+                         u_int32_t pktLen);
 
 
 /* prime numbers are good for hash tables */
 #define SFL_HASHTABLE_SIZ 199
 
 typedef struct _SFLAgent {
-  SFLSampler *jumpTable[SFL_HASHTABLE_SIZ]; /* fast lookup table for samplers (by ifIndex) */
-  SFLSampler *samplers;   /* the list of samplers */
-  SFLPoller  *pollers;    /* the list of samplers */
-  SFLReceiver *receivers; /* the array of receivers */
-  time_t bootTime;        /* time when we booted or started */
-  time_t now;             /* time now */
-  SFLAddress myIP;        /* IP address of this node */
-  u_int32_t subId;        /* sub_agent_id */
-  void *magic;            /* ptr to pass back in logging and alloc fns */
-  allocFn_t allocFn;
-  freeFn_t freeFn;
-  errorFn_t errorFn;
-  sendFn_t sendFn;
-  int receiverSocket;
+	SFLSampler *jumpTable[SFL_HASHTABLE_SIZ]; /* fast lookup table for samplers (by ifIndex) */
+	SFLSampler *samplers;   /* the list of samplers */
+	SFLPoller  *pollers;    /* the list of samplers */
+	SFLReceiver *receivers; /* the array of receivers */
+	time_t bootTime;        /* time when we booted or started */
+	time_t now;             /* time now */
+	SFLAddress myIP;        /* IP address of this node */
+	u_int32_t subId;        /* sub_agent_id */
+	void *magic;            /* ptr to pass back in logging and alloc fns */
+	allocFn_t allocFn;
+	freeFn_t freeFn;
+	errorFn_t errorFn;
+	sendFn_t sendFn;
+	int receiverSocket;
 } SFLAgent;
 
 /* call this at the start with a newly created agent */
 void sfl_agent_init(SFLAgent *agent,
-		    SFLAddress *myIP, /* IP address of this agent */
-		    u_int32_t subId,  /* agent_sub_id */
-		    time_t bootTime,  /* agent boot time */
-		    time_t now,       /* time now */
-		    void *magic,      /* ptr to pass back in logging and alloc fns */
-		    allocFn_t allocFn,
-		    freeFn_t freeFn,
-		    errorFn_t errorFn,
-		    sendFn_t sendFn);
+                    SFLAddress *myIP, /* IP address of this agent */
+                    u_int32_t subId,  /* agent_sub_id */
+                    time_t bootTime,  /* agent boot time */
+                    time_t now,       /* time now */
+                    void *magic,      /* ptr to pass back in logging and alloc fns */
+                    allocFn_t allocFn,
+                    freeFn_t freeFn,
+                    errorFn_t errorFn,
+                    sendFn_t sendFn);
 
 /* call this to create samplers */
 SFLSampler *sfl_agent_addSampler(SFLAgent *agent, SFLDataSource_instance *pdsi);
 
 /* call this to create pollers */
 SFLPoller *sfl_agent_addPoller(SFLAgent *agent,
-			       SFLDataSource_instance *pdsi,
-			       void *magic, /* ptr to pass back in getCountersFn() */
-			       getCountersFn_t getCountersFn);
+                               SFLDataSource_instance *pdsi,
+                               void *magic, /* ptr to pass back in getCountersFn() */
+                               getCountersFn_t getCountersFn);
 
 /* call this to create receivers */
 SFLReceiver *sfl_agent_addReceiver(SFLAgent *agent);
@@ -258,7 +258,7 @@ void sfl_sampler_resetFlowSeqNo(SFLSampler *sampler);
 /* call this to indicate a discontinuity with one or more of the counters so that the
    sflow collector will ignore the next delta */
 void sfl_poller_resetCountersSeqNo(SFLPoller *poller);
-  
+
 /* software sampling: call this with every packet - returns non-zero if the packet
    should be sampled (in which case you then call sfl_sampler_writeFlowSample()) */
 int sfl_sampler_takeSample(SFLSampler *sampler);

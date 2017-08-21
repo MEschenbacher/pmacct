@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with GNU Zebra; see the file COPYING.  If not, write to the Free
  * Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
- * 02111-1307, USA.  
+ * 02111-1307, USA.
  */
 
 #ifndef _LINKLIST_H_
@@ -25,33 +25,31 @@
 /* listnodes must always contain data to be valid. Adding an empty node
  * to a list is invalid
  */
-struct listnode 
-{
-  struct listnode *next;
-  struct listnode *prev;
-  
-  /* private member, use getdata() to retrieve, do not access directly */
-  void *data;
+struct listnode {
+	struct listnode *next;
+	struct listnode *prev;
+
+	/* private member, use getdata() to retrieve, do not access directly */
+	void *data;
 };
 
-struct list 
-{
-  struct listnode *head;
-  struct listnode *tail;
+struct list {
+	struct listnode *head;
+	struct listnode *tail;
 
-  /* invariant: count is the number of listnodes in the list */
-  unsigned int count;
+	/* invariant: count is the number of listnodes in the list */
+	unsigned int count;
 
-  /*
-   * Returns -1 if val1 < val2, 0 if equal?, 1 if val1 > val2.
-   * Used as definition of sorted for isis_listnode_add_sort
-   */
-  int (*cmp) (void *val1, void *val2);
+	/*
+	 * Returns -1 if val1 < val2, 0 if equal?, 1 if val1 > val2.
+	 * Used as definition of sorted for isis_listnode_add_sort
+	 */
+	int (*cmp) (void *val1, void *val2);
 
-  /* callback to free user-owned data when listnode is deleted. supplying
-   * this callback is very much encouraged!
-   */
-  void (*del) (void *val);
+	/* callback to free user-owned data when listnode is deleted. supplying
+	 * this callback is very much encouraged!
+	 */
+	void (*del) (void *val);
 };
 
 #define listnextnode(X) ((X)->next)
@@ -83,7 +81,7 @@ EXT void isis_list_add_node_next (struct list *, struct listnode *, void *);
 EXT void isis_list_add_list (struct list *, struct list *);
 #undef EXT
 
-/* List iteration macro. 
+/* List iteration macro.
  * Usage: for (ALL_LIST_ELEMENTS (...) { ... }
  * It is safe to delete the listnode using this macro.
  */
@@ -107,7 +105,7 @@ EXT void isis_list_add_list (struct list *, struct list *);
 /* these *do not* cleanup list nodes and referenced data, as the functions
  * do - these macros simply {de,at}tach a listnode from/to a list.
  */
- 
+
 /* List node attach macro.  */
 #define LISTNODE_ATTACH(L,N) \
   do { \

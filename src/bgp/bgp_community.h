@@ -28,20 +28,19 @@ Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 #define _BGP_COMMUNITY_H_
 
 /* Communities attribute.  */
-struct community 
-{
-  /* Reference count of communities value.  */
-  unsigned long refcnt;
+struct community {
+	/* Reference count of communities value.  */
+	unsigned long refcnt;
 
-  /* Communities value size.  */
-  int size;
+	/* Communities value size.  */
+	int size;
 
-  /* Communities value.  */
-  u_int32_t *val;
+	/* Communities value.  */
+	u_int32_t *val;
 
-  /* String of community attribute.  This sring is used by vty output
-     and expanded community-list for regular expression match.  */
-  char *str;
+	/* String of community attribute.  This sring is used by vty output
+	   and expanded community-list for regular expression match.  */
+	char *str;
 };
 
 /* Well-known communities value.  */

@@ -36,19 +36,19 @@
 
 /* structures */
 struct p_zmq_zap {
-  void *sock;
-  void *thread; 
-  char username[SHORTBUFLEN];
-  char password[SHORTBUFLEN];
+	void *sock;
+	void *thread;
+	char username[SHORTBUFLEN];
+	char password[SHORTBUFLEN];
 };
 
 struct p_zmq_host {
-  void *ctx;
-  struct p_zmq_zap zap;
-  void *sock;
+	void *ctx;
+	struct p_zmq_zap zap;
+	void *sock;
 
-  char bind_str[SHORTBUFLEN];
-  u_int8_t topic;
+	char bind_str[SHORTBUFLEN];
+	u_int8_t topic;
 };
 
 /* prototypes */

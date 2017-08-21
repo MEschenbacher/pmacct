@@ -17,39 +17,37 @@
  * You should have received a copy of the GNU General Public License
  * along with GNU Zebra; see the file COPYING.  If not, write to the Free
  * Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
- * 02111-1307, USA.  
+ * 02111-1307, USA.
  */
 
 #ifndef _TABLE_H_
 #define _TABLE_H_
 
 /* Routing table top structure. */
-struct route_table
-{
-  struct route_node *top;
+struct route_table {
+	struct route_node *top;
 };
 
 /* Each routing entry. */
-struct route_node
-{
-  /* Actual prefix of this radix. */
-  struct isis_prefix p;
+struct route_node {
+	/* Actual prefix of this radix. */
+	struct isis_prefix p;
 
-  /* Tree link. */
-  struct route_table *table;
-  struct route_node *parent;
-  struct route_node *link[2];
+	/* Tree link. */
+	struct route_table *table;
+	struct route_node *parent;
+	struct route_node *link[2];
 #define l_left   link[0]
 #define l_right  link[1]
 
-  /* Lock of this radix */
-  unsigned int lock;
+	/* Lock of this radix */
+	unsigned int lock;
 
-  /* Each node of route. */
-  void *info;
+	/* Each node of route. */
+	void *info;
 
-  /* Aggregation. */
-  void *aggregate;
+	/* Aggregation. */
+	void *aggregate;
 };
 
 /* Prototypes. */

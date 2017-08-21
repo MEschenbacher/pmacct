@@ -21,13 +21,12 @@
 #include <stdint.h>
 
 /* definitions */
-typedef struct pm_node_t
-{
-  /* Callers expect this to be the first element in the structure - do not
-     move!  */
-  const void *key;
-  uintptr_t left_node; /* Includes whether the node is red in low-bit. */
-  uintptr_t right_node;
+typedef struct pm_node_t {
+	/* Callers expect this to be the first element in the structure - do not
+	   move!  */
+	const void *key;
+	uintptr_t left_node; /* Includes whether the node is red in low-bit. */
+	uintptr_t right_node;
 } *pm_node;
 
 #define RED(N) (pm_node)((N)->left_node & ((uintptr_t) 0x1))
@@ -50,12 +49,11 @@ typedef const struct pm_node_t *pm_const_node;
    assumptions about the compiler.  It assumes that the first field
    in node must be the "key" field, which points to the datum.
    Everything depends on that.  */
-typedef enum
-{
-  preorder,
-  postorder,
-  endorder,
-  leaf
+typedef enum {
+	preorder,
+	postorder,
+	endorder,
+	leaf
 }
 pm_VISIT;
 

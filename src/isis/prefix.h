@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with GNU Zebra; see the file COPYING.  If not, write to the Free
  * Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
- * 02111-1307, USA.  
+ * 02111-1307, USA.
  */
 
 #ifndef _PREFIX_H_
@@ -35,20 +35,18 @@
  */
 
 /* IPv4 and IPv6 unified prefix structure. */
-struct isis_prefix
-{
-  u_char family;
-  u_char prefixlen;
-  union 
-  {
-    u_char prefix;
-    struct in_addr prefix4;
+struct isis_prefix {
+	u_char family;
+	u_char prefixlen;
+	union {
+		u_char prefix;
+		struct in_addr prefix4;
 #ifdef ENABLE_IPV6
-    struct in6_addr prefix6;
+		struct in6_addr prefix6;
 #endif
-    u_char val[8];
-  } u __attribute__ ((aligned (8)));
-  struct in_addr adv_router;
+		u_char val[8];
+	} u __attribute__ ((aligned (8)));
+	struct in_addr adv_router;
 };
 
 /* IPv4 prefix structure. */
@@ -132,16 +130,16 @@ struct prefix_rd
 static inline unsigned int
 prefix_bit (const u_char *prefix, const u_char prefixlen)
 {
-  unsigned int offset = prefixlen / 8;
-  unsigned int shift  = 7 - (prefixlen % 8);
+	unsigned int offset = prefixlen / 8;
+	unsigned int shift  = 7 - (prefixlen % 8);
 
-  return (prefix[offset] >> shift) & 1;
+	return (prefix[offset] >> shift) & 1;
 }
 
 static inline unsigned int
 prefix6_bit (const struct in6_addr *prefix, const u_char prefixlen)
 {
-  return prefix_bit((const u_char *) &prefix->s6_addr, prefixlen);
+	return prefix_bit((const u_char *) &prefix->s6_addr, prefixlen);
 }
 
 #define PREFIX_COPY_IPV4(DST, SRC)	\

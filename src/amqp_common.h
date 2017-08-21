@@ -32,27 +32,27 @@
 
 /* structures */
 struct p_amqp_host {
-  char *user;
-  char *passwd;
-  char *exchange;
-  char *exchange_type;
-  char *routing_key;
-  struct p_table_rr rk_rr;
-  char *host;
-  char *vhost;
-  int persistent_msg;
-  u_int8_t content_type;
-  u_int32_t frame_max;
-  int heartbeat_interval;
+	char *user;
+	char *passwd;
+	char *exchange;
+	char *exchange_type;
+	char *routing_key;
+	struct p_table_rr rk_rr;
+	char *host;
+	char *vhost;
+	int persistent_msg;
+	u_int8_t content_type;
+	u_int32_t frame_max;
+	int heartbeat_interval;
 
-  amqp_connection_state_t conn;
-  amqp_socket_t *socket;
-  amqp_rpc_reply_t ret;
-  amqp_bytes_t queue;
-  struct amqp_basic_properties_t_ msg_props;
-  int status;
+	amqp_connection_state_t conn;
+	amqp_socket_t *socket;
+	amqp_rpc_reply_t ret;
+	amqp_bytes_t queue;
+	struct amqp_basic_properties_t_ msg_props;
+	int status;
 
-  struct p_broker_timers btimers;
+	struct p_broker_timers btimers;
 };
 
 /* prototypes */

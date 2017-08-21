@@ -3,7 +3,7 @@
     pmacct is Copyright (C) 2003-2017 by Paolo Lucente
 */
 
-/* 
+/*
  Originally based on Quagga BGP routing table which is:
 
  Copyright (C) 1998, 2001 Kunihiro Ishiguro
@@ -29,63 +29,59 @@ Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 #define DEFAULT_BGP_INFO_HASH 13
 #define DEFAULT_BGP_INFO_PER_PEER_HASH 1
 
-struct bgp_table
-{
-  /* afi/safi of this table */
-  afi_t afi;
-  safi_t safi;
-  
-  /* The owner of this 'bgp_table' structure. */
-  void *owner;
+struct bgp_table {
+	/* afi/safi of this table */
+	afi_t afi;
+	safi_t safi;
 
-  struct bgp_node *top;
-  
-  unsigned long count;
+	/* The owner of this 'bgp_table' structure. */
+	void *owner;
+
+	struct bgp_node *top;
+
+	unsigned long count;
 };
 
-struct bgp_node
-{
-  struct prefix p;
+struct bgp_node {
+	struct prefix p;
 
-  struct bgp_table *table;
-  struct bgp_node *parent;
-  struct bgp_node *link[2];
+	struct bgp_table *table;
+	struct bgp_node *parent;
+	struct bgp_node *link[2];
 #define l_left   link[0]
 #define l_right  link[1]
 
-  void **info;
+	void **info;
 
-  unsigned int lock;
+	unsigned int lock;
 };
 
 struct bgp_msg_extra_data {
-  u_int8_t id;
-  u_int16_t len;
-  void *data;
+	u_int8_t id;
+	u_int16_t len;
+	void *data;
 };
 
-struct bgp_info_extra
-{
-  rd_t rd;
-  u_char label[3];
-  path_id_t path_id;
-  struct bgp_msg_extra_data bmed;
+struct bgp_info_extra {
+	rd_t rd;
+	u_char label[3];
+	path_id_t path_id;
+	struct bgp_msg_extra_data bmed;
 };
 
-struct bgp_info
-{
-  struct bgp_info *next;
-  struct bgp_info *prev;
-  struct bgp_peer *peer;
-  struct bgp_attr *attr;
-  struct bgp_info_extra *extra;
+struct bgp_info {
+	struct bgp_info *next;
+	struct bgp_info *prev;
+	struct bgp_peer *peer;
+	struct bgp_attr *attr;
+	struct bgp_info_extra *extra;
 };
 
 struct node_match_cmp_term2 {
-  struct bgp_peer *peer;
-  safi_t safi;
-  rd_t *rd;
-  struct host_addr *peer_dst_ip;
+	struct bgp_peer *peer;
+	safi_t safi;
+	rd_t *rd;
+	struct host_addr *peer_dst_ip;
 };
 
 /* Prototypes */
@@ -102,21 +98,21 @@ EXT struct bgp_node *bgp_route_next_until (struct bgp_peer *, struct bgp_node *,
 EXT struct bgp_node *bgp_node_get (struct bgp_peer *, struct bgp_table *const, struct prefix *);
 EXT struct bgp_node *bgp_lock_node (struct bgp_peer *, struct bgp_node *node);
 EXT void bgp_node_match (const struct bgp_table *, struct prefix *, struct bgp_peer *,
-			 u_int32_t (*modulo_func)(struct bgp_peer *, path_id_t *, int),
-			 int (*cmp_func)(struct bgp_info *, struct node_match_cmp_term2 *),
-			 struct node_match_cmp_term2 *,
-			 struct bgp_node **result_node, struct bgp_info **result_info);
+                         u_int32_t (*modulo_func)(struct bgp_peer *, path_id_t *, int),
+                         int (*cmp_func)(struct bgp_info *, struct node_match_cmp_term2 *),
+                         struct node_match_cmp_term2 *,
+                         struct bgp_node **result_node, struct bgp_info **result_info);
 EXT void bgp_node_match_ipv4 (const struct bgp_table *, struct in_addr *, struct bgp_peer *,
-			      u_int32_t (*modulo_func)(struct bgp_peer *, path_id_t *, int),
-			      int (*cmp_func)(struct bgp_info *, struct node_match_cmp_term2 *),
-			      struct node_match_cmp_term2 *,
-			      struct bgp_node **result_node, struct bgp_info **result_info);
+                              u_int32_t (*modulo_func)(struct bgp_peer *, path_id_t *, int),
+                              int (*cmp_func)(struct bgp_info *, struct node_match_cmp_term2 *),
+                              struct node_match_cmp_term2 *,
+                              struct bgp_node **result_node, struct bgp_info **result_info);
 #ifdef ENABLE_IPV6
 EXT void bgp_node_match_ipv6 (const struct bgp_table *, struct in6_addr *, struct bgp_peer *,
-			      u_int32_t (*modulo_func)(struct bgp_peer *, path_id_t *, int),
-			      int (*cmp_func)(struct bgp_info *, struct node_match_cmp_term2 *),
-			      struct node_match_cmp_term2 *,
-			      struct bgp_node **result_node, struct bgp_info **result_info);
+                              u_int32_t (*modulo_func)(struct bgp_peer *, path_id_t *, int),
+                              int (*cmp_func)(struct bgp_info *, struct node_match_cmp_term2 *),
+                              struct node_match_cmp_term2 *,
+                              struct bgp_node **result_node, struct bgp_info **result_info);
 #endif /* ENABLE_IPV6 */
 #undef EXT
-#endif 
+#endif

@@ -27,111 +27,106 @@
 /* functions */
 void Log(short int level, char *msg, ...)
 {
-  va_list ap;
-  char syslog_string[LOGSTRLEN];
-  
-  if ((level == LOG_DEBUG) && (!config.debug && !debug)) return;
+	va_list ap;
+	char syslog_string[LOGSTRLEN];
 
-  if (!config.syslog && !config.logfile_fd) {
-    va_start(ap, msg);
-    vfprintf(stderr, msg, ap);
-    va_end(ap);
-    fflush(stderr);
-  }
-  else {
-    va_start(ap, msg);
-    vsnprintf(syslog_string, LOGSTRLEN, msg, ap);
-    va_end(ap);
+	if ((level == LOG_DEBUG) && (!config.debug && !debug)) return;
 
-    if (config.syslog) syslog(level, "%s", syslog_string);
+	if (!config.syslog && !config.logfile_fd) {
+		va_start(ap, msg);
+		vfprintf(stderr, msg, ap);
+		va_end(ap);
+		fflush(stderr);
+	} else {
+		va_start(ap, msg);
+		vsnprintf(syslog_string, LOGSTRLEN, msg, ap);
+		va_end(ap);
 
-    if (config.logfile_fd) {
-      char timebuf[SRVBUFLEN];
-      struct tm *tmnow;
-      time_t now;
+		if (config.syslog) syslog(level, "%s", syslog_string);
 
-      now = time(NULL);
-      tmnow = localtime(&now);
-      strftime(timebuf, SRVBUFLEN, "%b %d %H:%M:%S", tmnow);
+		if (config.logfile_fd) {
+			char timebuf[SRVBUFLEN];
+			struct tm *tmnow;
+			time_t now;
 
-      fprintf(config.logfile_fd, "%s %s", timebuf, syslog_string);
-      fflush(config.logfile_fd);
-    }
-  }
+			now = time(NULL);
+			tmnow = localtime(&now);
+			strftime(timebuf, SRVBUFLEN, "%b %d %H:%M:%S", tmnow);
+
+			fprintf(config.logfile_fd, "%s %s", timebuf, syslog_string);
+			fflush(config.logfile_fd);
+		}
+	}
 }
 
 int parse_log_facility(const char *facility)
 {
-  int i;
-  
-  for (i = 0; facility_map[i].num != -1; i++) {
-    if (!strcmp(facility, facility_map[i].string))
-      return facility_map[i].num; 
-  }
+	int i;
 
-  return ERR;
+	for (i = 0; facility_map[i].num != -1; i++) {
+		if (!strcmp(facility, facility_map[i].string))
+			return facility_map[i].num;
+	}
+
+	return ERR;
 }
 
 void log_notification_init(struct log_notification *ln)
 {
-  if (ln) {
-    memset(ln, 0, sizeof(struct log_notification));
-  }
+	if (ln) {
+		memset(ln, 0, sizeof(struct log_notification));
+	}
 }
 
 void log_notifications_init(struct _log_notifications *ln)
 {
-  if (ln) {
-    memset(ln, 0, sizeof(struct _log_notifications));
-  }
+	if (ln) {
+		memset(ln, 0, sizeof(struct _log_notifications));
+	}
 }
 
 int log_notification_set(struct log_notification *ln, time_t now, int timeout)
 {
-  if (ln) {
-    ln->knob = TRUE;
-    if (now) ln->stamp = now;
-    else ln->stamp = time(NULL);
-    ln->timeout = timeout;
+	if (ln) {
+		ln->knob = TRUE;
+		if (now) ln->stamp = now;
+		else ln->stamp = time(NULL);
+		ln->timeout = timeout;
 
-    return SUCCESS;
-  }
-  else return ERR;
+		return SUCCESS;
+	} else return ERR;
 }
 
 int log_notification_unset(struct log_notification *ln)
 {
-  if (ln) {
-    log_notification_init(ln);
+	if (ln) {
+		log_notification_init(ln);
 
-    return SUCCESS;
-  }
-  else return ERR;
+		return SUCCESS;
+	} else return ERR;
 }
 
 int log_notification_isset(struct log_notification *ln, time_t now)
 {
-  time_t now_local;
+	time_t now_local;
 
-  if (ln) {
-    if (ln->timeout) {
-      if (!now) now_local = time(NULL);
-      else now_local = now;
+	if (ln) {
+		if (ln->timeout) {
+			if (!now) now_local = time(NULL);
+			else now_local = now;
 
-      if (now_local < (ln->stamp + ln->timeout)) {
-        /* valid */
-        if (ln->knob == TRUE) return TRUE;
-        else return FALSE;
-      }
-      else {
-        /* expired */
-        log_notification_unset(ln);
-        return FALSE;
-      }
-    }
-    else {
-      if (ln->knob == TRUE) return TRUE;
-      else return FALSE;
-    }
-  }
+			if (now_local < (ln->stamp + ln->timeout)) {
+				/* valid */
+				if (ln->knob == TRUE) return TRUE;
+				else return FALSE;
+			} else {
+				/* expired */
+				log_notification_unset(ln);
+				return FALSE;
+			}
+		} else {
+			if (ln->knob == TRUE) return TRUE;
+			else return FALSE;
+		}
+	}
 }

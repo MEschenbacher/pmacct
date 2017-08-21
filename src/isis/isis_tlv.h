@@ -3,21 +3,21 @@
  *                             IS-IS TLV related routines
  *
  * Copyright (C) 2001,2002   Sampo Saaristo
- *                           Tampere University of Technology      
+ *                           Tampere University of Technology
  *                           Institute of Communications Engineering
  *
- * This program is free software; you can redistribute it and/or modify it 
- * under the terms of the GNU General Public Licenseas published by the Free 
- * Software Foundation; either version 2 of the License, or (at your option) 
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public Licenseas published by the Free
+ * Software Foundation; either version 2 of the License, or (at your option)
  * any later version.
  *
- * This program is distributed in the hope that it will be useful,but WITHOUT 
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or 
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for 
+ * This program is distributed in the hope that it will be useful,but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
  * more details.
  *
- * You should have received a copy of the GNU General Public License along 
- * with this program; if not, write to the Free Software Foundation, Inc., 
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
  * 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
@@ -30,7 +30,7 @@
  * Name                   Value  IIH LSP SNP Status
  *                               LAN
  * ____________________________________________________________________________
- * 
+ *
  * Area Addresses             1   y   y   n  ISO10589
  * IIS Neighbors              2   n   y   n  ISO10589
  * ES Neighbors               3   n   y   n  ISO10589
@@ -61,7 +61,7 @@
  * IIH Sequence Number      241   y   n   n  draft-shen-isis-iih-sequence
  * Router Capability        242   -   -   -  draft-ietf-isis-caps
  *
- * 
+ *
  * IS Reachability sub-TLVs we (should) support.
  * ____________________________________________________________________________
  * Name                           Value   Status
@@ -77,7 +77,7 @@
  * Link Protection Type              20   draft-ietf-isis-gmpls-extensions
  * Interface Switching Capability    21   draft-ietf-isis-gmpls-extensions
  *
- * 
+ *
  * IP Reachability sub-TLVs we (should) support.
  * ____________________________________________________________________________
  * Name                           Value   Status
@@ -117,98 +117,86 @@
 #define IPV6_REACH_LEN 22
 
 /* struct for neighbor */
-struct is_neigh
-{
-  struct metric metrics;
-  u_char neigh_id[ISIS_SYS_ID_LEN + 1];
+struct is_neigh {
+	struct metric metrics;
+	u_char neigh_id[ISIS_SYS_ID_LEN + 1];
 };
 
 /* struct for te is neighbor */
-struct te_is_neigh
-{
-  u_char neigh_id[ISIS_SYS_ID_LEN + 1];
-  u_char te_metric[3];
-  u_char sub_tlvs_length;
+struct te_is_neigh {
+	u_char neigh_id[ISIS_SYS_ID_LEN + 1];
+	u_char te_metric[3];
+	u_char sub_tlvs_length;
 };
 
 /* struct for es neighbors */
-struct es_neigh
-{
-  struct metric metrics;
-  /* approximate position of first, we use the
-   * length ((uchar*)metric-1) to know all     */
-  u_char first_es_neigh[ISIS_SYS_ID_LEN];
+struct es_neigh {
+	struct metric metrics;
+	/* approximate position of first, we use the
+	 * length ((uchar*)metric-1) to know all     */
+	u_char first_es_neigh[ISIS_SYS_ID_LEN];
 
 };
 
-struct partition_desig_level2_is
-{
-  struct list *isis_system_ids;
+struct partition_desig_level2_is {
+	struct list *isis_system_ids;
 };
 
 /* struct for lan neighbors */
-struct lan_neigh
-{
-  u_char LAN_addr[6];
+struct lan_neigh {
+	u_char LAN_addr[6];
 };
 
 /* struct for LSP entry */
-struct lsp_entry
-{
-  u_int16_t rem_lifetime;
-  u_char lsp_id[ISIS_SYS_ID_LEN + 2];
-  u_int32_t seq_num;
-  u_int16_t checksum;
+struct lsp_entry {
+	u_int16_t rem_lifetime;
+	u_char lsp_id[ISIS_SYS_ID_LEN + 2];
+	u_int32_t seq_num;
+	u_int16_t checksum;
 } __attribute__ ((packed));
 
 /* struct for checksum */
-struct checksum
-{
-  u_int16_t checksum;
+struct checksum {
+	u_int16_t checksum;
 };
 
 /* ipv4 reachability */
-struct ipv4_reachability
-{
-  struct metric metrics;
-  struct in_addr prefix;
-  struct in_addr mask;
+struct ipv4_reachability {
+	struct metric metrics;
+	struct in_addr prefix;
+	struct in_addr mask;
 };
 
 /* te router id */
-struct te_router_id
-{
-  struct in_addr id;
+struct te_router_id {
+	struct in_addr id;
 };
 
 /* te ipv4 reachability */
-struct te_ipv4_reachability
-{
-  u_int32_t te_metric;
-  u_char control;
-  u_char prefix_start;		/* since this is variable length by nature it only */
+struct te_ipv4_reachability {
+	u_int32_t te_metric;
+	u_char control;
+	u_char prefix_start;		/* since this is variable length by nature it only */
 };				/* points to an approximate location */
 
 #define ISIS_TLV_HDR_LEN	2
-struct idrp_info
-{
-  u_char value;
-  u_char len;
+struct idrp_info {
+	u_char value;
+	u_char len;
 };
 
 struct area_address {
-  u_char len;
-  u_char afi;
-  u_int16_t area_id;
+	u_char len;
+	u_char afi;
+	u_int16_t area_id;
 };
 
 #ifdef ENABLE_IPV6
-struct ipv6_reachability
-{
-  u_int32_t metric;
-  u_char control_info;
-  u_char prefix_len;
-  u_char prefix[16];
+struct ipv6_reachability {
+	u_int32_t metric;
+	u_char control_info;
+	u_char prefix_len;
+	u_char prefix[16];
 };
 #endif /* ENABLE_IPV6 */
 
@@ -224,28 +212,27 @@ struct ipv6_reachability
 /*
  * Pointer to each tlv type, filled by parse_tlvs()
  */
-struct tlvs
-{
-  struct list *area_addrs;
-  struct list *is_neighs;
-  struct list *te_is_neighs;
-  struct list *es_neighs;
-  struct list *lsp_entries;
-  struct list *prefix_neighs;
-  struct list *lan_neighs;
-  struct checksum *checksum;
-  struct nlpids *nlpids;
-  struct list *ipv4_addrs;
-  struct list *ipv4_int_reachs;
-  struct list *ipv4_ext_reachs;
-  struct list *te_ipv4_reachs;
-  struct hostname *hostname;
-  struct te_router_id *router_id;
+struct tlvs {
+	struct list *area_addrs;
+	struct list *is_neighs;
+	struct list *te_is_neighs;
+	struct list *es_neighs;
+	struct list *lsp_entries;
+	struct list *prefix_neighs;
+	struct list *lan_neighs;
+	struct checksum *checksum;
+	struct nlpids *nlpids;
+	struct list *ipv4_addrs;
+	struct list *ipv4_int_reachs;
+	struct list *ipv4_ext_reachs;
+	struct list *te_ipv4_reachs;
+	struct hostname *hostname;
+	struct te_router_id *router_id;
 #ifdef ENABLE_IPV6
-  struct list *ipv6_addrs;
-  struct list *ipv6_reachs;
+	struct list *ipv6_addrs;
+	struct list *ipv6_reachs;
 #endif
-  struct isis_passwd auth_info;
+	struct isis_passwd auth_info;
 };
 
 /*

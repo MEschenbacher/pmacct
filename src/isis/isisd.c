@@ -2,21 +2,21 @@
  * IS-IS Rout(e)ing protocol - isisd.c
  *
  * Copyright (C) 2001,2002   Sampo Saaristo
- *                           Tampere University of Technology      
+ *                           Tampere University of Technology
  *                           Institute of Communications Engineering
  *
- * This program is free software; you can redistribute it and/or modify it 
- * under the terms of the GNU General Public Licenseas published by the Free 
- * Software Foundation; either version 2 of the License, or (at your option) 
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public Licenseas published by the Free
+ * Software Foundation; either version 2 of the License, or (at your option)
  * any later version.
  *
- * This program is distributed in the hope that it will be useful,but WITHOUT 
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or 
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for 
+ * This program is distributed in the hope that it will be useful,but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
  * more details.
 
- * You should have received a copy of the GNU General Public License along 
- * with this program; if not, write to the Free Software Foundation, Inc., 
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
  * 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
@@ -62,282 +62,265 @@ int area_clear_net_title(struct isis_area *, const u_char *);
 void
 isis_new (unsigned long process_id)
 {
-  isis = calloc(1, sizeof (struct isis));
-  /*
-   * Default values
-   */
-  isis->max_area_addrs = 3;
+	isis = calloc(1, sizeof (struct isis));
+	/*
+	 * Default values
+	 */
+	isis->max_area_addrs = 3;
 
-  isis->process_id = process_id;
-  isis->area_list = isis_list_new ();
-  isis->init_circ_list = isis_list_new ();
-  isis->uptime = time (NULL);
-  isis->nexthops = isis_list_new ();
+	isis->process_id = process_id;
+	isis->area_list = isis_list_new ();
+	isis->init_circ_list = isis_list_new ();
+	isis->uptime = time (NULL);
+	isis->nexthops = isis_list_new ();
 #ifdef ENABLE_IPV6
-  isis->nexthops6 = isis_list_new ();
+	isis->nexthops6 = isis_list_new ();
 #endif /* ENABLE_IPV6 */
-  /*
-   * uncomment the next line for full debugs
-   */
-  /* isis->debugs = 0xFFFF; */
+	/*
+	 * uncomment the next line for full debugs
+	 */
+	/* isis->debugs = 0xFFFF; */
 }
 
 void
 isis_init ()
 {
-  isis_new (0);
+	isis_new (0);
 }
 
 struct isis_area *
 isis_area_create ()
 {
-  struct isis_area *area;
+	struct isis_area *area;
 
-  area = calloc(1, sizeof (struct isis_area));
+	area = calloc(1, sizeof (struct isis_area));
 
-  /*
-   * The first instance is level-1-2 rest are level-1, unless otherwise
-   * configured
-   */
-  if (listcount (isis->area_list) > 0)
-    area->is_type = IS_LEVEL_1;
-  else
-    area->is_type = IS_LEVEL_1_AND_2;
-  /*
-   * intialize the databases
-   */
-  area->lspdb[0] = lsp_db_init ();
-  area->lspdb[1] = lsp_db_init ();
+	/*
+	 * The first instance is level-1-2 rest are level-1, unless otherwise
+	 * configured
+	 */
+	if (listcount (isis->area_list) > 0)
+		area->is_type = IS_LEVEL_1;
+	else
+		area->is_type = IS_LEVEL_1_AND_2;
+	/*
+	 * intialize the databases
+	 */
+	area->lspdb[0] = lsp_db_init ();
+	area->lspdb[1] = lsp_db_init ();
 
-  spftree_area_init (area);
-  area->route_table[0] = route_table_init ();
-  area->route_table[1] = route_table_init ();
+	spftree_area_init (area);
+	area->route_table[0] = route_table_init ();
+	area->route_table[1] = route_table_init ();
 #ifdef ENABLE_IPV6
-  area->route_table6[0] = route_table_init ();
-  area->route_table6[1] = route_table_init ();
+	area->route_table6[0] = route_table_init ();
+	area->route_table6[1] = route_table_init ();
 #endif /* ENABLE_IPV6 */
-  area->circuit_list = isis_list_new ();
-  area->area_addrs = isis_list_new ();
-  flags_initialize (&area->flags);
-  /*
-   * Default values
-   */
-  area->max_lsp_lifetime[0] = MAX_AGE;	/* 1200 */
-  area->max_lsp_lifetime[1] = MAX_AGE;	/* 1200 */
-  area->lsp_gen_interval[0] = LSP_GEN_INTERVAL_DEFAULT;
-  area->lsp_gen_interval[1] = LSP_GEN_INTERVAL_DEFAULT;
-  area->lsp_refresh[0] = MAX_LSP_GEN_INTERVAL;	/* 900 */
-  area->lsp_refresh[1] = MAX_LSP_GEN_INTERVAL;	/* 900 */
-  area->min_spf_interval[0] = MINIMUM_SPF_INTERVAL;
-  area->min_spf_interval[1] = MINIMUM_SPF_INTERVAL;
-  area->dynhostname = 1;
-  area->oldmetric = 1;
-  area->lsp_frag_threshold = 90;
+	area->circuit_list = isis_list_new ();
+	area->area_addrs = isis_list_new ();
+	flags_initialize (&area->flags);
+	/*
+	 * Default values
+	 */
+	area->max_lsp_lifetime[0] = MAX_AGE;	/* 1200 */
+	area->max_lsp_lifetime[1] = MAX_AGE;	/* 1200 */
+	area->lsp_gen_interval[0] = LSP_GEN_INTERVAL_DEFAULT;
+	area->lsp_gen_interval[1] = LSP_GEN_INTERVAL_DEFAULT;
+	area->lsp_refresh[0] = MAX_LSP_GEN_INTERVAL;	/* 900 */
+	area->lsp_refresh[1] = MAX_LSP_GEN_INTERVAL;	/* 900 */
+	area->min_spf_interval[0] = MINIMUM_SPF_INTERVAL;
+	area->min_spf_interval[1] = MINIMUM_SPF_INTERVAL;
+	area->dynhostname = 1;
+	area->oldmetric = 1;
+	area->lsp_frag_threshold = 90;
 
-  /* FIXME: Think of a better way... */
-  area->min_bcast_mtu = 1497;
+	/* FIXME: Think of a better way... */
+	area->min_bcast_mtu = 1497;
 
-  return area;
+	return area;
 }
 
 struct isis_area *
 isis_area_lookup (const char *area_tag)
 {
-  struct isis_area *area;
-  struct listnode *node;
+	struct isis_area *area;
+	struct listnode *node;
 
-  for (ALL_LIST_ELEMENTS_RO (isis->area_list, node, area))
-    if ((area->area_tag == NULL && area_tag == NULL) ||
-	(area->area_tag && area_tag
-	 && strcmp (area->area_tag, area_tag) == 0))
-    return area;
+	for (ALL_LIST_ELEMENTS_RO (isis->area_list, node, area))
+		if ((area->area_tag == NULL && area_tag == NULL) ||
+		    (area->area_tag && area_tag
+		     && strcmp (area->area_tag, area_tag) == 0))
+			return area;
 
-  return NULL;
+	return NULL;
 }
 
 int
 isis_area_get (const char *area_tag)
 {
-  struct isis_area *area;
+	struct isis_area *area;
 
-  area = isis_area_lookup (area_tag);
+	area = isis_area_lookup (area_tag);
 
-  if (area)
-    {
-      return FALSE;
-    }
+	if (area) {
+		return FALSE;
+	}
 
-  area = isis_area_create ();
-  area->area_tag = strdup (area_tag);
-  isis_listnode_add (isis->area_list, area);
+	area = isis_area_create ();
+	area->area_tag = strdup (area_tag);
+	isis_listnode_add (isis->area_list, area);
 
-  Log(LOG_DEBUG, "DEBUG ( %s/core/ISIS ): New IS-IS area instance %s\n", config.name, area->area_tag);
+	Log(LOG_DEBUG, "DEBUG ( %s/core/ISIS ): New IS-IS area instance %s\n", config.name, area->area_tag);
 
-  return FALSE;
+	return FALSE;
 }
 
 int
 isis_area_destroy (const char *area_tag)
 {
-  struct isis_area *area;
-  struct listnode *node, *nnode;
-  struct isis_circuit *circuit;
+	struct isis_area *area;
+	struct listnode *node, *nnode;
+	struct isis_circuit *circuit;
 
-  area = isis_area_lookup (area_tag);
+	area = isis_area_lookup (area_tag);
 
-  if (area == NULL)
-    {
-      Log(LOG_WARNING, "WARN ( %s/core/ISIS ): Can't find ISIS instance %s\n", config.name, area_tag);
-      return TRUE;
-    }
-
-  if (area->circuit_list)
-    {
-      for (ALL_LIST_ELEMENTS (area->circuit_list, node, nnode, circuit))
-	{
-	  /* The fact that it's in circuit_list means that it was configured */
-	  isis_csm_state_change (ISIS_DISABLE, circuit, area);
-	  isis_circuit_down (circuit);
-	  isis_circuit_deconfigure (circuit, area);
+	if (area == NULL) {
+		Log(LOG_WARNING, "WARN ( %s/core/ISIS ): Can't find ISIS instance %s\n", config.name, area_tag);
+		return TRUE;
 	}
-      
-      isis_list_delete (area->circuit_list);
-    }
-  isis_listnode_delete (isis->area_list, area);
 
-  if (area->t_remove_aged)
-    thread_cancel (area->t_remove_aged);
+	if (area->circuit_list) {
+		for (ALL_LIST_ELEMENTS (area->circuit_list, node, nnode, circuit)) {
+			/* The fact that it's in circuit_list means that it was configured */
+			isis_csm_state_change (ISIS_DISABLE, circuit, area);
+			isis_circuit_down (circuit);
+			isis_circuit_deconfigure (circuit, area);
+		}
 
-  THREAD_TIMER_OFF (area->spftree[0]->t_spf);
-  THREAD_TIMER_OFF (area->spftree[1]->t_spf);
+		isis_list_delete (area->circuit_list);
+	}
+	isis_listnode_delete (isis->area_list, area);
 
-  free(area);
+	if (area->t_remove_aged)
+		thread_cancel (area->t_remove_aged);
 
-  isis->sysid_set=0;
+	THREAD_TIMER_OFF (area->spftree[0]->t_spf);
+	THREAD_TIMER_OFF (area->spftree[1]->t_spf);
 
-  return FALSE;
+	free(area);
+
+	isis->sysid_set=0;
+
+	return FALSE;
 }
 
 int
 area_net_title (struct isis_area *area, const u_char *net_title)
 {
-  struct area_addr *addr;
-  struct area_addr *addrp;
-  struct listnode *node;
+	struct area_addr *addr;
+	struct area_addr *addrp;
+	struct listnode *node;
 
-  u_char buff[255];
+	u_char buff[255];
 
-  if (!area)
-    {
-      Log(LOG_WARNING, "WARN ( %s/core/ISIS ): Can't find ISIS instance\n", config.name);
-      return TRUE;
-    }
-
-  /* We check that we are not over the maximal number of addresses */
-  if (listcount (area->area_addrs) >= isis->max_area_addrs)
-    {
-      Log(LOG_WARNING, "WARN ( %s/core/ISIS ): Maximum of area addresses (%d) already reached\n",
-	       config.name, isis->max_area_addrs);
-      return TRUE;
-    }
-
-  addr = calloc(1, sizeof (struct area_addr));
-  addr->addr_len = dotformat2buff (buff, net_title);
-  memcpy (addr->area_addr, buff, addr->addr_len);
-  if (addr->addr_len < 8 || addr->addr_len > 20)
-    {
-      Log(LOG_WARNING, "WARN ( %s/core/ISIS ): area address must be at least 8..20 octets long (%d)\n",
-		 config.name, addr->addr_len);
-      free(addr);
-      return TRUE;
-    }
-
-  if (isis->sysid_set == 0)
-    {
-      /*
-       * First area address - get the SystemID for this router
-       */
-      memcpy (isis->sysid, GETSYSID (addr, ISIS_SYS_ID_LEN), ISIS_SYS_ID_LEN);
-      isis->sysid_set = 1;
-      Log(LOG_DEBUG, "DEBUG ( %s/core/ISIS ): Router has SystemID %s\n", config.name, sysid_print (isis->sysid));
-    }
-  else
-    {
-      /*
-       * Check that the SystemID portions match
-       */
-      if (memcmp (isis->sysid, GETSYSID (addr, ISIS_SYS_ID_LEN),
-		  ISIS_SYS_ID_LEN))
-	{
-	  Log(LOG_WARNING, "WARN ( %s/core/ISIS ): System ID must not change when defining additional area addresses\n", config.name);
-	  free(addr);
-	  return TRUE;
+	if (!area) {
+		Log(LOG_WARNING, "WARN ( %s/core/ISIS ): Can't find ISIS instance\n", config.name);
+		return TRUE;
 	}
 
-      /* now we see that we don't already have this address */
-      for (ALL_LIST_ELEMENTS_RO (area->area_addrs, node, addrp))
-	{
-	  if ((addrp->addr_len + ISIS_SYS_ID_LEN + 1) != (addr->addr_len))
-	    continue;
-	  if (!memcmp (addrp->area_addr, addr->area_addr, addr->addr_len))
-	    {
-	      free(addr);
-	      return FALSE;	/* silent fail */
-	    }
+	/* We check that we are not over the maximal number of addresses */
+	if (listcount (area->area_addrs) >= isis->max_area_addrs) {
+		Log(LOG_WARNING, "WARN ( %s/core/ISIS ): Maximum of area addresses (%d) already reached\n",
+		    config.name, isis->max_area_addrs);
+		return TRUE;
 	}
 
-    }
-  /*
-   * Forget the systemID part of the address
-   */
-  addr->addr_len -= (ISIS_SYS_ID_LEN + 1);
-  isis_listnode_add (area->area_addrs, addr);
+	addr = calloc(1, sizeof (struct area_addr));
+	addr->addr_len = dotformat2buff (buff, net_title);
+	memcpy (addr->area_addr, buff, addr->addr_len);
+	if (addr->addr_len < 8 || addr->addr_len > 20) {
+		Log(LOG_WARNING, "WARN ( %s/core/ISIS ): area address must be at least 8..20 octets long (%d)\n",
+		    config.name, addr->addr_len);
+		free(addr);
+		return TRUE;
+	}
 
-  /* Only now we can safely generate our LSPs for this area */
-  if (listcount (area->area_addrs) > 0)
-    {
-      lsp_l1_generate (area);
-      lsp_l2_generate (area);
-    }
+	if (isis->sysid_set == 0) {
+		/*
+		 * First area address - get the SystemID for this router
+		 */
+		memcpy (isis->sysid, GETSYSID (addr, ISIS_SYS_ID_LEN), ISIS_SYS_ID_LEN);
+		isis->sysid_set = 1;
+		Log(LOG_DEBUG, "DEBUG ( %s/core/ISIS ): Router has SystemID %s\n", config.name, sysid_print (isis->sysid));
+	} else {
+		/*
+		 * Check that the SystemID portions match
+		 */
+		if (memcmp (isis->sysid, GETSYSID (addr, ISIS_SYS_ID_LEN),
+		            ISIS_SYS_ID_LEN)) {
+			Log(LOG_WARNING, "WARN ( %s/core/ISIS ): System ID must not change when defining additional area addresses\n", config.name);
+			free(addr);
+			return TRUE;
+		}
 
-  return FALSE;
+		/* now we see that we don't already have this address */
+		for (ALL_LIST_ELEMENTS_RO (area->area_addrs, node, addrp)) {
+			if ((addrp->addr_len + ISIS_SYS_ID_LEN + 1) != (addr->addr_len))
+				continue;
+			if (!memcmp (addrp->area_addr, addr->area_addr, addr->addr_len)) {
+				free(addr);
+				return FALSE;	/* silent fail */
+			}
+		}
+
+	}
+	/*
+	 * Forget the systemID part of the address
+	 */
+	addr->addr_len -= (ISIS_SYS_ID_LEN + 1);
+	isis_listnode_add (area->area_addrs, addr);
+
+	/* Only now we can safely generate our LSPs for this area */
+	if (listcount (area->area_addrs) > 0) {
+		lsp_l1_generate (area);
+		lsp_l2_generate (area);
+	}
+
+	return FALSE;
 }
 
 int
 area_clear_net_title (struct isis_area *area, const u_char *net_title)
 {
-  struct area_addr addr, *addrp = NULL;
-  struct listnode *node;
-  u_char buff[255];
+	struct area_addr addr, *addrp = NULL;
+	struct listnode *node;
+	u_char buff[255];
 
-  if (!area)
-    {
-      Log(LOG_WARNING, "WARN ( %s/core/ISIS ): Can't find ISIS instance\n", config.name);
-      return TRUE;
-    }
+	if (!area) {
+		Log(LOG_WARNING, "WARN ( %s/core/ISIS ): Can't find ISIS instance\n", config.name);
+		return TRUE;
+	}
 
-  addr.addr_len = dotformat2buff (buff, net_title);
-  if (addr.addr_len < 8 || addr.addr_len > 20)
-    {
-      Log(LOG_WARNING, "WARN ( %s/core/ISIS ): Unsupported area address length %d, should be 8...20\n", config.name, addr.addr_len);
-      return TRUE;
-    }
+	addr.addr_len = dotformat2buff (buff, net_title);
+	if (addr.addr_len < 8 || addr.addr_len > 20) {
+		Log(LOG_WARNING, "WARN ( %s/core/ISIS ): Unsupported area address length %d, should be 8...20\n", config.name, addr.addr_len);
+		return TRUE;
+	}
 
-  memcpy (addr.area_addr, buff, (int) addr.addr_len);
+	memcpy (addr.area_addr, buff, (int) addr.addr_len);
 
-  for (ALL_LIST_ELEMENTS_RO (area->area_addrs, node, addrp))
-    if (addrp->addr_len == addr.addr_len &&
-	!memcmp (addrp->area_addr, addr.area_addr, addr.addr_len))
-    break;
+	for (ALL_LIST_ELEMENTS_RO (area->area_addrs, node, addrp))
+		if (addrp->addr_len == addr.addr_len &&
+		    !memcmp (addrp->area_addr, addr.area_addr, addr.addr_len))
+			break;
 
-  if (!addrp)
-    {
-      Log(LOG_WARNING, "WARN ( %s/core/ISIS ): No area address %s for area %s\n",
-		config.name, net_title, area->area_tag);
-      return TRUE;
-    }
+	if (!addrp) {
+		Log(LOG_WARNING, "WARN ( %s/core/ISIS ): No area address %s for area %s\n",
+		    config.name, net_title, area->area_tag);
+		return TRUE;
+	}
 
-  isis_listnode_delete (area->area_addrs, addrp);
+	isis_listnode_delete (area->area_addrs, addrp);
 
-  return FALSE;
+	return FALSE;
 }

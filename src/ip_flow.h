@@ -23,76 +23,76 @@
 #define _IP_FLOW_H_
 
 /* defines */
-#define FLOW_TABLE_HASHSZ 256 
-#define FLOW_GENERIC_LIFETIME 60 
-#define FLOW_TCPSYN_LIFETIME 60 
+#define FLOW_TABLE_HASHSZ 256
+#define FLOW_GENERIC_LIFETIME 60
+#define FLOW_TCPSYN_LIFETIME 60
 #define FLOW_TCPEST_LIFETIME 432000
-#define FLOW_TCPFIN_LIFETIME 30 
-#define FLOW_TCPRST_LIFETIME 10 
-#define FLOW_TABLE_PRUNE_INTERVAL 3600 
+#define FLOW_TCPFIN_LIFETIME 30
+#define FLOW_TCPRST_LIFETIME 10
+#define FLOW_TABLE_PRUNE_INTERVAL 3600
 #define FLOW_TABLE_EMER_PRUNE_INTERVAL 60
 #define DEFAULT_FLOW_BUFFER_SIZE 16384000 /* 16 Mb */
 
 struct context_chain {
-  char *protocol;
-  void *data;
-  struct context_chain *next;
+	char *protocol;
+	void *data;
+	struct context_chain *next;
 };
 
 /* structures */
 struct ip_flow_common {
-  /*
-     [0] = forward flow data
-     [1] = reverse flow data
-  */
-  u_int16_t bucket;
-  struct timeval last[2];
-  u_int32_t last_tcp_seq;
-  u_int8_t tcp_flags[2];
-  u_int8_t proto;
-  /* classifier hooks */
-  pm_class_t class[2]; 
-  struct class_st cst[2]; 
-  struct context_chain *cc[2];
-  /* conntrack hooks */
-  void (*conntrack_helper)(time_t, struct packet_ptrs *);
+	/*
+	   [0] = forward flow data
+	   [1] = reverse flow data
+	*/
+	u_int16_t bucket;
+	struct timeval last[2];
+	u_int32_t last_tcp_seq;
+	u_int8_t tcp_flags[2];
+	u_int8_t proto;
+	/* classifier hooks */
+	pm_class_t class[2];
+	struct class_st cst[2];
+	struct context_chain *cc[2];
+	/* conntrack hooks */
+	void (*conntrack_helper)(time_t, struct packet_ptrs *);
 };
 
 struct ip_flow {
-  struct ip_flow_common cmn;
-  u_int32_t ip_src;
-  u_int32_t ip_dst;
-  u_int16_t port_src;
-  u_int16_t port_dst;
-  char *bgp_src; /* pointer to bgp_node structure for source prefix, if any */
-  char *bgp_dst; /* pointer to bgp_node structure for destination prefix, if any */
-  struct ip_flow *lru_next;
-  struct ip_flow *lru_prev;
-  struct ip_flow *next;
-  struct ip_flow *prev;
+	struct ip_flow_common cmn;
+	u_int32_t ip_src;
+	u_int32_t ip_dst;
+	u_int16_t port_src;
+	u_int16_t port_dst;
+	char *bgp_src; /* pointer to bgp_node structure for source prefix, if any */
+	char *bgp_dst; /* pointer to bgp_node structure for destination prefix, if any */
+	struct ip_flow *lru_next;
+	struct ip_flow *lru_prev;
+	struct ip_flow *next;
+	struct ip_flow *prev;
 };
 
 struct flow_lru_l {
-  struct ip_flow *root;
-  struct ip_flow *last;
+	struct ip_flow *root;
+	struct ip_flow *last;
 };
 
 #if defined ENABLE_IPV6
 struct ip_flow6 {
-  struct ip_flow_common cmn;
-  u_int32_t ip_src[4];
-  u_int32_t ip_dst[4];
-  u_int16_t port_src;
-  u_int16_t port_dst;
-  struct ip_flow6 *lru_next;
-  struct ip_flow6 *lru_prev;
-  struct ip_flow6 *next;
-  struct ip_flow6 *prev;
+	struct ip_flow_common cmn;
+	u_int32_t ip_src[4];
+	u_int32_t ip_dst[4];
+	u_int16_t port_src;
+	u_int16_t port_dst;
+	struct ip_flow6 *lru_next;
+	struct ip_flow6 *lru_prev;
+	struct ip_flow6 *next;
+	struct ip_flow6 *prev;
 };
 
 struct flow_lru_l6 {
-  struct ip_flow6 *root;
-  struct ip_flow6 *last;
+	struct ip_flow6 *root;
+	struct ip_flow6 *last;
 };
 #endif
 
@@ -102,12 +102,12 @@ struct flow_lru_l6 {
 #define EXT
 #endif
 /* prototypes */
-EXT void init_ip_flow_handler(); /* wrapper */ 
-EXT void init_ip4_flow_handler(); 
-EXT void ip_flow_handler(struct packet_ptrs *); 
-EXT void find_flow(struct timeval *, struct packet_ptrs *); 
-EXT void create_flow(struct timeval *, struct ip_flow *, u_int8_t, unsigned int, struct packet_ptrs *, struct pm_iphdr *, struct pm_tlhdr *, unsigned int); 
-EXT void prune_old_flows(struct timeval *); 
+EXT void init_ip_flow_handler(); /* wrapper */
+EXT void init_ip4_flow_handler();
+EXT void ip_flow_handler(struct packet_ptrs *);
+EXT void find_flow(struct timeval *, struct packet_ptrs *);
+EXT void create_flow(struct timeval *, struct ip_flow *, u_int8_t, unsigned int, struct packet_ptrs *, struct pm_iphdr *, struct pm_tlhdr *, unsigned int);
+EXT void prune_old_flows(struct timeval *);
 
 EXT unsigned int hash_flow(u_int32_t, u_int32_t, u_int16_t, u_int16_t, u_int8_t);
 EXT unsigned int normalize_flow(u_int32_t *, u_int32_t *, u_int16_t *, u_int16_t *);
@@ -123,7 +123,7 @@ EXT unsigned int hash_flow6(u_int32_t, struct in6_addr *, struct in6_addr *);
 EXT unsigned int normalize_flow6(struct in6_addr *, struct in6_addr *, u_int16_t *, u_int16_t *);
 EXT void find_flow6(struct timeval *, struct packet_ptrs *);
 EXT void create_flow6(struct timeval *, struct ip_flow6 *, u_int8_t, unsigned int, struct packet_ptrs *, struct ip6_hdr *, struct pm_tlhdr *, unsigned int);
-EXT void prune_old_flows6(struct timeval *); 
+EXT void prune_old_flows6(struct timeval *);
 #endif
 
 /* global vars */

@@ -42,38 +42,38 @@
 /* structures */
 static struct _devices_struct _isis_devices[] = {
 #if defined DLT_LINUX_SLL
-  {isis_sll_handler, DLT_LINUX_SLL},
+	{isis_sll_handler, DLT_LINUX_SLL},
 #endif
-  {NULL, -1},
+	{NULL, -1},
 };
 
 struct pcap_isis_callback_data {
-  struct pcap_device *device;
-  struct isis_circuit *circuit;
+	struct pcap_device *device;
+	struct isis_circuit *circuit;
 };
 
 struct igp_map_metric {
-  struct isis_prefix prefix;
-  u_int32_t metric;
+	struct isis_prefix prefix;
+	u_int32_t metric;
 };
 
 struct igp_map_entry {
-  struct host_addr node;
-  u_int16_t area_id;
-  struct igp_map_metric adj_metric[MAX_IGP_MAP_ELEM];
-  struct igp_map_metric reach_metric[MAX_IGP_MAP_ELEM];
+	struct host_addr node;
+	u_int16_t area_id;
+	struct igp_map_metric adj_metric[MAX_IGP_MAP_ELEM];
+	struct igp_map_metric reach_metric[MAX_IGP_MAP_ELEM];
 #ifdef ENABLE_IPV6
-  struct igp_map_metric reach6_metric[MAX_IGP_MAP_ELEM];
+	struct igp_map_metric reach6_metric[MAX_IGP_MAP_ELEM];
 #endif
-  u_int8_t adj_metric_num;
-  u_int8_t reach_metric_num;
-  u_int8_t reach6_metric_num;
+	u_int8_t adj_metric_num;
+	u_int8_t reach_metric_num;
+	u_int8_t reach6_metric_num;
 };
 
 struct sysid_fragment {
-  u_char sysid[ISIS_SYS_ID_LEN];
-  u_char frag_num;
-  u_char valid;
+	u_char sysid[ISIS_SYS_ID_LEN];
+	u_char frag_num;
+	u_char valid;
 };
 
 /* prototypes */
@@ -108,7 +108,7 @@ EXT struct in_addr router_id_zebra; /* XXX: do something with this eventually */
 EXT struct timeval isis_now, isis_spf_deadline, isis_psnp_deadline;
 EXT struct igp_map_entry ime;
 EXT pcap_dumper_t *idmm_fd; /* igp_daemon_map : file descriptor for igp_daemon_map_msglog */
-EXT u_int32_t glob_isis_seq_num; 
+EXT u_int32_t glob_isis_seq_num;
 EXT struct sysid_fragment sysid_fragment_table[MAX_IGP_MAP_NODES];
 #undef EXT
 #endif

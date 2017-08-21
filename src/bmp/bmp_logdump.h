@@ -1,4 +1,4 @@
-/*  
+/*
     pmacct (Promiscuous mode IP Accounting package)
     pmacct is Copyright (C) 2003-2016 by Paolo Lucente
 */
@@ -31,56 +31,56 @@
 #define BMP_LOG_TYPE_ROUTE	6
 
 struct bmp_log_stats {
-  u_int16_t cnt_type;
-  u_int64_t cnt_data;
-  u_int8_t got_data;
+	u_int16_t cnt_type;
+	u_int64_t cnt_data;
+	u_int8_t got_data;
 };
 
 struct bmp_log_init {
-  u_int16_t type; 
-  u_int16_t len;
-  char *val;
+	u_int16_t type;
+	u_int16_t len;
+	char *val;
 };
 
 struct bmp_log_term {
-  u_int16_t type;
-  u_int16_t len;
-  char *val;
-  u_int16_t reas_type;
+	u_int16_t type;
+	u_int16_t len;
+	char *val;
+	u_int16_t reas_type;
 };
 
 struct bmp_log_peer_up {
-  struct host_addr local_ip;
-  u_int16_t loc_port;
-  u_int16_t rem_port;
+	struct host_addr local_ip;
+	u_int16_t loc_port;
+	u_int16_t rem_port;
 };
 
 struct bmp_log_peer_down {
-  u_char reason;
-  u_int16_t loc_code;
+	u_char reason;
+	u_int16_t loc_code;
 };
 
 struct bmp_dump_se {
-  struct bmp_data bdata;
-  u_int64_t seq;
-  int se_type;
-  union {
-    struct bmp_log_stats stats;
-    struct bmp_log_init init;
-    struct bmp_log_term term;
-    struct bmp_log_peer_up peer_up;
-    struct bmp_log_peer_down peer_down;
-  } se;
+	struct bmp_data bdata;
+	u_int64_t seq;
+	int se_type;
+	union {
+		struct bmp_log_stats stats;
+		struct bmp_log_init init;
+		struct bmp_log_term term;
+		struct bmp_log_peer_up peer_up;
+		struct bmp_log_peer_down peer_down;
+	} se;
 };
 
 struct bmp_dump_se_ll_elem {
-  struct bmp_dump_se rec; 
-  struct bmp_dump_se_ll_elem *next;
+	struct bmp_dump_se rec;
+	struct bmp_dump_se_ll_elem *next;
 };
 
 struct bmp_dump_se_ll {
-  struct bmp_dump_se_ll_elem *start;
-  struct bmp_dump_se_ll_elem *last;
+	struct bmp_dump_se_ll_elem *start;
+	struct bmp_dump_se_ll_elem *last;
 };
 
 /* prototypes */

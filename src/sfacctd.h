@@ -1,4 +1,4 @@
-/*  
+/*
     pmacct (Promiscuous mode IP Accounting package)
     pmacct is Copyright (C) 2003-2017 by Paolo Lucente
 */
@@ -19,126 +19,126 @@
     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 */
 
-/* 
+/*
     much of the sflow v2/v4/v5 definitions are based on sFlow toolkit 3.8 and
     later which is Copyright (C) InMon Corporation 2001 ALL RIGHTS RESERVED
 */
 
 /* defines */
-#define DEFAULT_SFACCTD_PORT 6343 
-#define SFLOW_MIN_MSG_SIZE 200 
+#define DEFAULT_SFACCTD_PORT 6343
+#define SFLOW_MIN_MSG_SIZE 200
 #define SFLOW_MAX_MSG_SIZE 65536 /* inflated ? */
 #define MAX_SF_CNT_LOG_ENTRIES 1024
 
 enum INMPacket_information_type {
-  INMPACKETTYPE_HEADER  = 1,      /* Packet headers are sampled */
-  INMPACKETTYPE_IPV4    = 2,      /* IP version 4 data */
-  INMPACKETTYPE_IPV6    = 3       /* IP version 4 data */
+	INMPACKETTYPE_HEADER  = 1,      /* Packet headers are sampled */
+	INMPACKETTYPE_IPV4    = 2,      /* IP version 4 data */
+	INMPACKETTYPE_IPV6    = 3       /* IP version 4 data */
 };
 
 enum INMExtended_information_type {
-  INMEXTENDED_SWITCH    = 1,      /* Extended switch information */
-  INMEXTENDED_ROUTER    = 2,      /* Extended router information */
-  INMEXTENDED_GATEWAY   = 3,      /* Extended gateway router information */
-  INMEXTENDED_USER      = 4,      /* Extended TACAS/RADIUS user information */
-  INMEXTENDED_URL       = 5       /* Extended URL information */
+	INMEXTENDED_SWITCH    = 1,      /* Extended switch information */
+	INMEXTENDED_ROUTER    = 2,      /* Extended router information */
+	INMEXTENDED_GATEWAY   = 3,      /* Extended gateway router information */
+	INMEXTENDED_USER      = 4,      /* Extended TACAS/RADIUS user information */
+	INMEXTENDED_URL       = 5       /* Extended URL information */
 };
 
 enum INMCounters_version {
-  INMCOUNTERSVERSION_GENERIC      = 1,
-  INMCOUNTERSVERSION_ETHERNET     = 2,
-  INMCOUNTERSVERSION_TOKENRING    = 3,
-  INMCOUNTERSVERSION_FDDI         = 4,
-  INMCOUNTERSVERSION_VG           = 5,
-  INMCOUNTERSVERSION_WAN          = 6,
-  INMCOUNTERSVERSION_VLAN         = 7
+	INMCOUNTERSVERSION_GENERIC      = 1,
+	INMCOUNTERSVERSION_ETHERNET     = 2,
+	INMCOUNTERSVERSION_TOKENRING    = 3,
+	INMCOUNTERSVERSION_FDDI         = 4,
+	INMCOUNTERSVERSION_VG           = 5,
+	INMCOUNTERSVERSION_WAN          = 6,
+	INMCOUNTERSVERSION_VLAN         = 7
 };
 
 typedef struct _SFSample {
-  struct in_addr sourceIP;
-  SFLAddress agent_addr;
-  u_int32_t agentSubId;
+	struct in_addr sourceIP;
+	SFLAddress agent_addr;
+	u_int32_t agentSubId;
 
-  /* the raw pdu */
-  u_char *rawSample;
-  u_int32_t rawSampleLen;
-  u_char *endp;
-  u_int32_t *datap;
+	/* the raw pdu */
+	u_char *rawSample;
+	u_int32_t rawSampleLen;
+	u_char *endp;
+	u_int32_t *datap;
 
-  u_int32_t datagramVersion;
-  u_int32_t sampleType;
-  u_int32_t ds_class;
-  u_int32_t ds_index;
+	u_int32_t datagramVersion;
+	u_int32_t sampleType;
+	u_int32_t ds_class;
+	u_int32_t ds_index;
 
-  /* generic interface counter sample */
-  SFLIf_counters ifCounters;
+	/* generic interface counter sample */
+	SFLIf_counters ifCounters;
 
-  /* sample stream info */
-  u_int32_t sysUpTime;
-  u_int32_t sequenceNo;
-  u_int32_t cntSequenceNo;
-  u_int32_t sampledPacketSize;
-  u_int32_t samplesGenerated;
-  u_int32_t meanSkipCount;
-  u_int32_t samplePool;
-  u_int32_t dropEvents;
+	/* sample stream info */
+	u_int32_t sysUpTime;
+	u_int32_t sequenceNo;
+	u_int32_t cntSequenceNo;
+	u_int32_t sampledPacketSize;
+	u_int32_t samplesGenerated;
+	u_int32_t meanSkipCount;
+	u_int32_t samplePool;
+	u_int32_t dropEvents;
 
-  /* the sampled header */
-  u_int32_t packet_data_tag;
-  u_int32_t headerProtocol;
-  u_char *header;
-  int headerLen;
-  u_int32_t stripped;
+	/* the sampled header */
+	u_int32_t packet_data_tag;
+	u_int32_t headerProtocol;
+	u_char *header;
+	int headerLen;
+	u_int32_t stripped;
 
-  /* header decode */
-  int gotIPV4;
-  int offsetToIPV4;
-  int gotIPV6;
-  int offsetToIPV6;
-  struct in_addr dcd_srcIP;
-  struct in_addr dcd_dstIP;
-  u_int32_t dcd_ipProtocol;
-  u_int32_t dcd_ipTos;
-  u_int32_t dcd_ipTTL;
-  u_int32_t dcd_sport;
-  u_int32_t dcd_dport;
-  u_int32_t dcd_tcpFlags;
-  u_int32_t ip_fragmentOffset;
-  u_int32_t udp_pduLen;
+	/* header decode */
+	int gotIPV4;
+	int offsetToIPV4;
+	int gotIPV6;
+	int offsetToIPV6;
+	struct in_addr dcd_srcIP;
+	struct in_addr dcd_dstIP;
+	u_int32_t dcd_ipProtocol;
+	u_int32_t dcd_ipTos;
+	u_int32_t dcd_ipTTL;
+	u_int32_t dcd_sport;
+	u_int32_t dcd_dport;
+	u_int32_t dcd_tcpFlags;
+	u_int32_t ip_fragmentOffset;
+	u_int32_t udp_pduLen;
 
-  /* inner header decode */
-  int got_inner_IPV4;
-  struct in_addr dcd_inner_srcIP;
-  struct in_addr dcd_inner_dstIP;
-  u_int32_t dcd_inner_ipProtocol;
-  u_int32_t dcd_inner_ipTos;
-  u_int32_t ip_inner_fragmentOffset;
+	/* inner header decode */
+	int got_inner_IPV4;
+	struct in_addr dcd_inner_srcIP;
+	struct in_addr dcd_inner_dstIP;
+	u_int32_t dcd_inner_ipProtocol;
+	u_int32_t dcd_inner_ipTos;
+	u_int32_t ip_inner_fragmentOffset;
 
-  /* ports */
-  u_int32_t inputPortFormat;
-  u_int32_t outputPortFormat;
-  u_int32_t inputPort;
-  u_int32_t outputPort;
+	/* ports */
+	u_int32_t inputPortFormat;
+	u_int32_t outputPortFormat;
+	u_int32_t inputPort;
+	u_int32_t outputPort;
 
-  /* ethernet */
-  u_int32_t eth_type;
-  u_int32_t eth_len;
-  u_char eth_src[8];
-  u_char eth_dst[8];
+	/* ethernet */
+	u_int32_t eth_type;
+	u_int32_t eth_len;
+	u_char eth_src[8];
+	u_char eth_dst[8];
 
-  /* vlan */
-  u_int32_t in_vlan;
-  u_int32_t in_priority;
-  u_int32_t internalPriority;
-  u_int32_t out_vlan;
-  u_int32_t out_priority;
+	/* vlan */
+	u_int32_t in_vlan;
+	u_int32_t in_priority;
+	u_int32_t internalPriority;
+	u_int32_t out_vlan;
+	u_int32_t out_priority;
 
-  /* MPLS hack */
-  SFLLabelStack lstk;
+	/* MPLS hack */
+	SFLLabelStack lstk;
 
-  /* extended data fields */
-  u_int32_t num_extended;
-  u_int32_t extended_data_tag;
+	/* extended data fields */
+	u_int32_t num_extended;
+	u_int32_t extended_data_tag;
 #define SASAMPLE_EXTENDED_DATA_SWITCH 1
 #define SASAMPLE_EXTENDED_DATA_ROUTER 4
 #define SASAMPLE_EXTENDED_DATA_GATEWAY 8
@@ -152,123 +152,120 @@ typedef struct _SFSample {
 #define SASAMPLE_EXTENDED_DATA_MPLS_LDP_FEC 2048
 #define SASAMPLE_EXTENDED_DATA_VLAN_TUNNEL 4096
 
-  /* IP forwarding info */
-  SFLAddress nextHop;
-  u_int32_t srcMask;
-  u_int32_t dstMask;
+	/* IP forwarding info */
+	SFLAddress nextHop;
+	u_int32_t srcMask;
+	u_int32_t dstMask;
 
-  /* BGP info */
-  SFLAddress bgp_nextHop;
-  u_int32_t my_as;
-  u_int32_t src_as;
-  u_int32_t src_peer_as;
+	/* BGP info */
+	SFLAddress bgp_nextHop;
+	u_int32_t my_as;
+	u_int32_t src_as;
+	u_int32_t src_peer_as;
 
-  u_int32_t dst_as_path_len;
-  char dst_as_path[LARGEBUFLEN];
+	u_int32_t dst_as_path_len;
+	char dst_as_path[LARGEBUFLEN];
 
-  u_int32_t dst_peer_as;
-  u_int32_t dst_as;
+	u_int32_t dst_peer_as;
+	u_int32_t dst_as;
 
-  u_int32_t communities_len;
-  char comms[LARGEBUFLEN];
-  u_int32_t localpref;
+	u_int32_t communities_len;
+	char comms[LARGEBUFLEN];
+	u_int32_t localpref;
 
-  /* user id */
+	/* user id */
 #define SA_MAX_EXTENDED_USER_LEN 200
-  u_int32_t src_user_charset;
-  u_int32_t src_user_len;
-  char src_user[SA_MAX_EXTENDED_USER_LEN+1];
-  u_int32_t dst_user_charset;
-  u_int32_t dst_user_len;
-  char dst_user[SA_MAX_EXTENDED_USER_LEN+1];
+	u_int32_t src_user_charset;
+	u_int32_t src_user_len;
+	char src_user[SA_MAX_EXTENDED_USER_LEN+1];
+	u_int32_t dst_user_charset;
+	u_int32_t dst_user_len;
+	char dst_user[SA_MAX_EXTENDED_USER_LEN+1];
 
-  /* url */
+	/* url */
 #define SA_MAX_EXTENDED_URL_LEN 200
 #define SA_MAX_EXTENDED_HOST_LEN 200
-  u_int32_t url_direction;
-  u_int32_t url_len;
-  char url[SA_MAX_EXTENDED_URL_LEN+1];
-  u_int32_t host_len;
-  char host[SA_MAX_EXTENDED_HOST_LEN+1];
+	u_int32_t url_direction;
+	u_int32_t url_len;
+	char url[SA_MAX_EXTENDED_URL_LEN+1];
+	u_int32_t host_len;
+	char host[SA_MAX_EXTENDED_HOST_LEN+1];
 
-  /* mpls */
-  SFLAddress mpls_nextHop;
-  u_int32_t mpls_vll_vc_id;
+	/* mpls */
+	SFLAddress mpls_nextHop;
+	u_int32_t mpls_vll_vc_id;
 
-  /* nat */
-  SFLAddress nat_src;
-  SFLAddress nat_dst;
+	/* nat */
+	SFLAddress nat_src;
+	SFLAddress nat_dst;
 
-  /* counter blocks */
-  u_int32_t statsSamplingInterval;
-  u_int32_t counterBlockVersion;
+	/* counter blocks */
+	u_int32_t statsSamplingInterval;
+	u_int32_t counterBlockVersion;
 
-  /* classification */
-  pm_class_t class;
+	/* classification */
+	pm_class_t class;
 #if defined (WITH_NDPI)
-  pm_class2_t ndpi_class;
-#endif 
+	pm_class2_t ndpi_class;
+#endif
 
-  pm_id_t tag;
-  pm_id_t tag2;
+	pm_id_t tag;
+	pm_id_t tag2;
 
-  SFLAddress ipsrc;
-  SFLAddress ipdst;
+	SFLAddress ipsrc;
+	SFLAddress ipdst;
 } SFSample;
 
 /* define my own IP header struct - to ease portability */
-struct SF_iphdr
-{
-  u_int8_t version_and_headerLen;
-  u_int8_t tos;
-  u_int16_t tot_len;
-  u_int16_t id;
-  u_int16_t frag_off;
-  u_int8_t ttl;
-  u_int8_t protocol;
-  u_int16_t check;
-  u_int32_t saddr;
-  u_int32_t daddr;
+struct SF_iphdr {
+	u_int8_t version_and_headerLen;
+	u_int8_t tos;
+	u_int16_t tot_len;
+	u_int16_t id;
+	u_int16_t frag_off;
+	u_int8_t ttl;
+	u_int8_t protocol;
+	u_int16_t check;
+	u_int32_t saddr;
+	u_int32_t daddr;
 };
 
 /* same for tcp */
-struct SF_tcphdr
-{
-  u_int16_t th_sport;
-  u_int16_t th_dport;
-  u_int32_t th_seq;
-  u_int32_t th_ack;
-  u_int8_t th_off_and_unused;
-  u_int8_t th_flags;
-  u_int16_t th_win;
-  u_int16_t th_sum;
-  u_int16_t th_urp;
+struct SF_tcphdr {
+	u_int16_t th_sport;
+	u_int16_t th_dport;
+	u_int32_t th_seq;
+	u_int32_t th_ack;
+	u_int8_t th_off_and_unused;
+	u_int8_t th_flags;
+	u_int16_t th_win;
+	u_int16_t th_sum;
+	u_int16_t th_urp;
 };
 
 /* and UDP */
 struct SF_udphdr {
-  u_int16_t uh_sport;
-  u_int16_t uh_dport;
-  u_int16_t uh_ulen;
-  u_int16_t uh_sum;
+	u_int16_t uh_sport;
+	u_int16_t uh_dport;
+	u_int16_t uh_ulen;
+	u_int16_t uh_sum;
 };
 
 /* and ICMP */
-struct SF_icmphdr
-{
-  u_int8_t type;
-  u_int8_t code;
-  /* ignore the rest */
+struct SF_icmphdr {
+	u_int8_t type;
+	u_int8_t code;
+	/* ignore the rest */
 };
 
 struct SF_dissect {
-  char *hdrBasePtr;
-  char *hdrEndPtr;
-  u_int32_t hdrLen;
-  char *flowBasePtr;
-  char *flowEndPtr;
-  u_int32_t flowLen;
-  u_int32_t *samplesInPkt;
+	char *hdrBasePtr;
+	char *hdrEndPtr;
+	u_int32_t hdrLen;
+	char *flowBasePtr;
+	char *flowEndPtr;
+	u_int32_t flowLen;
+	u_int32_t *samplesInPkt;
 };
 
 #if (!defined __SFACCTD_C)

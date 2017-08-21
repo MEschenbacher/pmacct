@@ -1,4 +1,4 @@
-/*  
+/*
     pmacct (Promiscuous mode IP Accounting package)
     pmacct is Copyright (C) 2003-2017 by Paolo Lucente
 */
@@ -89,4 +89,4 @@ EXT unsigned int attrhash_key_make(void *);
 EXT int attrhash_cmp(const void *, const void *);
 EXT void attrhash_init(int, struct hash **);
 #undef EXT
-#endif 
+#endif

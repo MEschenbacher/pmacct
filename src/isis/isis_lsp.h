@@ -1,23 +1,23 @@
 /*
- * IS-IS Rout(e)ing protocol - isis_lsp.h   
+ * IS-IS Rout(e)ing protocol - isis_lsp.h
  *                             LSP processing
  *
  * Copyright (C) 2001,2002   Sampo Saaristo
- *                           Tampere University of Technology      
+ *                           Tampere University of Technology
  *                           Institute of Communications Engineering
  *
- * This program is free software; you can redistribute it and/or modify it 
- * under the terms of the GNU General Public Licenseas published by the Free 
- * Software Foundation; either version 2 of the License, or (at your option) 
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public Licenseas published by the Free
+ * Software Foundation; either version 2 of the License, or (at your option)
  * any later version.
  *
- * This program is distributed in the hope that it will be useful,but WITHOUT 
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or 
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for 
+ * This program is distributed in the hope that it will be useful,but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
  * more details.
 
- * You should have received a copy of the GNU General Public License along 
- * with this program; if not, write to the Free Software Foundation, Inc., 
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
  * 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
@@ -32,36 +32,34 @@
  * System ID (Currently 6) (atleast for now). In order to support more
  * We will have to split the header into two parts, and for readability
  * sake it should better be avoided */
-struct isis_lsp
-{
-  struct isis_fixed_hdr *isis_header;		/* normally equals pdu */
-  struct isis_link_state_hdr *lsp_header;	/* pdu + isis_header_len */
-  struct stream *pdu;				/* full pdu lsp */
-  union
-  {
-    struct list *frags;
-    struct isis_lsp *zero_lsp;
-  } lspu;
-  u_int32_t SRMflags[ISIS_MAX_CIRCUITS];
-  u_int32_t SSNflags[ISIS_MAX_CIRCUITS];
-  u_int32_t rexmit_queue[ISIS_MAX_CIRCUITS];
-  int level;			/* L1 or L2? */
-  int purged;			/* have purged this one */
-  int scheduled;		/* scheduled for sending */
-  time_t installed;
-  time_t last_generated;
-  time_t last_sent;
-  int own_lsp;
+struct isis_lsp {
+	struct isis_fixed_hdr *isis_header;		/* normally equals pdu */
+	struct isis_link_state_hdr *lsp_header;	/* pdu + isis_header_len */
+	struct stream *pdu;				/* full pdu lsp */
+	union {
+		struct list *frags;
+		struct isis_lsp *zero_lsp;
+	} lspu;
+	u_int32_t SRMflags[ISIS_MAX_CIRCUITS];
+	u_int32_t SSNflags[ISIS_MAX_CIRCUITS];
+	u_int32_t rexmit_queue[ISIS_MAX_CIRCUITS];
+	int level;			/* L1 or L2? */
+	int purged;			/* have purged this one */
+	int scheduled;		/* scheduled for sending */
+	time_t installed;
+	time_t last_generated;
+	time_t last_sent;
+	int own_lsp;
 #ifdef TOPOLOGY_GENERATE
-  int from_topology;
-  struct thread *t_lsp_top_ref;
+	int from_topology;
+	struct thread *t_lsp_top_ref;
 #endif
-  /* used for 60 second counting when rem_lifetime is zero */
-  int age_out;
-  struct isis_adjacency *adj;
-  /* FIXME: For now only topology LSP's use this. Is it helpful for others? */
-  struct isis_area *area;
-  struct tlvs tlv_data;		/* Simplifies TLV access */
+	/* used for 60 second counting when rem_lifetime is zero */
+	int age_out;
+	struct isis_adjacency *adj;
+	/* FIXME: For now only topology LSP's use this. Is it helpful for others? */
+	struct isis_area *area;
+	struct tlvs tlv_data;		/* Simplifies TLV access */
 };
 
 #define LSP_EQUAL 1

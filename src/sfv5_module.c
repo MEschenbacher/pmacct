@@ -33,35 +33,35 @@
 
 void sfv5_modules_db_init()
 {
-  memset(&sfv5_modules, 0, sizeof(sfv5_modules));
+	memset(&sfv5_modules, 0, sizeof(sfv5_modules));
 }
 
 struct sfv5_modules_db_field *sfv5_modules_db_get_ie(u_int32_t type)
 {
-  u_int16_t idx, modulo = (type%SFV5_MODULES_DB_ENTRIES);
-  struct sfv5_modules_db_field *db_ptr = NULL;
+	u_int16_t idx, modulo = (type%SFV5_MODULES_DB_ENTRIES);
+	struct sfv5_modules_db_field *db_ptr = NULL;
 
-  for (idx = 0; idx < IES_PER_SFV5_MODULES_DB_ENTRY; idx++) {
-    if (sfv5_modules.db[modulo].ie[idx].type == type) {
-      db_ptr = &sfv5_modules.db[modulo].ie[idx];
-      break;
-    }
-  }
+	for (idx = 0; idx < IES_PER_SFV5_MODULES_DB_ENTRY; idx++) {
+		if (sfv5_modules.db[modulo].ie[idx].type == type) {
+			db_ptr = &sfv5_modules.db[modulo].ie[idx];
+			break;
+		}
+	}
 
-  return db_ptr;
+	return db_ptr;
 }
 
 struct sfv5_modules_db_field *sfv5_modules_db_get_next_ie(u_int32_t type)
 {
-  u_int16_t idx, modulo = (type%SFV5_MODULES_DB_ENTRIES);
-  struct sfv5_modules_db_field *db_ptr = NULL;
+	u_int16_t idx, modulo = (type%SFV5_MODULES_DB_ENTRIES);
+	struct sfv5_modules_db_field *db_ptr = NULL;
 
-  for (idx = 0; idx < IES_PER_SFV5_MODULES_DB_ENTRY; idx++) {
-    if (sfv5_modules.db[modulo].ie[idx].type == 0) {
-      db_ptr = &sfv5_modules.db[modulo].ie[idx];
-      break;
-    }
-  }
+	for (idx = 0; idx < IES_PER_SFV5_MODULES_DB_ENTRY; idx++) {
+		if (sfv5_modules.db[modulo].ie[idx].type == 0) {
+			db_ptr = &sfv5_modules.db[modulo].ie[idx];
+			break;
+		}
+	}
 
-  return db_ptr;
+	return db_ptr;
 }

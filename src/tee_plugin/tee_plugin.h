@@ -26,8 +26,8 @@
 
 /* defines */
 #define DEFAULT_TEE_REFRESH_TIME 10
-#define MAX_TEE_POOLS 128 
-#define MAX_TEE_RECEIVERS 32 
+#define MAX_TEE_POOLS 128
+#define MAX_TEE_RECEIVERS 32
 
 #define TEE_BALANCE_NONE	0
 #define TEE_BALANCE_RR		1
@@ -39,32 +39,32 @@ typedef struct tee_receiver *(*tee_balance_algorithm) (void *, struct pkt_msg *)
 /* structures */
 struct tee_receiver {
 #if defined ENABLE_IPV6
-  struct sockaddr_storage dest;
+	struct sockaddr_storage dest;
 #else
-  struct sockaddr dest;
+	struct sockaddr dest;
 #endif
-  socklen_t dest_len;
-  int fd;
+	socklen_t dest_len;
+	int fd;
 };
 
 struct tee_balance {
-  int type;				/* Balancing algorithm: id */
-  tee_balance_algorithm func;		/* Balancing algorithm: handler */
-  int next;				/* RR algorithm: next receiver */
+	int type;				/* Balancing algorithm: id */
+	tee_balance_algorithm func;		/* Balancing algorithm: handler */
+	int next;				/* RR algorithm: next receiver */
 };
 
 struct tee_receivers_pool {
-  struct tee_receiver *receivers;
-  u_int32_t id;				/* Pool ID */
-  struct pretag_filter tag_filter; 	/* filter datagrams basing on a pre_tag_map */
-  struct tee_balance balance;		/* balance datagrams basing on supported algorithm */
-  u_int16_t src_port;			/* Non transparent mode: source UDP port to use for replication */
-  int num;				/* Number of receivers in the pool */
+	struct tee_receiver *receivers;
+	u_int32_t id;				/* Pool ID */
+	struct pretag_filter tag_filter; 	/* filter datagrams basing on a pre_tag_map */
+	struct tee_balance balance;		/* balance datagrams basing on supported algorithm */
+	u_int16_t src_port;			/* Non transparent mode: source UDP port to use for replication */
+	int num;				/* Number of receivers in the pool */
 };
 
 struct tee_receivers {
-  struct tee_receivers_pool *pools;
-  int num;
+	struct tee_receivers_pool *pools;
+	int num;
 };
 
 /* prototypes */
@@ -86,7 +86,7 @@ EXT struct tee_receiver *Tee_hash_tag_balance(void *, struct pkt_msg *);
 
 /* global variables */
 EXT char tee_send_buf[65535];
-EXT struct tee_receivers receivers; 
+EXT struct tee_receivers receivers;
 EXT int err_cant_bridge_af;
 
 #undef EXT

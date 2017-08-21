@@ -36,7 +36,7 @@ EXT pkt_handler phandler[N_PRIMITIVES];
 #else
 #define EXT
 #endif
-EXT void evaluate_packet_handlers(); 
+EXT void evaluate_packet_handlers();
 EXT void src_mac_handler(struct channels_list_entry *, struct packet_ptrs *, char **);
 EXT void dst_mac_handler(struct channels_list_entry *, struct packet_ptrs *, char **);
 EXT void vlan_handler(struct channels_list_entry *, struct packet_ptrs *, char **);

@@ -12,26 +12,26 @@
  * json_object_foreach() macro. */
 int json_object_update_missing(json_t *object, json_t *other)
 {
-    void *iter;
+	void *iter;
 
-    if(!json_is_object(object) || !json_is_object(other))
-        return -1;
+	if(!json_is_object(object) || !json_is_object(other))
+		return -1;
 
-    iter = json_object_iter(other);
-    while(iter) {
-        const char *key;
-        json_t *value;
+	iter = json_object_iter(other);
+	while(iter) {
+		const char *key;
+		json_t *value;
 
-        key = json_object_iter_key(iter);
-        if(!json_object_get(object, key)) {
-            value = json_object_iter_value(iter);
-            if(json_object_set_nocheck(object, key, value))
-                return -1;
-        }
+		key = json_object_iter_key(iter);
+		if(!json_object_get(object, key)) {
+			value = json_object_iter_value(iter);
+			if(json_object_set_nocheck(object, key, value))
+				return -1;
+		}
 
-        iter = json_object_iter_next(other, iter);
-    }
+		iter = json_object_iter_next(other, iter);
+	}
 
-    return 0;
+	return 0;
 }
 #endif

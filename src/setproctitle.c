@@ -1,7 +1,7 @@
 /*
  * setproctitle()-related routines in this file are derived from Sendmail
  * 8.13.5 which is:
- *        
+ *
  * Copyright (c) 1998-2005 Sendmail, Inc. and its suppliers.
  *      All rights reserved.
  * Copyright (c) 1983, 1995-1997 Eric P. Allman.  All rights reserved.
@@ -49,14 +49,14 @@ char pmbmpd_globstr[] = "pmbmpd\0";
 char *spt_newstr(s)
 const char *s;
 {
-  size_t l;
-  char *n;
-  
-  l = strlen(s);
-  n = malloc(l + 1);
-  strlcpy(n, s, l + 1);
+	size_t l;
+	char *n;
 
-  return n;
+	l = strlen(s);
+	n = malloc(l + 1);
+	strlcpy(n, s, l + 1);
+
+	return n;
 }
 
 #ifndef SPT_TYPE
@@ -90,9 +90,9 @@ static char	*LastArgv = NULL;	/* end of argv */
 
 void
 initsetproctitle(argc, argv, envp)
-	int argc;
-	char **argv;
-	char **envp;
+int argc;
+char **argv;
+char **envp;
 {
 	register int i;
 	int align;
@@ -103,8 +103,7 @@ initsetproctitle(argc, argv, envp)
 	**  the top of memory.
 	*/
 
-	if (envp != NULL)
-	{
+	if (envp != NULL) {
 		for (i = 0; envp[i] != NULL; i++)
 			continue;
 		environ = (char **) malloc(sizeof (char *) * (i + 1));
@@ -124,13 +123,11 @@ initsetproctitle(argc, argv, envp)
 	**  Use all contiguous argv and envp pointers starting at argv[0]
 	*/
 
-	for (i = 0; i < argc; i++)
-	{
+	for (i = 0; i < argc; i++) {
 		if (i == 0 || LastArgv + 1 == argv[i])
 			LastArgv = argv[i] + strlen(argv[i]);
 	}
-	for (i = 0; LastArgv != NULL && envp != NULL && envp[i] != NULL; i++)
-	{
+	for (i = 0; LastArgv != NULL && envp != NULL && envp[i] != NULL; i++) {
 		if (LastArgv + 1 == envp[i])
 			LastArgv = envp[i] + strlen(envp[i]);
 	}
@@ -154,8 +151,8 @@ static void
 setproctitle(const char *fmt, ...)
 # else /* __STDC__ */
 setproctitle(fmt, va_alist)
-	const char *fmt;
-	va_dcl
+const char *fmt;
+va_dcl
 # endif /* __STDC__ */
 {
 # if SPT_TYPE != SPT_NONE
@@ -209,33 +206,33 @@ void
 pm_setproctitle(const char *fmt, ...)
 #else /* __STDC__ */
 pm_setproctitle(fmt, va_alist)
-  const char *fmt;
-  va_dcl
+const char *fmt;
+va_dcl
 #endif /* __STDC__ */
 {
-  char buf[SPT_BUFSIZE];
-  char prefix[16];
-  va_list ap;
+	char buf[SPT_BUFSIZE];
+	char prefix[16];
+	va_list ap;
 
-  memset(prefix, 0, sizeof(prefix));
-  memset(buf, 0, sizeof(buf));
+	memset(prefix, 0, sizeof(prefix));
+	memset(buf, 0, sizeof(buf));
 
-  if (config.uacctd_group) strcpy(prefix, uacctd_globstr); /* XXX: hack */
-  else if (config.acct_type == ACCT_PM) strcpy(prefix, pmacctd_globstr);
-  else if (config.acct_type == ACCT_NF) strcpy(prefix, nfacctd_globstr);
-  else if (config.acct_type == ACCT_SF) strcpy(prefix, sfacctd_globstr);
-  else if (config.acct_type == ACCT_PMTELE) strcpy(prefix, pmtele_globstr);
-  else if (config.acct_type == ACCT_PMBGP) strcpy(prefix, pmbgpd_globstr);
-  else if (config.acct_type == ACCT_PMBMP) strcpy(prefix, pmbmpd_globstr);
+	if (config.uacctd_group) strcpy(prefix, uacctd_globstr); /* XXX: hack */
+	else if (config.acct_type == ACCT_PM) strcpy(prefix, pmacctd_globstr);
+	else if (config.acct_type == ACCT_NF) strcpy(prefix, nfacctd_globstr);
+	else if (config.acct_type == ACCT_SF) strcpy(prefix, sfacctd_globstr);
+	else if (config.acct_type == ACCT_PMTELE) strcpy(prefix, pmtele_globstr);
+	else if (config.acct_type == ACCT_PMBGP) strcpy(prefix, pmbgpd_globstr);
+	else if (config.acct_type == ACCT_PMBMP) strcpy(prefix, pmbmpd_globstr);
 
-  va_start(ap, fmt);
-  vsnprintf(buf, sizeof(buf), fmt, ap);
-  va_end(ap);
+	va_start(ap, fmt);
+	vsnprintf(buf, sizeof(buf), fmt, ap);
+	va_end(ap);
 
 #if SPT_TYPE != SPT_BUILTIN
-  setproctitle("%s: %s", prefix, buf);
+	setproctitle("%s: %s", prefix, buf);
 #else
-  setproctitle("%s", buf);
+	setproctitle("%s", buf);
 #endif
 }
 

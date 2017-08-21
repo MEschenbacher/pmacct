@@ -47,7 +47,7 @@ pm_regsub(regexp * prog, char * source, char * dest)
 	register char c;
 	register int no;
 	register int len;
-	
+
 	/* Not necessary and gcc doesn't like it -MLS */
 	/*extern char *strncpy();*/
 

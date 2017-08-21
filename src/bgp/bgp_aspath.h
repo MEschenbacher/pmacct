@@ -3,9 +3,9 @@
     pmacct is Copyright (C) 2003-2016 by Paolo Lucente
 */
 
-/* 
+/*
  Originally based on Quagga AS path related definitions which is:
- 
+
  Copyright (C) 1997, 98, 99 Kunihiro Ishiguro
 
 GNU Zebra is free software; you can redistribute it and/or modify it
@@ -43,25 +43,23 @@ Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 #define BGP_AS_TRANS		 23456U
 
 /* AS_PATH segment data in abstracted form, no limit is placed on length */
-struct assegment
-{
-  struct assegment *next;
-  as_t *as;
-  u_short length;
-  u_char type;
+struct assegment {
+	struct assegment *next;
+	as_t *as;
+	u_short length;
+	u_char type;
 };
 
 /* AS path may be include some AsSegments.  */
-struct aspath 
-{
-  /* Reference count to this aspath.  */
-  unsigned long refcnt;
+struct aspath {
+	/* Reference count to this aspath.  */
+	unsigned long refcnt;
 
-  /* segment data */
-  struct assegment *segments;
-  as_t last_as;
+	/* segment data */
+	struct assegment *segments;
+	as_t last_as;
 
-  char *str;
+	char *str;
 };
 
 #define ASPATH_STR_DEFAULT_LEN 32

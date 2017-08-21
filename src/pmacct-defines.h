@@ -29,13 +29,13 @@
 #define ARGS_PMBMPD "hVL:l:f:dDS:F:o:O:i:"
 #define ARGS_PMACCT "Ssc:Cetm:p:P:M:arN:n:lT:O:E:uDVUiI"
 #define N_PRIMITIVES 57
-#define N_FUNCS 10 
+#define N_FUNCS 10
 #define MAX_N_PLUGINS 32
 #define PROTO_LEN 12
 #define MAX_MAP_ENTRIES 2048 /* allow maps */
 #define BGP_MD5_MAP_ENTRIES 8192
-#define AGG_FILTER_ENTRIES 128 
-#define FOLLOW_BGP_NH_ENTRIES 32 
+#define AGG_FILTER_ENTRIES 128
+#define FOLLOW_BGP_NH_ENTRIES 32
 #define MAX_PROTOCOL_LEN 16
 #define MAX_PKT_LEN_DISTRIB_BINS 255
 #define MAX_PKT_LEN_DISTRIB_LEN 15
@@ -130,17 +130,17 @@
 #define PATH_MAX 4096
 #endif
 
-/* Daemon identificator */ 
+/* Daemon identificator */
 #define ACCT_PM			1	/* promiscuous mode */
 #define ACCT_NF			2	/* NetFlow */
 #define ACCT_SF			3	/* sFlow */
 #define ACCT_UL			4	/* Linux NetFilter NFLOG */
-#define ACCT_FWPLANE_MAX	100	/* Max ID for forwarding-plane daemons */ 
+#define ACCT_FWPLANE_MAX	100	/* Max ID for forwarding-plane daemons */
 #define ACCT_PMBGP		101	/* standalone BGP daemon */
 #define ACCT_PMBMP		102	/* standalone BMP daemon */
-#define ACCT_CTLPLANE_MAX	200	/* Max ID for control-plane daemons */ 
+#define ACCT_CTLPLANE_MAX	200	/* Max ID for control-plane daemons */
 #define ACCT_PMTELE		201	/* Streaming Network Telemetry */
-#define ACCT_INFRA_MAX		300	/* Max ID for infrastructure daemons */ 
+#define ACCT_INFRA_MAX		300	/* Max ID for infrastructure daemons */
 
 /* map type */
 #define MAP_TAG 		0	/* pre_tag_map */
@@ -299,7 +299,7 @@
 #define COUNT_POST_NAT_SRC_HOST		(COUNT_INT_POST_NAT_SRC_HOST & COUNT_REGISTRY_MASK)
 #define COUNT_POST_NAT_DST_HOST		(COUNT_INT_POST_NAT_DST_HOST & COUNT_REGISTRY_MASK)
 #define COUNT_POST_NAT_SRC_PORT		(COUNT_INT_POST_NAT_SRC_PORT & COUNT_REGISTRY_MASK)
-#define COUNT_POST_NAT_DST_PORT		(COUNT_INT_POST_NAT_DST_PORT & COUNT_REGISTRY_MASK)	
+#define COUNT_POST_NAT_DST_PORT		(COUNT_INT_POST_NAT_DST_PORT & COUNT_REGISTRY_MASK)
 #define COUNT_NAT_EVENT			(COUNT_INT_NAT_EVENT & COUNT_REGISTRY_MASK)
 #define COUNT_TIMESTAMP_START		(COUNT_INT_TIMESTAMP_START & COUNT_REGISTRY_MASK)
 #define COUNT_TIMESTAMP_END		(COUNT_INT_TIMESTAMP_END & COUNT_REGISTRY_MASK)
@@ -323,7 +323,7 @@
 /* PRIMITIVES DEFINITION: END */
 
 /* BYTES and PACKETS are used into templates; we let their values to
-   overlap with some values we will not need into templates */ 
+   overlap with some values we will not need into templates */
 #define LT_BYTES		COUNT_SRC_NET
 #define LT_PACKETS		COUNT_DST_NET
 #define LT_FLOWS		COUNT_SUM_HOST
@@ -423,40 +423,40 @@ typedef struct ndpi_proto pm_class2_t;
 #endif
 
 typedef struct {
-  union {
-    u_int32_t id;
-    char str[PM_COUNTRY_T_STRLEN];
-  };
+	union {
+		u_int32_t id;
+		char str[PM_COUNTRY_T_STRLEN];
+	};
 } pm_country_t;
 
 typedef struct {
-  char str[PM_POCODE_T_STRLEN];
+	char str[PM_POCODE_T_STRLEN];
 } pm_pocode_t;
 
 typedef struct {
-  pm_cfgreg_t type;
-  u_int32_t len;
+	pm_cfgreg_t type;
+	u_int32_t len;
 } __attribute__ ((packed)) pm_label_t;
 
 /* one-off: pt_ structures should all be defined in pretag.h */
 typedef struct {
-  u_int32_t len;
-  char *val;
+	u_int32_t len;
+	char *val;
 } pt_label_t;
 
 typedef struct {
-  u_int8_t set;
-  int n;
+	u_int8_t set;
+	int n;
 } s_int_t;
 
 typedef struct {
-  u_int8_t set;
-  u_int8_t n;
+	u_int8_t set;
+	u_int8_t n;
 } s_uint8_t;
 
 typedef struct {
-  u_int8_t set;
-  u_int16_t n;
+	u_int8_t set;
+	u_int16_t n;
 } s_uint16_t;
 
 #if defined HAVE_64BIT_COUNTERS
@@ -487,11 +487,11 @@ typedef u_int32_t pm_counter_t;
 #define NF9_FTYPE_IPV6                  2
 #define NF9_FTYPE_VLAN                  5
 #define NF9_FTYPE_VLAN_IPV4             6
-#define NF9_FTYPE_VLAN_IPV6             7 
+#define NF9_FTYPE_VLAN_IPV6             7
 #define NF9_FTYPE_MPLS                  10
 #define NF9_FTYPE_MPLS_IPV4             11
 #define NF9_FTYPE_MPLS_IPV6             12
-#define NF9_FTYPE_VLAN_MPLS             15      
+#define NF9_FTYPE_VLAN_MPLS             15
 #define NF9_FTYPE_VLAN_MPLS_IPV4        16
 #define NF9_FTYPE_VLAN_MPLS_IPV6        17
 #define NF9_FTYPE_EVENT			100 /* temporary: re-coding needed */

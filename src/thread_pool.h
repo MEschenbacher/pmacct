@@ -35,31 +35,31 @@
 #define MIN_TH_STACK_SIZE 8192000
 
 typedef struct thread_pool_item {
-  int			id;
+	int			id;
 
-  pthread_mutex_t   		*mutex;
-  pthread_cond_t    		*cond;
+	pthread_mutex_t   		*mutex;
+	pthread_cond_t    		*cond;
 
-  pthread_t         		*thread;
+	pthread_t         		*thread;
 
-  void               		(*function)(struct packet_ptrs *data);
-  struct packet_ptrs 		*data;
+	void               		(*function)(struct packet_ptrs *data);
+	struct packet_ptrs 		*data;
 
-  int                		usage;
-  int          			go;
-  int          			quit;  
+	int                		usage;
+	int          			go;
+	int          			quit;
 
-  struct thread_pool_item	*next;
-  struct thread_pool		*owner;
+	struct thread_pool_item	*next;
+	struct thread_pool		*owner;
 } thread_pool_item_t;
 
 typedef struct thread_pool {
-  int			count;
+	int			count;
 
-  thread_pool_item_t	*free_list;
+	thread_pool_item_t	*free_list;
 
-  pthread_cond_t	*cond;
-  pthread_mutex_t	*mutex;
+	pthread_cond_t	*cond;
+	pthread_mutex_t	*mutex;
 } thread_pool_t;
 
 #if (!defined __THREAD_POOL_C)

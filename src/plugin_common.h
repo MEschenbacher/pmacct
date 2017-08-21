@@ -31,7 +31,7 @@
 #endif /* #if (!defined __PLUGIN_COMMON_EXPORT) */
 
 /* defines */
-#define DEFAULT_PLUGIN_COMMON_REFRESH_TIME 60 
+#define DEFAULT_PLUGIN_COMMON_REFRESH_TIME 60
 #define DEFAULT_PLUGIN_COMMON_WRITERS_NO 10
 
 #define AVERAGE_CHAIN_LEN 10
@@ -40,59 +40,59 @@
 /* cache element states */
 #define PRINT_CACHE_FREE	0
 #define PRINT_CACHE_COMMITTED	1
-#define PRINT_CACHE_INUSE	2 
-#define PRINT_CACHE_INVALID	3 
+#define PRINT_CACHE_INUSE	2
+#define PRINT_CACHE_INVALID	3
 #define PRINT_CACHE_ERROR	255
 
 /* structures */
 #ifndef STRUCT_SCRATCH_AREA
 #define STRUCT_SCRATCH_AREA
 struct scratch_area {
-  unsigned char *base;
-  unsigned char *ptr;
-  u_int64_t num;
-  u_int64_t size;
-  struct scratch_area *next;
+	unsigned char *base;
+	unsigned char *ptr;
+	u_int64_t num;
+	u_int64_t size;
+	struct scratch_area *next;
 };
 #endif
 
 #ifndef STRUCT_CHAINED_CACHE
 #define STRUCT_CHAINED_CACHE
 struct chained_cache {
-  struct pkt_primitives primitives;
-  pm_counter_t bytes_counter;
-  pm_counter_t packet_counter;
-  pm_counter_t flow_counter;
-  u_int8_t flow_type;
-  u_int32_t tcp_flags;
-  struct pkt_bgp_primitives *pbgp;
-  struct pkt_nat_primitives *pnat;
-  struct pkt_mpls_primitives *pmpls;
-  struct pkt_tunnel_primitives *ptun;
-  char *pcust;
-  struct pkt_vlen_hdr_primitives *pvlen;
-  u_int8_t valid;
-  u_int8_t prep_valid;
-  struct timeval basetime;
-  struct pkt_stitching *stitch;
-  struct chained_cache *next;
+	struct pkt_primitives primitives;
+	pm_counter_t bytes_counter;
+	pm_counter_t packet_counter;
+	pm_counter_t flow_counter;
+	u_int8_t flow_type;
+	u_int32_t tcp_flags;
+	struct pkt_bgp_primitives *pbgp;
+	struct pkt_nat_primitives *pnat;
+	struct pkt_mpls_primitives *pmpls;
+	struct pkt_tunnel_primitives *ptun;
+	char *pcust;
+	struct pkt_vlen_hdr_primitives *pvlen;
+	u_int8_t valid;
+	u_int8_t prep_valid;
+	struct timeval basetime;
+	struct pkt_stitching *stitch;
+	struct chained_cache *next;
 };
 #endif
 
 #ifndef P_TABLE_RR
 #define P_TABLE_RR
 struct p_table_rr {
-  int min; /* unused */
-  int max;
-  int next;
+	int min; /* unused */
+	int max;
+	int next;
 };
 #endif
 
 #ifndef P_BROKER_TIMERS
 #define P_BROKER_TIMERS
 struct p_broker_timers {
-  time_t last_fail;
-  int retry_interval;
+	time_t last_fail;
+	int retry_interval;
 };
 #endif
 
@@ -145,13 +145,13 @@ EXT int P_test_zero_elem(struct chained_cache *);
 
 /* global vars */
 EXT void (*insert_func)(struct primitives_ptrs *, struct insert_data *); /* pointer to INSERT function */
-EXT void (*purge_func)(struct chained_cache *[], int, int); /* pointer to purge function */ 
+EXT void (*purge_func)(struct chained_cache *[], int, int); /* pointer to purge function */
 EXT struct scratch_area sa;
 EXT struct chained_cache *cache;
 EXT struct chained_cache **queries_queue, **pending_queries_queue, *pqq_container;
 EXT struct timeval flushtime;
 EXT int qq_ptr, pqq_ptr, pp_size, pb_size, pn_size, pm_size, pt_size, pc_size;
-EXT int dbc_size, quit; 
+EXT int dbc_size, quit;
 EXT time_t refresh_deadline;
 
 EXT void (*basetime_init)(time_t);

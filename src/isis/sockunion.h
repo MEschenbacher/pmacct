@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with GNU Zebra; see the file COPYING.  If not, write to the Free
  * Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
- * 02111-1307, USA.  
+ * 02111-1307, USA.
  */
 
 #ifndef _SOCKUNION_H_
@@ -25,33 +25,31 @@
 
 #if 0
 union sockunion {
-  struct sockinet {
-    u_char si_len;
-    u_char si_family;
-    u_short si_port;
-  } su_si;
-  struct sockaddr_in  su_sin;
-  struct sockaddr_in6 su_sin6;
+	struct sockinet {
+		u_char si_len;
+		u_char si_family;
+		u_short si_port;
+	} su_si;
+	struct sockaddr_in  su_sin;
+	struct sockaddr_in6 su_sin6;
 };
 #define su_len                su_si.si_len
 #define su_family     su_si.si_family
 #define su_port               su_si.si_port
 #endif /* 0 */
 
-union sockunion 
-{
-  struct sockaddr sa;
-  struct sockaddr_in sin;
+union sockunion {
+	struct sockaddr sa;
+	struct sockaddr_in sin;
 #ifdef ENABLE_IPV6
-  struct sockaddr_in6 sin6;
+	struct sockaddr_in6 sin6;
 #endif /* ENABLE_IPV6 */
 };
 
-enum connect_result
-{
-  connect_error,
-  connect_success,
-  connect_in_progress
+enum connect_result {
+	connect_error,
+	connect_success,
+	connect_in_progress
 };
 
 /* Default address family. */

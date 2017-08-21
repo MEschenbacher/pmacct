@@ -88,7 +88,7 @@
 
 /*
 #ifndef IP_OFFMASK
-# define IP_OFFMASK		0x1fff	
+# define IP_OFFMASK		0x1fff
 #endif
 #ifndef IPV6_VERSION
 #define IPV6_VERSION		0x60

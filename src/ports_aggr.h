@@ -20,12 +20,12 @@
 */
 
 /* defines */
-#define PORTS_TABLE_ENTRIES 65536 
+#define PORTS_TABLE_ENTRIES 65536
 
 /* structures */
 struct ports_table {
-  u_int8_t table[PORTS_TABLE_ENTRIES];
-  time_t timestamp;
+	u_int8_t table[PORTS_TABLE_ENTRIES];
+	time_t timestamp;
 };
 
 /* prototypes */
@@ -34,6 +34,6 @@ struct ports_table {
 #else
 #define EXT
 #endif
-EXT void load_ports(char *, struct ports_table *); 
+EXT void load_ports(char *, struct ports_table *);
 #undef EXT
 

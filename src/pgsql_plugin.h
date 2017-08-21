@@ -70,5 +70,5 @@ static char pgsql_table_as_v2[] = "acct_as_v2";
 static char pgsql_table_as_v3[] = "acct_as_v3";
 static char pgsql_table_as_v4[] = "acct_as_v4";
 static char pgsql_table_as_v5[] = "acct_as_v5";
-static char typed_str[] = "typed"; 
-static char unified_str[] = "unified"; 
+static char typed_str[] = "typed";
+static char unified_str[] = "unified";

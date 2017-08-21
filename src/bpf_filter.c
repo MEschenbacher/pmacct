@@ -125,8 +125,8 @@
 
 static int
 m_xword(m, k, err)
-	register struct mbuf *m;
-	register int k, *err;
+register struct mbuf *m;
+register int k, *err;
 {
 	register int len;
 	register u_char *cp, *np;
@@ -154,15 +154,15 @@ m_xword(m, k, err)
 	default:
 		return (cp[0] << 24) | (cp[1] << 16) | (cp[2] << 8) | np[0];
 	}
-    bad:
+bad:
 	*err = 1;
 	return 0;
 }
 
 static int
 m_xhalf(m, k, err)
-	register struct mbuf *m;
-	register int k, *err;
+register struct mbuf *m;
+register int k, *err;
 {
 	register int len;
 	register u_char *cp;
@@ -179,7 +179,7 @@ m_xhalf(m, k, err)
 		goto bad;
 	*err = 0;
 	return (cp[0] << 8) | mtod(m0, u_char *)[0];
- bad:
+bad:
 	*err = 1;
 	return 0;
 }
@@ -194,10 +194,10 @@ m_xhalf(m, k, err)
  */
 u_int
 bpf_filter(pc, p, wirelen, buflen)
-	register struct bpf_insn *pc;
-	register u_char *p;
-	u_int wirelen;
-	register u_int buflen;
+register struct bpf_insn *pc;
+register u_char *p;
+u_int wirelen;
+register u_int buflen;
 {
 	register u_int32 A, X;
 	register int k;
@@ -518,8 +518,8 @@ bpf_filter(pc, p, wirelen, buflen)
  */
 int
 bpf_validate(f, len)
-	struct bpf_insn *f;
-	int len;
+struct bpf_insn *f;
+int len;
 {
 	register int i;
 	register struct bpf_insn *p;
@@ -536,8 +536,7 @@ bpf_validate(f, len)
 			if (BPF_OP(p->code) == BPF_JA) {
 				if (from + p->k >= (unsigned)len)
 					return 0;
-			}
-			else if (from + p->jt >= len || from + p->jf >= len)
+			} else if (from + p->jt >= len || from + p->jf >= len)
 				return 0;
 		}
 		/*

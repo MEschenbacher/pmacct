@@ -1,4 +1,4 @@
-/*  
+/*
     pmacct (Promiscuous mode IP Accounting package)
     pmacct is Copyright (C) 2003-2017 by Paolo Lucente
 */
@@ -23,7 +23,7 @@
 #define _ONCE_H_
 
 #if defined __PMACCTD_C || defined __NFACCTD_C || defined __SFACCTD_C || defined __UACCTD_C || defined __PMACCT_CLIENT_C || defined __PMTELEMETRYD_C || defined __PMBGPD_C || defined __PMBMPD_C
-#define EXT 
+#define EXT
 #else
 #define EXT extern
 #endif
@@ -36,10 +36,10 @@ EXT u_int32_t IpFixHdrSz;
 EXT u_int32_t NfDataHdrV9Sz, NfTplHdrV9Sz, NfOptTplHdrV9Sz;
 EXT u_int32_t NfTplFieldV9Sz;
 EXT u_int32_t NfDataV1Sz, NfDataV5Sz, NfDataV7Sz;
-EXT u_int32_t IP4HdrSz, IP4TlSz, IP6HdrSz, IP6AddrSz, IP6TlSz; 
+EXT u_int32_t IP4HdrSz, IP4TlSz, IP6HdrSz, IP6AddrSz, IP6TlSz;
 EXT u_int32_t MyTLHdrSz, TCPFlagOff;
 EXT u_int32_t SFSampleSz, SFLAddressSz, SFrenormEntrySz;
-EXT u_int32_t PptrsSz, UDPHdrSz, CSSz, MyTCPHdrSz, IpFlowCmnSz; 
+EXT u_int32_t PptrsSz, UDPHdrSz, CSSz, MyTCPHdrSz, IpFlowCmnSz;
 EXT u_int16_t PbgpSz, PlbgpSz, PnatSz, PmplsSz, PtunSz;
 
 #undef EXT

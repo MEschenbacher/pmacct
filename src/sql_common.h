@@ -35,11 +35,11 @@
 #define DEFAULT_DB_REFRESH_TIME 60
 #define DEFAULT_SQL_TABLE_VERSION 1
 #define DEFAULT_SQL_WRITERS_NO 10
-#define CACHE_ENTRIES 32771 
+#define CACHE_ENTRIES 32771
 #define QUERY_BUFFER_SIZE 32768
 #define MAGIC 14021979
-#define DEF_HDR_FIELD_LEN 128 
-#define MAX_LOGFILE_SIZE 2048000000 
+#define DEF_HDR_FIELD_LEN 128
+#define MAX_LOGFILE_SIZE 2048000000
 #define MAX_LOGFILE_ROTATIONS 1000
 
 /* cache elements defines */
@@ -60,8 +60,8 @@
 /* cache element states */
 #define SQL_CACHE_FREE		0
 #define SQL_CACHE_COMMITTED	1
-#define SQL_CACHE_INUSE		2 
-#define SQL_CACHE_INVALID	3 
+#define SQL_CACHE_INUSE		2
+#define SQL_CACHE_INVALID	3
 #define SQL_CACHE_ERROR		255
 
 #define SQL_TABLE_VERSION_PLAIN 0
@@ -78,94 +78,94 @@
 #define SQL_INSERT_SAFE_ACTION	0x00000008
 
 struct multi_values {
-  int buffer_offset;      /* multi-values buffer offset where to write next query */ 
-  int head_buffer_elem;   /* first multi-values buffer element */ 
-  int buffer_elem_num;    /* number of elements in the multi-values buffer */ 
-  int last_queue_elem;    /* last queue element signallation */
+	int buffer_offset;      /* multi-values buffer offset where to write next query */
+	int head_buffer_elem;   /* first multi-values buffer element */
+	int buffer_elem_num;    /* number of elements in the multi-values buffer */
+	int last_queue_elem;    /* last queue element signallation */
 };
 
 /* structures */
 struct insert_data {
-  struct configuration *cfg;
-  unsigned int hash;
-  unsigned int modulo;
-  time_t now;
-  time_t basetime;   
-  time_t triggertime;
-  time_t timeslot;   /* counters timeslot */ 
-  time_t t_timeslot; /* trigger timeslot */
-  struct timeval flushtime; /* last time the table has been flushed */
-  int pending_accumulators;
-  int num_primitives;
-  int dyn_table;
-  int dyn_table_time_only;
-  char dyn_table_name[SRVBUFLEN];
-  int recover;
-  int locks;
-  time_t new_basetime;
-  time_t committed_basetime;
-  int current_queue_elem;
-  struct multi_values mv;
-  int cp_idx; /* custom primitives index */
-  /* stats */
-  time_t elap_time; /* elapsed time */
-  unsigned int ten; /* total elements number */
-  unsigned int een; /* effective elements number */ 
-  unsigned int qn; /* total query number */
-  unsigned int iqn; /* INSERTs query number */
-  unsigned int uqn; /* UPDATEs query number */
+	struct configuration *cfg;
+	unsigned int hash;
+	unsigned int modulo;
+	time_t now;
+	time_t basetime;
+	time_t triggertime;
+	time_t timeslot;   /* counters timeslot */
+	time_t t_timeslot; /* trigger timeslot */
+	struct timeval flushtime; /* last time the table has been flushed */
+	int pending_accumulators;
+	int num_primitives;
+	int dyn_table;
+	int dyn_table_time_only;
+	char dyn_table_name[SRVBUFLEN];
+	int recover;
+	int locks;
+	time_t new_basetime;
+	time_t committed_basetime;
+	int current_queue_elem;
+	struct multi_values mv;
+	int cp_idx; /* custom primitives index */
+	/* stats */
+	time_t elap_time; /* elapsed time */
+	unsigned int ten; /* total elements number */
+	unsigned int een; /* effective elements number */
+	unsigned int qn; /* total query number */
+	unsigned int iqn; /* INSERTs query number */
+	unsigned int uqn; /* UPDATEs query number */
 };
 
 struct db_cache {
-  struct pkt_primitives primitives;
-  pm_counter_t bytes_counter;
-  pm_counter_t packet_counter;
-  pm_counter_t flows_counter;
-  u_int8_t flow_type;
-  u_int32_t tcp_flags;
-  u_int8_t tentatives;	/* support to classifiers: tentatives remaining */
-  time_t basetime;
-  struct pkt_bgp_primitives *pbgp;
-  struct pkt_nat_primitives *pnat;
-  struct pkt_mpls_primitives *pmpls;
-  struct pkt_tunnel_primitives *ptun;
-  char *pcust;
-  struct pkt_vlen_hdr_primitives *pvlen;
-  u_int8_t valid;
-  u_int8_t prep_valid;
-  unsigned int signature;
-  u_int8_t chained;
-  struct pkt_stitching *stitch;
-  struct db_cache *prev;
-  struct db_cache *next;
-  time_t start_tag;	/* time: first packet received */
-  time_t lru_tag;	/* time: last packet received */
-  struct db_cache *lru_prev;
-  struct db_cache *lru_next;
+	struct pkt_primitives primitives;
+	pm_counter_t bytes_counter;
+	pm_counter_t packet_counter;
+	pm_counter_t flows_counter;
+	u_int8_t flow_type;
+	u_int32_t tcp_flags;
+	u_int8_t tentatives;	/* support to classifiers: tentatives remaining */
+	time_t basetime;
+	struct pkt_bgp_primitives *pbgp;
+	struct pkt_nat_primitives *pnat;
+	struct pkt_mpls_primitives *pmpls;
+	struct pkt_tunnel_primitives *ptun;
+	char *pcust;
+	struct pkt_vlen_hdr_primitives *pvlen;
+	u_int8_t valid;
+	u_int8_t prep_valid;
+	unsigned int signature;
+	u_int8_t chained;
+	struct pkt_stitching *stitch;
+	struct db_cache *prev;
+	struct db_cache *next;
+	time_t start_tag;	/* time: first packet received */
+	time_t lru_tag;	/* time: last packet received */
+	struct db_cache *lru_prev;
+	struct db_cache *lru_next;
 };
 
 typedef void (*dbop_handler) (const struct db_cache *, struct insert_data *, int, char **, char **);
 
 struct frags {
-  dbop_handler handler;
-  u_int64_t type;
-  char string[SRVBUFLEN];
+	dbop_handler handler;
+	u_int64_t type;
+	char string[SRVBUFLEN];
 };
 
 /* Backend descriptors */
 struct DBdesc {
-  void *desc;
-  char *conn_string; /* PostgreSQL */
-  char *filename; /* SQLite */
-  char *errmsg;
-  short int type;
-  short int connected;
-  short int fail;
+	void *desc;
+	char *conn_string; /* PostgreSQL */
+	char *filename; /* SQLite */
+	char *errmsg;
+	short int type;
+	short int connected;
+	short int fail;
 };
 
-struct BE_descs { 
-  struct DBdesc *p;
-  struct DBdesc *b;
+struct BE_descs {
+	struct DBdesc *p;
+	struct DBdesc *b;
 };
 
 /* Callbacks for a common SQL layer */
@@ -174,19 +174,19 @@ typedef void (*db_close)(struct BE_descs *);
 typedef void (*db_lock)(struct DBdesc *);
 typedef void (*db_unlock)(struct BE_descs *);
 typedef void (*db_create_table)(struct DBdesc *, char *);
-typedef int (*db_op)(struct DBdesc *, struct db_cache *, struct insert_data *); 
+typedef int (*db_op)(struct DBdesc *, struct db_cache *, struct insert_data *);
 typedef void (*sqlcache_purge)(struct db_cache *[], int, struct insert_data *);
 typedef void (*sqlbackend_create)(struct DBdesc *);
 struct sqlfunc_cb_registry {
-  db_connect connect;
-  db_close close;
-  db_lock lock;
-  db_unlock unlock;
-  db_op op;
-  db_create_table create_table;
-  sqlbackend_create create_backend;
-  sqlcache_purge purge;
-  /* flush and query wrapper are common for all SQL plugins */
+	db_connect connect;
+	db_close close;
+	db_lock lock;
+	db_unlock unlock;
+	db_op op;
+	db_create_table create_table;
+	sqlbackend_create create_backend;
+	sqlcache_purge purge;
+	/* flush and query wrapper are common for all SQL plugins */
 };
 
 #if (!defined __SQL_COMMON_EXPORT)
@@ -347,8 +347,8 @@ EXT int sql_evaluate_primitives(int);
 EXT void sql_create_table(struct DBdesc *, time_t *, struct primitives_ptrs *);
 EXT void sql_invalidate_shadow_entries(struct db_cache *[], int *);
 EXT int sql_select_locking_style(char *);
-EXT int sql_compose_static_set(int); 
-EXT int sql_compose_static_set_event(); 
+EXT int sql_compose_static_set(int);
+EXT int sql_compose_static_set_event();
 EXT void primptrs_set_all_from_db_cache(struct primitives_ptrs *, struct db_cache *);
 
 EXT void sql_sum_host_insert(struct primitives_ptrs *, struct insert_data *);
@@ -363,7 +363,7 @@ EXT void sql_sum_ext_comm_insert(struct primitives_ptrs *, struct insert_data *)
 #undef EXT
 
 #if (!defined __MYSQL_PLUGIN_C) && (!defined __PMACCT_PLAYER_C) && \
-	(!defined __PGSQL_PLUGIN_C) && (!defined __SQLITE3_PLUGIN_C) 
+	(!defined __PGSQL_PLUGIN_C) && (!defined __SQLITE3_PLUGIN_C)
 #define EXT extern
 #else
 #define EXT
@@ -402,7 +402,7 @@ EXT time_t glob_committed_basetime; /* last resort for signal handling */
 EXT int glob_dyn_table, glob_dyn_table_time_only; /* last resort for signal handling */
 EXT int glob_timeslot; /* last resort for sql handlers */
 
-EXT struct sqlfunc_cb_registry sqlfunc_cbr; 
+EXT struct sqlfunc_cb_registry sqlfunc_cbr;
 EXT void (*insert_func)(struct primitives_ptrs *, struct insert_data *);
 EXT struct DBdesc p;
 EXT struct DBdesc b;

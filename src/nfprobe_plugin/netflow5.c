@@ -70,8 +70,8 @@ struct NF5_FLOW {
  */
 int
 send_netflow_v5(struct FLOW **flows, int num_flows, int nfsock,
-    u_int64_t *flows_exported, struct timeval *system_boot_time,
-    int verbose_flag, u_int8_t engine_type, u_int8_t engine_id)
+                u_int64_t *flows_exported, struct timeval *system_boot_time,
+                int verbose_flag, u_int8_t engine_type, u_int8_t engine_id)
 {
 	struct timeval now;
 	u_int32_t uptime_ms;
@@ -80,7 +80,7 @@ send_netflow_v5(struct FLOW **flows, int num_flows, int nfsock,
 	struct NF5_FLOW *flw = NULL;
 	int i, j, offset, num_packets, err;
 	socklen_t errsz;
-	
+
 	gettimeofday(&now, NULL);
 	uptime_ms = timeval_sub_ms(&now, system_boot_time);
 
@@ -88,14 +88,14 @@ send_netflow_v5(struct FLOW **flows, int num_flows, int nfsock,
 	for(num_packets = offset = j = i = 0; i < num_flows; i++) {
 		if (j >= NF5_MAXFLOWS - 1) {
 			if (verbose_flag)
-			  Log(LOG_DEBUG, "DEBUG ( %s/%s ): Sending NetFlow v5 packet: len = %d\n", config.name, config.type, offset);
+				Log(LOG_DEBUG, "DEBUG ( %s/%s ): Sending NetFlow v5 packet: len = %d\n", config.name, config.type, offset);
 			hdr->flows = htons(hdr->flows);
 			errsz = sizeof(err);
 			getsockopt(nfsock, SOL_SOCKET, SO_ERROR,
-			    &err, &errsz); /* Clear ICMP errors */
+			           &err, &errsz); /* Clear ICMP errors */
 			if (send(nfsock, packet, (size_t)offset, 0) == -1) {
-			  Log(LOG_WARNING, "WARN ( %s/%s ): send() failed: %s\n", config.name, config.type, strerror(errno));
-			  return (-1);
+				Log(LOG_WARNING, "WARN ( %s/%s ): send() failed: %s\n", config.name, config.type, strerror(errno));
+				return (-1);
 			}
 			*flows_exported += j;
 			j = 0;
@@ -111,13 +111,13 @@ send_netflow_v5(struct FLOW **flows, int num_flows, int nfsock,
 			hdr->flow_sequence = htonl(*flows_exported);
 			hdr->engine_type = engine_type;
 			hdr->engine_id = engine_id;
-			if (config.sampling_rate) 
-			  hdr->sampling = htons(config.sampling_rate & 0x3FFF); 
-			else if (config.ext_sampling_rate) 
-			  hdr->sampling = htons(config.ext_sampling_rate & 0x3FFF); 
+			if (config.sampling_rate)
+				hdr->sampling = htons(config.sampling_rate & 0x3FFF);
+			else if (config.ext_sampling_rate)
+				hdr->sampling = htons(config.ext_sampling_rate & 0x3FFF);
 			if (hdr->sampling) hdr->sampling |= (htons(1) >> 2);
 			offset = sizeof(*hdr);
-		}		
+		}
 		flw = (struct NF5_FLOW *)(packet + offset);
 
 		/* NetFlow v.5 doesn't do IPv6 */
@@ -132,18 +132,18 @@ send_netflow_v5(struct FLOW **flows, int num_flows, int nfsock,
 			flw->dst_mask = flows[i]->mask[1];
 			flw->src_port = flows[i]->port[0];
 			flw->dest_port = flows[i]->port[1];
-                        flw->if_index_in = htons(flows[i]->ifindex[0]);
-                        flw->if_index_out = htons(flows[i]->ifindex[1]);
+			flw->if_index_in = htons(flows[i]->ifindex[0]);
+			flw->if_index_out = htons(flows[i]->ifindex[1]);
 			{
-			  as_t tmp_as;
+				as_t tmp_as;
 
-			  tmp_as = ntohl(flows[i]->as[0]);
-			  if (tmp_as > 65535) flw->src_as = htons(23456);
-			  else flw->src_as = htons(tmp_as);
+				tmp_as = ntohl(flows[i]->as[0]);
+				if (tmp_as > 65535) flw->src_as = htons(23456);
+				else flw->src_as = htons(tmp_as);
 
-			  tmp_as = ntohl(flows[i]->as[1]);
-			  if (tmp_as > 65535) flw->dest_as = htons(23456);
-			  else flw->dest_as = htons(tmp_as);
+				tmp_as = ntohl(flows[i]->as[1]);
+				if (tmp_as > 65535) flw->dest_as = htons(23456);
+				else flw->dest_as = htons(tmp_as);
 			}
 #if defined HAVE_64BIT_COUNTERS
 			rec32 = flows[i]->packets[0];
@@ -158,10 +158,10 @@ send_netflow_v5(struct FLOW **flows, int num_flows, int nfsock,
 
 			flw->flow_start =
 			    htonl(timeval_sub_ms(&flows[i]->flow_start,
-			    system_boot_time));
+			                         system_boot_time));
 			flw->flow_finish =
 			    htonl(timeval_sub_ms(&flows[i]->flow_last,
-			    system_boot_time));
+			                         system_boot_time));
 			flw->tcp_flags = flows[i]->tcp_flags[0];
 			flw->protocol = flows[i]->protocol;
 			flw->tos = flows[i]->tos[0];
@@ -180,18 +180,18 @@ send_netflow_v5(struct FLOW **flows, int num_flows, int nfsock,
 			flw->dst_mask = flows[i]->mask[0];
 			flw->src_port = flows[i]->port[1];
 			flw->dest_port = flows[i]->port[0];
-                        flw->if_index_in = htons(flows[i]->ifindex[1]);
-                        flw->if_index_out = htons(flows[i]->ifindex[0]);
+			flw->if_index_in = htons(flows[i]->ifindex[1]);
+			flw->if_index_out = htons(flows[i]->ifindex[0]);
 			{
-			  as_t tmp_as;
-			  
-			  tmp_as = ntohl(flows[i]->as[1]);
-			  if (tmp_as > 65535) flw->src_as = htons(23456);
-			  else flw->src_as = htons(tmp_as);
+				as_t tmp_as;
 
-			  tmp_as = ntohl(flows[i]->as[0]);
-			  if (tmp_as > 65535) flw->dest_as = htons(23456);
-			  else flw->dest_as = htons(tmp_as);
+				tmp_as = ntohl(flows[i]->as[1]);
+				if (tmp_as > 65535) flw->src_as = htons(23456);
+				else flw->src_as = htons(tmp_as);
+
+				tmp_as = ntohl(flows[i]->as[0]);
+				if (tmp_as > 65535) flw->dest_as = htons(23456);
+				else flw->dest_as = htons(tmp_as);
 			}
 #if defined HAVE_64BIT_COUNTERS
 			rec32 = flows[i]->packets[1];
@@ -205,10 +205,10 @@ send_netflow_v5(struct FLOW **flows, int num_flows, int nfsock,
 #endif
 			flw->flow_start =
 			    htonl(timeval_sub_ms(&flows[i]->flow_start,
-			    system_boot_time));
+			                         system_boot_time));
 			flw->flow_finish =
 			    htonl(timeval_sub_ms(&flows[i]->flow_last,
-			    system_boot_time));
+			                         system_boot_time));
 			flw->tcp_flags = flows[i]->tcp_flags[1];
 			flw->protocol = flows[i]->protocol;
 			flw->tos = flows[i]->tos[1];
@@ -221,14 +221,14 @@ send_netflow_v5(struct FLOW **flows, int num_flows, int nfsock,
 	/* Send any leftovers */
 	if (j != 0) {
 		if (verbose_flag)
-		  Log(LOG_DEBUG, "DEBUG ( %s/%s ): Sending NetFlow v5 packet: len = %d\n", config.name, config.type, offset);
+			Log(LOG_DEBUG, "DEBUG ( %s/%s ): Sending NetFlow v5 packet: len = %d\n", config.name, config.type, offset);
 		hdr->flows = htons(hdr->flows);
 		errsz = sizeof(err);
 		getsockopt(nfsock, SOL_SOCKET, SO_ERROR,
-		    &err, &errsz); /* Clear ICMP errors */
+		           &err, &errsz); /* Clear ICMP errors */
 		if (send(nfsock, packet, (size_t)offset, 0) == -1) {
-		  Log(LOG_WARNING, "WARN ( %s/%s ): send() failed: %s\n", config.name, config.type, strerror(errno));
-	 	  return (-1);
+			Log(LOG_WARNING, "WARN ( %s/%s ): send() failed: %s\n", config.name, config.type, strerror(errno));
+			return (-1);
 		}
 		num_packets++;
 	}

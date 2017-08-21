@@ -25,60 +25,55 @@
 #define XFLOW_STATUS_TABLE_MAX_ENTRIES 100000
 
 /* structures */
-struct xflow_status_entry_counters
-{
-  u_int32_t good;
-  u_int32_t jumps_f;
-  u_int32_t jumps_b;
+struct xflow_status_entry_counters {
+	u_int32_t good;
+	u_int32_t jumps_f;
+	u_int32_t jumps_b;
 };
 
-struct xflow_status_entry_sampling
-{
-  u_int32_t interface;		/* sFlow/NetFlow v9: interface generating the sample */
-  u_int32_t sample_pool;	/* sampling rate */
-  u_int32_t seqno;		/* sFlow: flow samples sequence number */
-  u_int32_t sampler_id;		/* NetFlow v9: flow sampler ID field */ 
-  struct xflow_status_entry_sampling *next;
+struct xflow_status_entry_sampling {
+	u_int32_t interface;		/* sFlow/NetFlow v9: interface generating the sample */
+	u_int32_t sample_pool;	/* sampling rate */
+	u_int32_t seqno;		/* sFlow: flow samples sequence number */
+	u_int32_t sampler_id;		/* NetFlow v9: flow sampler ID field */
+	struct xflow_status_entry_sampling *next;
 };
 
-struct xflow_status_entry_class
-{
-  pm_class_t class_id;				/* NetFlow v9: classfier ID field */
-  pm_class_t class_int_id;			/* NetFlow v9: internal classfier ID field */
-  char class_name[MAX_PROTOCOL_LEN];		/* NetFlow v9: classfier name field */
-  struct xflow_status_entry_class *next;
+struct xflow_status_entry_class {
+	pm_class_t class_id;				/* NetFlow v9: classfier ID field */
+	pm_class_t class_int_id;			/* NetFlow v9: internal classfier ID field */
+	char class_name[MAX_PROTOCOL_LEN];		/* NetFlow v9: classfier name field */
+	struct xflow_status_entry_class *next;
 };
 
-struct xflow_status_map_cache
-{
-  pm_id_t tag;
-  pm_id_t tag2;
-  s_uint16_t port;		/* BGP port */
-  int ret;
-  struct timeval stamp;
+struct xflow_status_map_cache {
+	pm_id_t tag;
+	pm_id_t tag2;
+	s_uint16_t port;		/* BGP port */
+	int ret;
+	struct timeval stamp;
 };
 
-struct xflow_status_entry
-{
-  struct host_addr agent_addr;  /* xFlow agent IP address */
-  u_int32_t seqno;              /* Sequence number */
-  u_int32_t aux1;               /* Some more distinguishing fields:
+struct xflow_status_entry {
+	struct host_addr agent_addr;  /* xFlow agent IP address */
+	u_int32_t seqno;              /* Sequence number */
+	u_int32_t aux1;               /* Some more distinguishing fields:
                                    NetFlow v5-v8: Engine Type + Engine ID
                                    NetFlow v9: Source ID
                                    IPFIX: ObservedDomainID
                                    sFlow v5: agentSubID */
-  u_int32_t aux2;		/* Some more distinguishing (internal) flags */
-  u_int16_t inc;		/* increment, NetFlow v5: required by flow sequence number */
-  u_int32_t peer_v4_idx;        /* last known BGP peer index for ipv4 address family */
-  u_int32_t peer_v6_idx;        /* last known BGP peer index for ipv6 address family */
-  struct xflow_status_map_cache bta_v4;			/* last known bgp_agent_map IPv4 result */
-  struct xflow_status_map_cache bta_v6;			/* last known bgp_agent_map IPv6 result */
-  struct xflow_status_map_cache st;			/* last known sampling_map result */
-  struct xflow_status_entry_counters counters;
-  struct xflow_status_entry_sampling *sampling;
-  struct xflow_status_entry_class *class;
-  void *sf_cnt;			/* struct (ab)used for sFlow counters logging */
-  struct xflow_status_entry *next;
+	u_int32_t aux2;		/* Some more distinguishing (internal) flags */
+	u_int16_t inc;		/* increment, NetFlow v5: required by flow sequence number */
+	u_int32_t peer_v4_idx;        /* last known BGP peer index for ipv4 address family */
+	u_int32_t peer_v6_idx;        /* last known BGP peer index for ipv6 address family */
+	struct xflow_status_map_cache bta_v4;			/* last known bgp_agent_map IPv4 result */
+	struct xflow_status_map_cache bta_v6;			/* last known bgp_agent_map IPv6 result */
+	struct xflow_status_map_cache st;			/* last known sampling_map result */
+	struct xflow_status_entry_counters counters;
+	struct xflow_status_entry_sampling *sampling;
+	struct xflow_status_entry_class *class;
+	void *sf_cnt;			/* struct (ab)used for sFlow counters logging */
+	struct xflow_status_entry *next;
 };
 
 /* prototypes */

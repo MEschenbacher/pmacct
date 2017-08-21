@@ -20,30 +20,30 @@
 */
 
 static const struct _preprocess_dictionary_line sql_prep_dict[] = {
-  {"qnum"},
-  {"minp"},
-  {"minf"},
-  {"minb"},
-  {"maxp"},
-  {"maxf"},
-  {"maxb"},
-  {"minbpp"},
-  {"minppf"},
-  {"maxbpp"},
-  {"maxppf"},
-  {"fss"},
-  {"fsrc"},
-  {"usrf"},
-  {"adjb"},
-  {"recover"},
-  {""}
+	{"qnum"},
+	{"minp"},
+	{"minf"},
+	{"minb"},
+	{"maxp"},
+	{"maxf"},
+	{"maxb"},
+	{"minbpp"},
+	{"minppf"},
+	{"maxbpp"},
+	{"maxppf"},
+	{"fss"},
+	{"fsrc"},
+	{"usrf"},
+	{"adjb"},
+	{"recover"},
+	{""}
 };
 
 static const struct _preprocess_dictionary_line print_prep_dict[] = {
-  {"minp"},
-  {"minf"},
-  {"minb"},
-  {"minbpp"},
-  {"minppf"},
-  {""}
+	{"minp"},
+	{"minf"},
+	{"minb"},
+	{"minbpp"},
+	{"minppf"},
+	{""}
 };

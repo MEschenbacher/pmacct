@@ -1,4 +1,4 @@
-/*  
+/*
     pmacct (Promiscuous mode IP Accounting package)
     pmacct is Copyright (C) 2003-2016 by Paolo Lucente
 */
@@ -27,25 +27,23 @@
 #define LCOMMUNITY_STR_DEFAULT_LEN	32
 
 /* Large Communities attribute */
-struct lcommunity
-{
-  /* Reference counter */
-  unsigned long refcnt;
+struct lcommunity {
+	/* Reference counter */
+	unsigned long refcnt;
 
-  /* Size of Large Communities attribute.  */
-  int size;
+	/* Size of Large Communities attribute.  */
+	int size;
 
-  /* Large Communities value.  */
-  u_int8_t *val;
+	/* Large Communities value.  */
+	u_int8_t *val;
 
-  /* Human readable format string.  */
-  char *str;
+	/* Human readable format string.  */
+	char *str;
 };
 
 /* Extended community value is eight octet.  */
-struct lcommunity_val
-{
-  char val[LCOMMUNITY_SIZE];
+struct lcommunity_val {
+	char val[LCOMMUNITY_SIZE];
 };
 
 #define lcom_length(X)    ((X)->size * LCOMMUNITY_SIZE)

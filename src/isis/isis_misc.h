@@ -3,21 +3,21 @@
  *                             Miscellanous routines
  *
  * Copyright (C) 2001,2002   Sampo Saaristo
- *                           Tampere University of Technology      
+ *                           Tampere University of Technology
  *                           Institute of Communications Engineering
  *
- * This program is free software; you can redistribute it and/or modify it 
- * under the terms of the GNU General Public Licenseas published by the Free 
- * Software Foundation; either version 2 of the License, or (at your option) 
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public Licenseas published by the Free
+ * Software Foundation; either version 2 of the License, or (at your option)
  * any later version.
  *
- * This program is distributed in the hope that it will be useful,but WITHOUT 
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or 
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for 
+ * This program is distributed in the hope that it will be useful,but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
  * more details.
 
- * You should have received a copy of the GNU General Public License along 
- * with this program; if not, write to the Free Software Foundation, Inc., 
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
  * 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
@@ -30,35 +30,34 @@
 /* defines */
 
 /* Host configuration variable */
-struct host
-{
-  /* Host name of this router. */
-  char *name;
+struct host {
+	/* Host name of this router. */
+	char *name;
 
-  /* Password for vty interface. */
-  char *password;
-  char *password_encrypt;
+	/* Password for vty interface. */
+	char *password;
+	char *password_encrypt;
 
-  /* Enable password */
-  char *enable;
-  char *enable_encrypt;
+	/* Enable password */
+	char *enable;
+	char *enable_encrypt;
 
-  /* System wide terminal lines. */
-  int lines;
+	/* System wide terminal lines. */
+	int lines;
 
-  /* Log filename. */
-  char *logfile;
+	/* Log filename. */
+	char *logfile;
 
-  /* config file name of this host */
-  char *config;
+	/* config file name of this host */
+	char *config;
 
-  /* Flags for services */
-  int advanced;
-  int encrypt;
+	/* Flags for services */
+	int advanced;
+	int encrypt;
 
-  /* Banner configuration. */
-  const char *motd;
-  char *motdfile;
+	/* Banner configuration. */
+	const char *motd;
+	char *motdfile;
 };
 
 /* prototypes */
@@ -98,11 +97,10 @@ EXT const char *unix_hostname (void);
 #define SECS_PER_MONTH  2628000
 #define SECS_PER_YEAR   31536000
 
-enum
-{
-  ISIS_UI_LEVEL_BRIEF,
-  ISIS_UI_LEVEL_DETAIL,
-  ISIS_UI_LEVEL_EXTENSIVE,
+enum {
+	ISIS_UI_LEVEL_BRIEF,
+	ISIS_UI_LEVEL_DETAIL,
+	ISIS_UI_LEVEL_EXTENSIVE,
 };
 
 #endif /* _ISIS_MISC_H_ */
