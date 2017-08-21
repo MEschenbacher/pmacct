@@ -52,10 +52,11 @@
 #define NfDataV5Sz (sizeof(struct struct_export_v5))
 #define NfDataV7Sz (sizeof(struct struct_export_v7))
 #define IP4HdrSz (sizeof(struct pm_iphdr))
+#define IP4TlSz (sizeof(struct pm_iphdr)+sizeof(struct pm_tlhdr))
 
 u_int32_t HostAddrSz;
 u_int32_t IpFixHdrSz;
-u_int32_t IP4TlSz, IP6HdrSz, IP6AddrSz, IP6TlSz;
+u_int32_t IP6HdrSz, IP6AddrSz, IP6TlSz;
 u_int32_t MyTLHdrSz, TCPFlagOff;
 u_int32_t SFSampleSz, SFLAddressSz, SFrenormEntrySz;
 u_int32_t PptrsSz, UDPHdrSz, CSSz, MyTCPHdrSz, IpFlowCmnSz;

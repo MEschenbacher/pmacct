@@ -2147,7 +2147,6 @@ void compute_once()
 {
 	struct pkt_data dummy;
 
-	IP4TlSz = sizeof(struct pm_iphdr)+sizeof(struct pm_tlhdr);
 	PptrsSz = sizeof(struct packet_ptrs);
 	CSSz = sizeof(struct class_st);
 	HostAddrSz = sizeof(struct host_addr);

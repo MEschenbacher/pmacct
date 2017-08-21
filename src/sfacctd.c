@@ -1350,7 +1350,6 @@ void compute_once()
 {
 	struct pkt_data dummy;
 
-	IP4TlSz = sizeof(struct pm_iphdr)+sizeof(struct pm_tlhdr);
 	SFSampleSz = sizeof(SFSample);
 	SFLAddressSz = sizeof(SFLAddress);
 	SFrenormEntrySz = sizeof(struct xflow_status_entry_sampling);
