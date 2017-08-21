@@ -1350,7 +1350,6 @@ void compute_once()
 {
 	struct pkt_data dummy;
 
-	PbgpSz = sizeof(struct pkt_bgp_primitives);
 	PlbgpSz = sizeof(struct pkt_legacy_bgp_primitives);
 	PnatSz = sizeof(struct pkt_nat_primitives);
 	PmplsSz = sizeof(struct pkt_mpls_primitives);

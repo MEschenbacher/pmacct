@@ -31,6 +31,7 @@
 #define PmsgSz (sizeof(struct pkt_msg))
 #define ChBufHdrSz (sizeof(struct ch_buf_hdr))
 #define PextrasSz (sizeof(struct pkt_extras))
+#define PbgpSz (sizeof(struct pkt_bgp_primitives))
 
 u_int32_t CharPtrSz, HostAddrSz;
 u_int32_t PvhdrSz, PtLabelTSz;
@@ -44,7 +45,7 @@ u_int32_t IP4HdrSz, IP4TlSz, IP6HdrSz, IP6AddrSz, IP6TlSz;
 u_int32_t MyTLHdrSz, TCPFlagOff;
 u_int32_t SFSampleSz, SFLAddressSz, SFrenormEntrySz;
 u_int32_t PptrsSz, UDPHdrSz, CSSz, MyTCPHdrSz, IpFlowCmnSz;
-u_int16_t PbgpSz, PlbgpSz, PnatSz, PmplsSz, PtunSz;
+u_int16_t PlbgpSz, PnatSz, PmplsSz, PtunSz;
 
 
 #endif /* _ONCE_H_ */
