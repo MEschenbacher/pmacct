@@ -157,7 +157,6 @@ int main(int argc,char **argv, char **envp)
 #endif
 
 	umask(077);
-	compute_once();
 
 	/* a bunch of default definitions */
 	reload_map = false;
@@ -1344,11 +1343,6 @@ void process_SF_raw_packet(SFSample *spp, struct packet_ptrs_vector *pptrsv,
 	req->ptm_c.exec_ptm_res = false;
 
 	exec_plugins(pptrs, req);
-}
-
-void compute_once()
-{
-	struct pkt_data dummy;
 }
 
 void SF_notify_malf_packet(short int severity, char *ostr, struct sockaddr *sa)

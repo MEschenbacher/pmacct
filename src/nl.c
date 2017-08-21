@@ -392,11 +392,6 @@ int PM_find_id(struct id_table *t, struct packet_ptrs *pptrs, pm_id_t *tag, pm_i
 	return ret;
 }
 
-void compute_once()
-{
-	struct pkt_data dummy;
-}
-
 void tunnel_registry_init()
 {
 	if (config.tunnel0) {

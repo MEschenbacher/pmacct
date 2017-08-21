@@ -356,7 +356,6 @@ int gtp_tunnel_configurator(struct tunnel_handler *, char *);
 void tunnel_registry_init();
 void pcap_cb(u_char *, const struct pcap_pkthdr *, const u_char *);
 int PM_find_id(struct id_table *, struct packet_ptrs *, pm_id_t *, pm_id_t *);
-void compute_once();
 void set_index_pkt_ptrs(struct packet_ptrs *);
 
 #ifndef HAVE_STRLCPY

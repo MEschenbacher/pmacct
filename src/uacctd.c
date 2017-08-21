@@ -195,7 +195,6 @@ int main(int argc,char **argv, char **envp)
 #endif
 
 	umask(077);
-	compute_once();
 
 	/* a bunch of default definitions */
 	reload_map = false;

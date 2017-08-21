@@ -27,7 +27,6 @@
 #if (!defined __PMBMPD_C)
 #else
 void usage_daemon(char *);
-void compute_once();
 #endif
 
 /* global variables */

@@ -146,7 +146,6 @@ int main(int argc,char **argv, char **envp)
 #endif
 
 	umask(077);
-	compute_once();
 
 	/* a bunch of default definitions */
 	reload_map = false;
@@ -2141,11 +2140,6 @@ void process_raw_packet(unsigned char *pkt, u_int16_t len, struct packet_ptrs_ve
 
 	req->ptm_c.exec_ptm_res = false;
 	exec_plugins(pptrs, req);
-}
-
-void compute_once()
-{
-	struct pkt_data dummy;
 }
 
 u_int8_t NF_evaluate_flow_type(struct template_cache_entry *tpl, struct packet_ptrs *pptrs)

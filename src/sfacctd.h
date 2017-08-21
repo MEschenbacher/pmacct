@@ -337,7 +337,6 @@ char *sfv245_check_status(SFSample *spp, struct sockaddr *);
 void sfv245_check_counter_log_init(struct packet_ptrs *);
 
 void usage_daemon(char *);
-void compute_once();
 
 /* global variables */
 int sfacctd_counter_backend_methods;
