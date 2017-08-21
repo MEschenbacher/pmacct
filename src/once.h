@@ -28,9 +28,10 @@
 
 #define PdataSz (sizeof(struct pkt_data))
 #define PpayloadSz (sizeof(struct pkt_payload))
+#define PmsgSz (sizeof(struct pkt_msg))
 
 u_int32_t ChBufHdrSz, CharPtrSz, HostAddrSz;
-u_int32_t PextrasSz, PmsgSz, PvhdrSz, PtLabelTSz;
+u_int32_t PextrasSz, PvhdrSz, PtLabelTSz;
 u_int32_t PmLabelTSz;
 u_int32_t NfHdrV5Sz, NfHdrV1Sz, NfHdrV7Sz, NfHdrV8Sz, NfHdrV9Sz;
 u_int32_t IpFixHdrSz;
