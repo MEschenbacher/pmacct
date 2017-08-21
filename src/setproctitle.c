@@ -108,7 +108,7 @@ char **envp;
 			continue;
 		environ = (char **) malloc(sizeof (char *) * (i + 1));
 		for (i = 0; envp[i] != NULL; i++)
-			environ[i] = spt_newstr(envp[i]);
+			environ[i] = strdup(envp[i]);
 		environ[i] = NULL;
 	}
 
