@@ -405,7 +405,6 @@ void compute_once()
 	PvhdrSz = sizeof(struct pkt_vlen_hdr_primitives);
 	PmLabelTSz = sizeof(pm_label_t);
 	PtLabelTSz = sizeof(pt_label_t);
-	ChBufHdrSz = sizeof(struct ch_buf_hdr);
 	CharPtrSz = sizeof(char *);
 	IP4HdrSz = sizeof(struct pm_iphdr);
 	MyTLHdrSz = sizeof(struct pm_tlhdr);
