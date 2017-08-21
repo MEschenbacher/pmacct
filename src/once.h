@@ -63,7 +63,5 @@
 #define MyTCPHdrSz (TCPFlagOff + 1)
 
 u_int32_t IP6HdrSz, IP6AddrSz, IP6TlSz;
-u_int32_t IpFlowCmnSz;
-
 
 #endif /* _ONCE_H_ */
