@@ -764,8 +764,6 @@ int main(int argc,char **argv)
 	is_event = false;
 	want_tstamp_since_epoch = false;
 
-	PtLabelTSz = sizeof(pt_label_t);
-
 	while (!errflag && ((cp = getopt(argc, argv, ARGS_PMACCT)) != -1)) {
 		switch (cp) {
 		case 's':

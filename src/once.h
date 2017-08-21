@@ -40,7 +40,6 @@
 #define PmLabelTSz (sizeof(pm_label_t))
 
 u_int32_t CharPtrSz, HostAddrSz;
-u_int32_t PtLabelTSz;
 u_int32_t NfHdrV5Sz, NfHdrV1Sz, NfHdrV7Sz, NfHdrV8Sz, NfHdrV9Sz;
 u_int32_t IpFixHdrSz;
 u_int32_t NfDataHdrV9Sz, NfTplHdrV9Sz, NfOptTplHdrV9Sz;

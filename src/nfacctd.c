@@ -2147,7 +2147,6 @@ void compute_once()
 {
 	struct pkt_data dummy;
 
-	PtLabelTSz = sizeof(pt_label_t);
 	CharPtrSz = sizeof(char *);
 	NfHdrV1Sz = sizeof(struct struct_header_v1);
 	NfHdrV5Sz = sizeof(struct struct_header_v5);
