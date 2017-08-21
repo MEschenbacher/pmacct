@@ -43,9 +43,9 @@
 #define NfHdrV5Sz (sizeof(struct struct_header_v5))
 #define NfHdrV7Sz (sizeof(struct struct_header_v7))
 #define NfHdrV8Sz (sizeof(struct struct_header_v8))
+#define NfHdrV9Sz (sizeof(struct struct_header_v9))
 
 u_int32_t HostAddrSz;
-u_int32_t NfHdrV9Sz;
 u_int32_t IpFixHdrSz;
 u_int32_t NfDataHdrV9Sz, NfTplHdrV9Sz, NfOptTplHdrV9Sz;
 u_int32_t NfTplFieldV9Sz;
