@@ -44,7 +44,7 @@ void tee_plugin(int pipe_fd, struct configuration *cfgptr, void *ptr)
 	struct plugin_requests req;
 
 	unsigned char *rgptr;
-	int pollagain = TRUE;
+	int pollagain = true;
 	u_int32_t seq = 1, rg_err_count = 0;
 	time_t now;
 
@@ -58,7 +58,7 @@ void tee_plugin(int pipe_fd, struct configuration *cfgptr, void *ptr)
 	if (config.pidfile) write_pid_file_plugin(config.pidfile, config.type, config.name);
 	if (config.logfile) {
 		fclose(config.logfile_fd);
-		config.logfile_fd = open_output_file(config.logfile, "a", FALSE);
+		config.logfile_fd = open_output_file(config.logfile, "a", false);
 	}
 
 	if (config.proc_priority) {
@@ -91,7 +91,7 @@ void tee_plugin(int pipe_fd, struct configuration *cfgptr, void *ptr)
 
 	memset(&receivers, 0, sizeof(receivers));
 	memset(&req, 0, sizeof(req));
-	reload_map = FALSE;
+	reload_map = false;
 
 	/* Setting up pools */
 	if (!config.tee_max_receiver_pools) config.tee_max_receiver_pools = MAX_TEE_POOLS;
@@ -129,7 +129,7 @@ void tee_plugin(int pipe_fd, struct configuration *cfgptr, void *ptr)
 			receivers.num = pool_idx;
 		}
 	} else if (config.tee_receivers) {
-		int recvs_allocated = FALSE;
+		int recvs_allocated = false;
 
 		req.key_value_table = (void *) &receivers;
 		load_id_file(MAP_TEE_RECVS, config.tee_receivers, NULL, &req, &recvs_allocated);
@@ -162,7 +162,7 @@ void tee_plugin(int pipe_fd, struct configuration *cfgptr, void *ptr)
 	/* plugin main loop */
 	for (;;) {
 poll_again:
-		status->wakeup = TRUE;
+		status->wakeup = true;
 
 		pfd.fd = pipe_fd;
 		pfd.events = POLLIN;
@@ -173,7 +173,7 @@ poll_again:
 
 		if (reload_map) {
 			if (config.tee_receivers) {
-				int recvs_allocated = FALSE;
+				int recvs_allocated = false;
 
 				Tee_destroy_recvs();
 				load_id_file(MAP_TEE_RECVS, config.tee_receivers, NULL, &req, &recvs_allocated);
@@ -181,7 +181,7 @@ poll_again:
 				Tee_init_socks();
 			}
 
-			reload_map = FALSE;
+			reload_map = false;
 		}
 
 		now = time(NULL);
@@ -196,7 +196,7 @@ read_data:
 				if (!pollagain) {
 					seq++;
 					seq %= MAX_SEQNUM;
-					if (seq == 0) rg_err_count = FALSE;
+					if (seq == 0) rg_err_count = false;
 				} else {
 					if ((ret = read(pipe_fd, &rgptr, sizeof(rgptr))) == 0)
 						exit_plugin(1); /* we exit silently; something happened at the write end */
@@ -206,7 +206,7 @@ read_data:
 
 				if (((struct ch_buf_hdr *)rg->ptr)->seq != seq) {
 					if (!pollagain) {
-						pollagain = TRUE;
+						pollagain = true;
 						goto poll_again;
 					} else {
 						rg_err_count++;
@@ -222,7 +222,7 @@ read_data:
 					}
 				}
 
-				pollagain = FALSE;
+				pollagain = false;
 				memcpy(pipebuf, rg->ptr, bufsz);
 				rg->ptr += bufsz;
 			}
@@ -522,7 +522,7 @@ int Tee_prepare_sock(struct sockaddr *addr, socklen_t len, u_int16_t src_port)
 		if (ret && bind(s, (struct sockaddr *) &ssource_ip, sizeof(ssource_ip)) == -1)
 			Log(LOG_WARNING, "WARN ( %s/%s ): bind() error: %s\n", config.name, config.type, strerror(errno));
 	} else {
-		int hincl = TRUE;
+		int hincl = true;
 
 		if ((s = socket(addr->sa_family, SOCK_RAW, IPPROTO_RAW)) == -1) {
 			Log(LOG_ERR, "ERROR ( %s/%s ): socket() error: %s\n", config.name, config.type, strerror(errno));
@@ -574,7 +574,7 @@ int Tee_parse_hostport(const char *s, struct sockaddr *addr, socklen_t *len)
 	trim_spaces(host);
 	trim_spaces(orig);
 
-	if ((port = strrchr(host, ':')) == NULL || *(++port) == '\0' || *host == '\0') return TRUE;
+	if ((port = strrchr(host, ':')) == NULL || *(++port) == '\0' || *host == '\0') return true;
 
 	*(port - 1) = '\0';
 
@@ -588,15 +588,15 @@ int Tee_parse_hostport(const char *s, struct sockaddr *addr, socklen_t *len)
 	hints.ai_socktype = SOCK_DGRAM;
 
 	/* Validations */
-	if ((herr = getaddrinfo(host, port, &hints, &res)) == -1) return TRUE;
-	if (res == NULL || res->ai_addr == NULL) return TRUE;
-	if (res->ai_addrlen > *len) return TRUE;
+	if ((herr = getaddrinfo(host, port, &hints, &res)) == -1) return true;
+	if (res == NULL || res->ai_addr == NULL) return true;
+	if (res->ai_addrlen > *len) return true;
 
 	memcpy(addr, res->ai_addr, res->ai_addrlen);
 	free(orig);
 	*len = res->ai_addrlen;
 
-	return FALSE;
+	return false;
 }
 
 struct tee_receiver *Tee_rr_balance(void *pool, struct pkt_msg *msg)

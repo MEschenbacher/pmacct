@@ -98,13 +98,13 @@ void telemetry_daemon(void *t_data_void)
 	}
 
 	/* initial cleanups */
-	reload_log_telemetry_thread = FALSE;
+	reload_log_telemetry_thread = false;
 	memset(&server, 0, sizeof(server));
 	memset(&client, 0, sizeof(client));
 	memset(&allow, 0, sizeof(struct hosts_table));
 	clen = sizeof(client);
 	telemetry_peers_udp_cache = NULL;
-	last_udp_timeout_check = FALSE;
+	last_udp_timeout_check = false;
 
 	telemetry_misc_db = &inter_domain_misc_dbs[FUNC_TYPE_TELEMETRY];
 	memset(telemetry_misc_db, 0, sizeof(telemetry_misc_structs));
@@ -399,7 +399,7 @@ void telemetry_daemon(void *t_data_void)
 			dump_refresh_deadline += config.telemetry_dump_refresh_time; /* it's a deadline not a basetime */
 		} else {
 			config.telemetry_dump_file = NULL;
-			telemetry_misc_db->dump_backend_methods = FALSE;
+			telemetry_misc_db->dump_backend_methods = false;
 			Log(LOG_WARNING, "WARN ( %s/%s ): Invalid 'telemetry_dump_refresh_time'.\n", config.name, t_data->log_str);
 		}
 
@@ -408,7 +408,7 @@ void telemetry_daemon(void *t_data_void)
 	}
 
 	select_fd = bkp_select_fd = (config.telemetry_sock + 1);
-	recalc_fds = FALSE;
+	recalc_fds = false;
 
 	telemetry_link_misc_structs(telemetry_misc_db);
 
@@ -430,7 +430,7 @@ select_again:
 			max_peers_idx++;
 
 			bkp_select_fd = select_fd;
-			recalc_fds = FALSE;
+			recalc_fds = false;
 		} else select_fd = bkp_select_fd;
 
 		memcpy(&read_descs, &bkp_read_descs, sizeof(bkp_read_descs));
@@ -463,7 +463,7 @@ select_again:
 							Log(LOG_INFO, "INFO ( %s/%s ): [%s] telemetry UDP peer removed (timeout).\n", config.name, t_data->log_str, peer->addr_str);
 							telemetry_peer_close(peer, FUNC_TYPE_TELEMETRY);
 							if (telemetry_is_zjson(decoder)) telemetry_peer_z_close(peer_z);
-							recalc_fds = TRUE;
+							recalc_fds = true;
 						}
 					}
 				}
@@ -474,23 +474,23 @@ select_again:
 			for (peers_idx = 0; peers_idx < config.telemetry_max_peers; peers_idx++) {
 				if (telemetry_misc_db->peers_log[peers_idx].fd) {
 					fclose(telemetry_misc_db->peers_log[peers_idx].fd);
-					telemetry_misc_db->peers_log[peers_idx].fd = open_output_file(telemetry_misc_db->peers_log[peers_idx].filename, "a", FALSE);
+					telemetry_misc_db->peers_log[peers_idx].fd = open_output_file(telemetry_misc_db->peers_log[peers_idx].filename, "a", false);
 					setlinebuf(telemetry_misc_db->peers_log[peers_idx].fd);
 				} else break;
 			}
 
-			reload_log_telemetry_thread = FALSE;
+			reload_log_telemetry_thread = false;
 		}
 
 		if (telemetry_misc_db->msglog_backend_methods || telemetry_misc_db->dump_backend_methods) {
 			gettimeofday(&telemetry_misc_db->log_tstamp, NULL);
-			compose_timestamp(telemetry_misc_db->log_tstamp_str, SRVBUFLEN, &telemetry_misc_db->log_tstamp, TRUE, config.timestamps_since_epoch);
+			compose_timestamp(telemetry_misc_db->log_tstamp_str, SRVBUFLEN, &telemetry_misc_db->log_tstamp, true, config.timestamps_since_epoch);
 
 			if (telemetry_misc_db->dump_backend_methods) {
 				while (telemetry_misc_db->log_tstamp.tv_sec > dump_refresh_deadline) {
 					telemetry_misc_db->dump.tstamp.tv_sec = dump_refresh_deadline;
 					telemetry_misc_db->dump.tstamp.tv_usec = 0;
-					compose_timestamp(telemetry_misc_db->dump.tstamp_str, SRVBUFLEN, &telemetry_misc_db->dump.tstamp, FALSE, config.timestamps_since_epoch);
+					compose_timestamp(telemetry_misc_db->dump.tstamp_str, SRVBUFLEN, &telemetry_misc_db->dump.tstamp, false, config.timestamps_since_epoch);
 					telemetry_misc_db->dump.period = config.telemetry_dump_refresh_time;
 
 					telemetry_handle_dump_event(t_data);
@@ -552,9 +552,9 @@ select_again:
 				fd = accept(config.telemetry_sock, (struct sockaddr *) &client, &clen);
 				if (fd == ERR) goto read_data;
 			} else if (config.telemetry_port_udp) {
-				char dummy_local_buf[TRUE];
+				char dummy_local_buf[true];
 
-				ret = recvfrom(config.telemetry_sock, dummy_local_buf, TRUE, MSG_PEEK, (struct sockaddr *) &client, &clen);
+				ret = recvfrom(config.telemetry_sock, dummy_local_buf, true, MSG_PEEK, (struct sockaddr *) &client, &clen);
 				if (ret <= 0) goto select_again;
 				else fd = config.telemetry_sock;
 			}
@@ -565,7 +565,7 @@ select_again:
 
 			/* If an ACL is defined, here we check against and enforce it */
 			if (allow.num) allowed = check_allow(&allow, (struct sockaddr *)&client);
-			else allowed = TRUE;
+			else allowed = true;
 
 			if (!allowed) {
 				if (config.telemetry_port_tcp) close(fd);
@@ -603,7 +603,7 @@ select_again:
 					}
 
 					if (peer) {
-						recalc_fds = TRUE;
+						recalc_fds = true;
 
 						if (config.telemetry_port_udp) {
 							tpuc.index = peers_idx;
@@ -707,7 +707,7 @@ read_data:
 			data_decoder = TELEMETRY_DATA_DECODER_GPB;
 			break;
 		default:
-			ret = TRUE;
+			ret = true;
 			recv_flags = ERR;
 			data_decoder = TELEMETRY_DATA_DECODER_UNKNOWN;
 			break;
@@ -718,7 +718,7 @@ read_data:
 			FD_CLR(peer->fd, &bkp_read_descs);
 			telemetry_peer_close(peer, FUNC_TYPE_TELEMETRY);
 			if (telemetry_is_zjson(decoder)) telemetry_peer_z_close(peer_z);
-			recalc_fds = TRUE;
+			recalc_fds = true;
 		} else {
 			peer->stats.packets++;
 			if (recv_flags != ERR) {
@@ -734,7 +734,7 @@ void telemetry_prepare_thread(struct telemetry_data *t_data)
 	if (!t_data) return;
 
 	memset(t_data, 0, sizeof(struct telemetry_data));
-	t_data->is_thread = TRUE;
+	t_data->is_thread = true;
 	t_data->log_str = malloc(strlen("core/TELE") + 1);
 	strcpy(t_data->log_str, "core/TELE");
 }
@@ -744,7 +744,7 @@ void telemetry_prepare_daemon(struct telemetry_data *t_data)
 	if (!t_data) return;
 
 	memset(t_data, 0, sizeof(struct telemetry_data));
-	t_data->is_thread = FALSE;
+	t_data->is_thread = false;
 	t_data->log_str = malloc(strlen("core") + 1);
 	strcpy(t_data->log_str, "core");
 }

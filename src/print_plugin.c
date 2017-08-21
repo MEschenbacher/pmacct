@@ -58,7 +58,7 @@ void print_plugin(int pipe_fd, struct configuration *cfgptr, void *ptr)
 	char default_separator[] = ",";
 
 	unsigned char *rgptr;
-	int pollagain = TRUE;
+	int pollagain = true;
 	u_int32_t seq = 1, rg_err_count = 0;
 
 	struct extra_primitives extras;
@@ -80,11 +80,11 @@ void print_plugin(int pipe_fd, struct configuration *cfgptr, void *ptr)
 	pipebuf = (unsigned char *) pm_malloc(config.buffer_size);
 	memset(pipebuf, 0, config.buffer_size);
 
-	is_event = FALSE;
+	is_event = false;
 	if (!config.print_output)
 		config.print_output = PRINT_OUTPUT_FORMATTED;
 	else if (config.print_output & PRINT_OUTPUT_EVENT)
-		is_event = TRUE;
+		is_event = true;
 
 	refresh_timeout = config.sql_refresh_time*1000;
 
@@ -164,19 +164,19 @@ void print_plugin(int pipe_fd, struct configuration *cfgptr, void *ptr)
 		exit_plugin(1);
 	}
 
-	print_output_stdout_header = TRUE;
+	print_output_stdout_header = true;
 	if (!config.sql_table && !config.print_output_lock_file)
 		Log(LOG_WARNING, "WARN ( %s/%s ): no print_output_file and no print_output_lock_file defined.\n", config.name, config.type);
 
 	if (config.sql_table) {
 		if (strchr(config.sql_table, '%') || strchr(config.sql_table, '$')) {
-			dyn_table = TRUE;
+			dyn_table = true;
 
-			if (!strchr(config.sql_table, '$')) dyn_table_time_only = TRUE;
-			else dyn_table_time_only = FALSE;
+			if (!strchr(config.sql_table, '$')) dyn_table_time_only = true;
+			else dyn_table_time_only = false;
 		} else {
-			dyn_table = FALSE;
-			dyn_table_time_only = FALSE;
+			dyn_table = false;
+			dyn_table_time_only = false;
 
 			if (config.print_latest_file && (strchr(config.print_latest_file, '%') || strchr(config.print_latest_file, '$'))) {
 				Log(LOG_WARNING, "WARN ( %s/%s ): Disabling print_latest_file due to non-dynamic print_output_file.\n", config.name, config.type);
@@ -188,7 +188,7 @@ void print_plugin(int pipe_fd, struct configuration *cfgptr, void *ptr)
 	/* plugin main loop */
 	for(;;) {
 poll_again:
-		status->wakeup = TRUE;
+		status->wakeup = true;
 		calc_refresh_timeout(refresh_deadline, idata.now, &refresh_timeout);
 
 		pfd.fd = pipe_fd;
@@ -214,7 +214,7 @@ poll_again:
 
 				saved_qq_ptr = qq_ptr;
 				P_cache_handle_flush_event(&pt);
-				if (saved_qq_ptr) print_output_stdout_header = FALSE;
+				if (saved_qq_ptr) print_output_stdout_header = false;
 			}
 			break;
 		default: /* we received data */
@@ -223,7 +223,7 @@ read_data:
 				if (!pollagain) {
 					seq++;
 					seq %= MAX_SEQNUM;
-					if (seq == 0) rg_err_count = FALSE;
+					if (seq == 0) rg_err_count = false;
 				} else {
 					if ((ret = read(pipe_fd, &rgptr, sizeof(rgptr))) == 0)
 						exit_plugin(1); /* we exit silently; something happened at the write end */
@@ -233,7 +233,7 @@ read_data:
 
 				if (((struct ch_buf_hdr *)rg->ptr)->seq != seq) {
 					if (!pollagain) {
-						pollagain = TRUE;
+						pollagain = true;
 						goto poll_again;
 					} else {
 						rg_err_count++;
@@ -249,7 +249,7 @@ read_data:
 					}
 				}
 
-				pollagain = FALSE;
+				pollagain = false;
 				memcpy(pipebuf, rg->ptr, bufsz);
 				rg->ptr += bufsz;
 			}
@@ -275,7 +275,7 @@ read_data:
 
 				saved_qq_ptr = qq_ptr;
 				P_cache_handle_flush_event(&pt);
-				if (saved_qq_ptr) print_output_stdout_header = FALSE;
+				if (saved_qq_ptr) print_output_stdout_header = false;
 			}
 
 			data = (struct pkt_data *) (pipebuf+sizeof(struct ch_buf_hdr));
@@ -339,7 +339,7 @@ void P_cache_purge(struct chained_cache *queue[], int index, int safe_action)
 	char *as_path, *bgp_comm, empty_string[] = "", empty_aspath[] = "^$", empty_ip4[] = "0.0.0.0", empty_ip6[] = "::";
 	char empty_macaddress[] = "00:00:00:00:00:00", empty_rd[] = "0:0", ndpi_class[SUPERSHORTBUFLEN];
 	FILE *f = NULL, *lockf = NULL;
-	int j, stop, is_event = FALSE, qn = 0, go_to_pending, saved_index = index, file_to_be_created;
+	int j, stop, is_event = false, qn = 0, go_to_pending, saved_index = index, file_to_be_created;
 	time_t start, duration;
 	char tmpbuf[LONGLONGSRVBUFLEN], current_table[SRVBUFLEN], elem_table[SRVBUFLEN];
 	struct primitives_ptrs prim_ptrs, elem_prim_ptrs;
@@ -387,9 +387,9 @@ start:
 	memset(pending_queries_queue, 0, pqq_ptr*sizeof(struct db_cache *));
 	index = pqq_ptr;
 	pqq_ptr = 0;
-	file_to_be_created = FALSE;
+	file_to_be_created = false;
 
-	if (config.print_output & PRINT_OUTPUT_EVENT) is_event = TRUE;
+	if (config.print_output & PRINT_OUTPUT_EVENT) is_event = true;
 
 	if (config.sql_table) {
 		time_t stamp = 0;
@@ -409,7 +409,7 @@ start:
 		if (config.print_output & PRINT_OUTPUT_AVRO) {
 			int file_is_empty, ret;
 #ifdef WITH_AVRO
-			f = open_output_file(current_table, "ab", TRUE);
+			f = open_output_file(current_table, "ab", true);
 
 			fseek(f, 0, SEEK_END);
 			file_is_empty = ftell(f) == 0;
@@ -429,9 +429,9 @@ start:
 		} else {
 			if (config.print_output_file_append) {
 				file_to_be_created = access(current_table, F_OK);
-				f = open_output_file(current_table, "a", TRUE);
+				f = open_output_file(current_table, "a", true);
 			} else
-				f = open_output_file(current_table, "w", TRUE);
+				f = open_output_file(current_table, "w", true);
 		}
 
 		if (f) {
@@ -463,7 +463,7 @@ start:
 		/* writing to stdout: pointing f and obtaining lock */
 		f = stdout;
 		if (config.print_output_lock_file) {
-			lockf = open_output_file(config.print_output_lock_file, "w", TRUE);
+			lockf = open_output_file(config.print_output_lock_file, "w", true);
 			if (!lockf)
 				Log(LOG_WARNING, "WARN ( %s/%s ): Failed locking print_output_lock_file: %s\n", config.name, config.type, config.print_output_lock_file);
 		}
@@ -490,7 +490,7 @@ start:
 
 	for (j = 0; j < index; j++) {
 		int count = 0;
-		go_to_pending = FALSE;
+		go_to_pending = false;
 
 		if (queue[j]->valid != PRINT_CACHE_COMMITTED) continue;
 
@@ -512,7 +512,7 @@ start:
 				pending_queries_queue[pqq_ptr] = queue[j];
 
 				pqq_ptr++;
-				go_to_pending = TRUE;
+				go_to_pending = true;
 			}
 		}
 
@@ -886,7 +886,7 @@ start:
 						if (config.cpptrs.primitive[cp_idx].ptr->len != PM_VARIABLE_LENGTH) {
 							char cp_str[SRVBUFLEN];
 
-							custom_primitive_value_print(cp_str, SRVBUFLEN, pcust, &config.cpptrs.primitive[cp_idx], TRUE);
+							custom_primitive_value_print(cp_str, SRVBUFLEN, pcust, &config.cpptrs.primitive[cp_idx], true);
 							fprintf(f, "%s  ", cp_str);
 						} else {
 							/* vlen primitives not supported in formatted outputs: we should never get here */
@@ -1257,7 +1257,7 @@ start:
 						if (config.cpptrs.primitive[cp_idx].ptr->len != PM_VARIABLE_LENGTH) {
 							char cp_str[SRVBUFLEN];
 
-							custom_primitive_value_print(cp_str, SRVBUFLEN, pcust, &config.cpptrs.primitive[cp_idx], FALSE);
+							custom_primitive_value_print(cp_str, SRVBUFLEN, pcust, &config.cpptrs.primitive[cp_idx], false);
 							fprintf(f, "%s%s", write_sep(sep, &count), cp_str);
 						} else {
 							char *label_ptr = NULL;
@@ -1306,7 +1306,7 @@ start:
 				} else {
 					char *json_str;
 
-					if (avro_value_to_json(&avro_value, TRUE, &json_str)) {
+					if (avro_value_to_json(&avro_value, true, &json_str)) {
 						Log(LOG_ERR, "ERROR ( %s/%s ): AVRO: unable to value to JSON: %s\n",
 						    config.name, config.type, avro_strerror());
 						exit_plugin(1);
@@ -1476,7 +1476,7 @@ void P_write_stats_header_formatted(FILE *f, int is_event)
 		int cp_idx;
 
 		for (cp_idx = 0; cp_idx < config.cpptrs.num; cp_idx++) {
-			custom_primitive_header_print(cp_str, SRVBUFLEN, &config.cpptrs.primitive[cp_idx], TRUE);
+			custom_primitive_header_print(cp_str, SRVBUFLEN, &config.cpptrs.primitive[cp_idx], true);
 			fprintf(f, "%s  ", cp_str);
 		}
 	}
@@ -1583,7 +1583,7 @@ void P_write_stats_header_csv(FILE *f, int is_event)
 		int cp_idx;
 
 		for (cp_idx = 0; cp_idx < config.cpptrs.num; cp_idx++) {
-			custom_primitive_header_print(cp_str, SRVBUFLEN, &config.cpptrs.primitive[cp_idx], FALSE);
+			custom_primitive_header_print(cp_str, SRVBUFLEN, &config.cpptrs.primitive[cp_idx], false);
 			fprintf(f, "%s%s", write_sep(sep, &count), cp_str);
 		}
 	}

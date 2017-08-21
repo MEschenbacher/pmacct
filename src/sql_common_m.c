@@ -76,7 +76,7 @@ Inline void BuildChain(struct db_cache *Cursor, struct db_cache *newElem)
 {
 	Cursor->next = newElem;
 	newElem->prev = Cursor;
-	newElem->chained = TRUE;
+	newElem->chained = true;
 }
 
 Inline void ReBuildChain(struct db_cache *Cursor, struct db_cache *newElem)

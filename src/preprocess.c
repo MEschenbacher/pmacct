@@ -61,14 +61,14 @@ void set_preprocess_funcs(char *string, struct preprocess *prep, int dictionary)
 		if (dictionary == PREP_DICT_SQL) {
 			for (dindex = 0; strcmp(sql_prep_dict[dindex].key, ""); dindex++) {
 				if (!strcmp(sql_prep_dict[dindex].key, key)) {
-					err = FALSE;
+					err = false;
 					break;
 				} else err = E_NOTFOUND; /* key not found */
 			}
 		} else if (dictionary == PREP_DICT_PRINT) {
 			for (dindex = 0; strcmp(print_prep_dict[dindex].key, ""); dindex++) {
 				if (!strcmp(print_prep_dict[dindex].key, key)) {
-					err = FALSE;
+					err = false;
 					break;
 				} else err = E_NOTFOUND; /* key not found */
 			}
@@ -343,8 +343,8 @@ void check_validity(struct db_cache *entry, int seq)
 
 int cond_qnum(struct db_cache *queue[], int *num, int seq)
 {
-	if (*num > prep.qnum) return FALSE;
-	else return TRUE;
+	if (*num > prep.qnum) return false;
+	else return true;
 }
 
 int check_minp(struct db_cache *queue[], int *num, int seq)
@@ -359,7 +359,7 @@ int check_minp(struct db_cache *queue[], int *num, int seq)
 		}
 	}
 
-	return FALSE;
+	return false;
 }
 
 int check_minb(struct db_cache *queue[], int *num, int seq)
@@ -374,7 +374,7 @@ int check_minb(struct db_cache *queue[], int *num, int seq)
 		}
 	}
 
-	return FALSE;
+	return false;
 }
 
 int check_minf(struct db_cache *queue[], int *num, int seq)
@@ -389,7 +389,7 @@ int check_minf(struct db_cache *queue[], int *num, int seq)
 		}
 	}
 
-	return FALSE;
+	return false;
 }
 
 int check_maxp(struct db_cache *queue[], int *num, int seq)
@@ -404,7 +404,7 @@ int check_maxp(struct db_cache *queue[], int *num, int seq)
 		}
 	}
 
-	return FALSE;
+	return false;
 }
 
 int check_maxb(struct db_cache *queue[], int *num, int seq)
@@ -419,7 +419,7 @@ int check_maxb(struct db_cache *queue[], int *num, int seq)
 		}
 	}
 
-	return FALSE;
+	return false;
 }
 
 int check_maxf(struct db_cache *queue[], int *num, int seq)
@@ -434,7 +434,7 @@ int check_maxf(struct db_cache *queue[], int *num, int seq)
 		}
 	}
 
-	return FALSE;
+	return false;
 }
 
 int check_maxbpp(struct db_cache *queue[], int *num, int seq)
@@ -449,14 +449,14 @@ int check_maxbpp(struct db_cache *queue[], int *num, int seq)
 		}
 	}
 
-	return FALSE;
+	return false;
 }
 
 int check_maxppf(struct db_cache *queue[], int *num, int seq)
 {
 	int x;
 
-	if (!queue[0]->flows_counter) return FALSE;
+	if (!queue[0]->flows_counter) return false;
 
 	for (x = 0; x < *num; x++) {
 		if (queue[x]->valid == SQL_CACHE_INVALID || queue[x]->valid == SQL_CACHE_COMMITTED) {
@@ -466,7 +466,7 @@ int check_maxppf(struct db_cache *queue[], int *num, int seq)
 		}
 	}
 
-	return FALSE;
+	return false;
 }
 
 int check_minbpp(struct db_cache *queue[], int *num, int seq)
@@ -481,14 +481,14 @@ int check_minbpp(struct db_cache *queue[], int *num, int seq)
 		}
 	}
 
-	return FALSE;
+	return false;
 }
 
 int check_minppf(struct db_cache *queue[], int *num, int seq)
 {
 	int x;
 
-	if (!queue[0]->flows_counter) return FALSE;
+	if (!queue[0]->flows_counter) return false;
 
 	for (x = 0; x < *num; x++) {
 		if (queue[x]->valid == SQL_CACHE_INVALID || queue[x]->valid == SQL_CACHE_COMMITTED) {
@@ -498,7 +498,7 @@ int check_minppf(struct db_cache *queue[], int *num, int seq)
 		}
 	}
 
-	return FALSE;
+	return false;
 }
 
 int check_fss(struct db_cache *queue[], int *num, int seq)
@@ -526,7 +526,7 @@ int check_fss(struct db_cache *queue[], int *num, int seq)
 		}
 	}
 
-	return FALSE;
+	return false;
 }
 
 /*
@@ -619,7 +619,7 @@ int check_fsrc(struct db_cache *queue[], int *num, int seq)
 		                      config.name, config.type, *num, total, fsrc_queue.num-1, subtotal);
 
 end:
-	return FALSE;
+	return false;
 }
 
 int action_usrf(struct db_cache *queue[], int *num, int seq)
@@ -637,7 +637,7 @@ int action_usrf(struct db_cache *queue[], int *num, int seq)
 		}
 	}
 
-	return FALSE;
+	return false;
 }
 
 int action_adjb(struct db_cache *queue[], int *num, int seq)
@@ -650,7 +650,7 @@ int action_adjb(struct db_cache *queue[], int *num, int seq)
 		}
 	}
 
-	return FALSE;
+	return false;
 }
 
 int mandatory_invalidate(struct db_cache *queue[], int *num, int seq)
@@ -672,7 +672,7 @@ int mandatory_invalidate(struct db_cache *queue[], int *num, int seq)
 			queue[x]->valid = SQL_CACHE_INVALID;
 	}
 
-	return FALSE;
+	return false;
 }
 
 /*
@@ -688,7 +688,7 @@ int mandatory_validate(struct db_cache *queue[], int *num, int seq)
 		if (queue[x]->valid == SQL_CACHE_INVALID && prep.recover) queue[x]->valid = SQL_CACHE_ERROR;
 	}
 
-	return FALSE;
+	return false;
 }
 
 int P_mandatory_invalidate(struct chained_cache *queue[], int *num, int seq)
@@ -710,7 +710,7 @@ int P_mandatory_invalidate(struct chained_cache *queue[], int *num, int seq)
 			queue[x]->valid = PRINT_CACHE_INVALID;
 	}
 
-	return FALSE;
+	return false;
 }
 
 int P_check_minp(struct chained_cache *queue[], int *num, int seq)
@@ -725,7 +725,7 @@ int P_check_minp(struct chained_cache *queue[], int *num, int seq)
 		}
 	}
 
-	return FALSE;
+	return false;
 }
 
 int P_check_minb(struct chained_cache *queue[], int *num, int seq)
@@ -740,7 +740,7 @@ int P_check_minb(struct chained_cache *queue[], int *num, int seq)
 		}
 	}
 
-	return FALSE;
+	return false;
 }
 
 int P_check_minf(struct chained_cache *queue[], int *num, int seq)
@@ -755,7 +755,7 @@ int P_check_minf(struct chained_cache *queue[], int *num, int seq)
 		}
 	}
 
-	return FALSE;
+	return false;
 }
 
 int P_check_minbpp(struct chained_cache *queue[], int *num, int seq)
@@ -770,14 +770,14 @@ int P_check_minbpp(struct chained_cache *queue[], int *num, int seq)
 		}
 	}
 
-	return FALSE;
+	return false;
 }
 
 int P_check_minppf(struct chained_cache *queue[], int *num, int seq)
 {
 	int x;
 
-	if (!queue[0]->flow_counter) return FALSE;
+	if (!queue[0]->flow_counter) return false;
 
 	for (x = 0; x < *num; x++) {
 		if (queue[x]->valid == PRINT_CACHE_INVALID || queue[x]->valid == PRINT_CACHE_COMMITTED) {
@@ -787,7 +787,7 @@ int P_check_minppf(struct chained_cache *queue[], int *num, int seq)
 		}
 	}
 
-	return FALSE;
+	return false;
 }
 
 void P_check_validity(struct chained_cache *entry, int seq)

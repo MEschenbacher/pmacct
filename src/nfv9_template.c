@@ -34,7 +34,7 @@ struct template_cache_entry *handle_template(struct template_hdr_v9 *hdr, struct
 	struct template_cache_entry *tpl = NULL;
 	u_int8_t version = 0;
 
-	if (pens) *pens = FALSE;
+	if (pens) *pens = false;
 
 	if (tpl_type == 0 || tpl_type == 1) version = 9;
 	else if (tpl_type == 2 || tpl_type == 3) version = 10;
@@ -121,11 +121,11 @@ struct template_cache_entry *insert_template(struct template_hdr_v9 *hdr, struct
 		}
 
 		pen = NULL;
-		ipfix_ebit = FALSE;
+		ipfix_ebit = false;
 		type = ntohs(field->type);
 
 		if (type & IPFIX_TPL_EBIT && version == 10) {
-			ipfix_ebit = TRUE;
+			ipfix_ebit = true;
 			type ^= IPFIX_TPL_EBIT;
 			if (pens) (*pens)++;
 			pen = (u_int32_t *) field;
@@ -145,7 +145,7 @@ struct template_cache_entry *insert_template(struct template_hdr_v9 *hdr, struct
 
 			if (ptr->tpl[type].tpl_len == IPFIX_VARIABLE_LENGTH) {
 				ptr->tpl[type].len = 0;
-				ptr->vlen = TRUE;
+				ptr->vlen = true;
 				ptr->len = 0;
 			} else {
 				ptr->tpl[type].len = ptr->tpl[type].tpl_len;
@@ -168,7 +168,7 @@ struct template_cache_entry *insert_template(struct template_hdr_v9 *hdr, struct
 
 				if (ext_db_ptr->tpl_len == IPFIX_VARIABLE_LENGTH) {
 					ext_db_ptr->len = 0;
-					ptr->vlen = TRUE;
+					ptr->vlen = true;
 					ptr->len = 0;
 				} else {
 					ext_db_ptr->len = ext_db_ptr->tpl_len;
@@ -313,7 +313,7 @@ void update_template_in_file(struct template_cache_entry *tpl, char *path)
 			addr_to_str(tpl_agent_str, &tpl->agent);
 			if (tpl_id == tpl->template_id && tpl_type == tpl->template_type
 			    && src_id == tpl->source_id && !strcmp(addr, tpl_agent_str)) {
-				tpl_found = TRUE;
+				tpl_found = true;
 				json_decref(json_obj);
 				break;
 			}
@@ -341,7 +341,7 @@ next_line:
 
 void save_template(struct template_cache_entry *tpl, char *file)
 {
-	FILE *tpl_file = open_output_file(config.nfacctd_templates_file, "a", TRUE);
+	FILE *tpl_file = open_output_file(config.nfacctd_templates_file, "a", true);
 	u_int16_t field_idx;
 	u_int8_t idx;
 	char *fmt;
@@ -758,11 +758,11 @@ struct template_cache_entry *refresh_template(struct template_hdr_v9 *hdr, struc
 		}
 
 		pen = NULL;
-		ipfix_ebit = FALSE;
+		ipfix_ebit = false;
 		type = ntohs(field->type);
 
 		if (type & IPFIX_TPL_EBIT && version == 10) {
-			ipfix_ebit = TRUE;
+			ipfix_ebit = true;
 			type ^= IPFIX_TPL_EBIT;
 			if (pens) (*pens)++;
 			pen = (u_int32_t *) field;
@@ -778,7 +778,7 @@ struct template_cache_entry *refresh_template(struct template_hdr_v9 *hdr, struc
 
 			if (tpl->tpl[type].tpl_len == IPFIX_VARIABLE_LENGTH) {
 				tpl->tpl[type].len = 0;
-				tpl->vlen = TRUE;
+				tpl->vlen = true;
 				tpl->len = 0;
 			} else {
 				tpl->tpl[type].len = tpl->tpl[type].tpl_len;
@@ -801,7 +801,7 @@ struct template_cache_entry *refresh_template(struct template_hdr_v9 *hdr, struc
 
 				if (ext_db_ptr->tpl_len == IPFIX_VARIABLE_LENGTH) {
 					ext_db_ptr->len = 0;
-					tpl->vlen = TRUE;
+					tpl->vlen = true;
 					tpl->len = 0;
 				} else {
 					ext_db_ptr->len = ext_db_ptr->tpl_len;
@@ -957,18 +957,18 @@ struct template_cache_entry *insert_opt_template(void *hdr, struct packet_ptrs *
 		}
 
 		pen = NULL;
-		ipfix_ebit = FALSE;
+		ipfix_ebit = false;
 		type = ntohs(field->type);
 
 		if (type & IPFIX_TPL_EBIT && version == 10) {
-			ipfix_ebit = TRUE;
+			ipfix_ebit = true;
 			type ^= IPFIX_TPL_EBIT;
 			if (pens) (*pens)++;
 			pen = (u_int32_t *) field;
 			pen++;
 		}
 
-		log_opt_template_field(FALSE, pen, type, ptr->len, ntohs(field->len), version);
+		log_opt_template_field(false, pen, type, ptr->len, ntohs(field->len), version);
 		if (type < NF9_MAX_DEFINED_FIELD && !pen) {
 			ptr->tpl[type].off = ptr->len;
 			ptr->tpl[type].len = ntohs(field->len);
@@ -1066,18 +1066,18 @@ struct template_cache_entry *refresh_opt_template(void *hdr, struct template_cac
 		}
 
 		pen = NULL;
-		ipfix_ebit = FALSE;
+		ipfix_ebit = false;
 		type = ntohs(field->type);
 
 		if (type & IPFIX_TPL_EBIT && version == 10) {
-			ipfix_ebit = TRUE;
+			ipfix_ebit = true;
 			type ^= IPFIX_TPL_EBIT;
 			if (pens) (*pens)++;
 			pen = (u_int32_t *) field;
 			pen++;
 		}
 
-		log_opt_template_field(FALSE, pen, type, tpl->len, ntohs(field->len), version);
+		log_opt_template_field(false, pen, type, tpl->len, ntohs(field->len), version);
 		if (type < NF9_MAX_DEFINED_FIELD && !pen) {
 			tpl->tpl[type].off = tpl->len;
 			tpl->tpl[type].len = ntohs(field->len);
@@ -1133,7 +1133,7 @@ void resolve_vlen_template(char *ptr, u_int16_t flowsetlen, struct template_cach
 			if (vlen) otpl_ptr->off = len;
 
 			if (otpl_ptr->tpl_len == IPFIX_VARIABLE_LENGTH) {
-				vlen = TRUE;
+				vlen = true;
 				add_len = get_ipfix_vlen(ptr+len, &otpl_ptr->len);
 				otpl_ptr->off = len+add_len;
 			}
@@ -1144,7 +1144,7 @@ void resolve_vlen_template(char *ptr, u_int16_t flowsetlen, struct template_cach
 			if (vlen) utpl_ptr->off = len;
 
 			if (utpl_ptr->tpl_len == IPFIX_VARIABLE_LENGTH) {
-				vlen = TRUE;
+				vlen = true;
 				add_len = get_ipfix_vlen(ptr+len, &utpl_ptr->len);
 				utpl_ptr->off = len+add_len;
 			}

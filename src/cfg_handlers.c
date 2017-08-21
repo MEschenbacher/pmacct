@@ -36,8 +36,8 @@ int parse_truefalse(char *value_ptr)
 
 	lower_string(value_ptr);
 
-	if (!strcmp("true", value_ptr)) value = TRUE;
-	else if (!strcmp("false", value_ptr)) value = FALSE;
+	if (!strcmp("true", value_ptr)) value = true;
+	else if (!strcmp("false", value_ptr)) value = false;
 	else value = ERR;
 
 	return value;
@@ -49,7 +49,7 @@ int parse_truefalse_nonzero(char *value_ptr)
 
 	lower_string(value_ptr);
 
-	if (!strcmp("true", value_ptr)) value = TRUE;
+	if (!strcmp("true", value_ptr)) value = true;
 	else if (!strcmp("false", value_ptr)) value = FALSE_NONZERO;
 	else value = ERR;
 
@@ -58,7 +58,7 @@ int parse_truefalse_nonzero(char *value_ptr)
 
 int validate_truefalse(int value)
 {
-	if (value == TRUE || value == FALSE) return SUCCESS;
+	if (value == true || value == false) return SUCCESS;
 	else return ERR;
 }
 
@@ -863,7 +863,7 @@ int cfg_key_print_latest_file(char *filename, char *name, char *value_ptr)
 
 	if (strchr(value_ptr, '%')) {
 		Log(LOG_ERR, "ERROR: [%s] invalid 'print_latest_file' value: time-based '%' variables not allowed.\n", filename);
-		return TRUE;
+		return true;
 	}
 
 	if (!name) for (; list; list = list->next, changes++) list->cfg.print_latest_file = value_ptr;
@@ -1415,8 +1415,8 @@ int cfg_key_sql_preprocess_type(char *filename, char *name, char *value_ptr)
 	int changes = 0, value = 0;
 
 	lower_string(value_ptr);
-	if (!strncmp(value_ptr, "any", 3)) value = FALSE;
-	if (!strncmp(value_ptr, "all", 3)) value = TRUE;
+	if (!strncmp(value_ptr, "any", 3)) value = false;
+	if (!strncmp(value_ptr, "all", 3)) value = true;
 
 	if (!name) for (; list; list = list->next, changes++) list->cfg.sql_preprocess_type = value;
 	else {
@@ -2849,7 +2849,7 @@ int cfg_key_nfacctd_time_new(char *filename, char *name, char *value_ptr)
 		if (!list->cfg.nfacctd_time) {
 			if (value) {
 				list->cfg.nfacctd_time = NF_TIME_NEW;
-				list->cfg.nfacctd_time_new = TRUE;
+				list->cfg.nfacctd_time_new = true;
 			}
 		} else Log(LOG_WARNING, "WARN: [%s] Possibly 'nfacctd_time_secs: true' set. 'nfacctd_time_new' ignored.\n", filename);
 	}

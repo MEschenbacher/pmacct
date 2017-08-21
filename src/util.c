@@ -209,7 +209,7 @@ void trim_spaces(char *buf)
 void trim_all_spaces(char *buf)
 {
 	char *tmp_buf;
-	int i = 0, len, quotes = FALSE;
+	int i = 0, len, quotes = false;
 
 	len = strlen(buf);
 
@@ -222,8 +222,8 @@ void trim_all_spaces(char *buf)
 	/* trimming all spaces */
 	while (i <= len) {
 		if (buf[i] == '\'') {
-			if (!quotes) quotes = TRUE;
-			else if (quotes) quotes = FALSE;
+			if (!quotes) quotes = true;
+			else if (quotes) quotes = false;
 		}
 		if (isspace(buf[i]) && !quotes) {
 			strlcpy(tmp_buf, &buf[i+1], len);
@@ -265,32 +265,32 @@ int isblankline(char *line)
 {
 	int len, j, n_spaces = 0;
 
-	if (!line) return FALSE;
+	if (!line) return false;
 
 	len = strlen(line);
 	for (j = 0; j < len; j++)
 		if (isspace(line[j])) n_spaces++;
 
-	if (n_spaces == len) return TRUE;
-	else return FALSE;
+	if (n_spaces == len) return true;
+	else return false;
 }
 
 int iscomment(char *line)
 {
-	int len, j, first_char = TRUE;
+	int len, j, first_char = true;
 
-	if (!line) return FALSE;
+	if (!line) return false;
 
 	len = strlen(line);
 	for (j = 0; j <= len; j++) {
 		if (!isspace(line[j])) first_char--;
 		if (!first_char) {
-			if (line[j] == '!' || line[j] == '#') return TRUE;
-			else return FALSE;
+			if (line[j] == '!' || line[j] == '#') return true;
+			else return false;
 		}
 	}
 
-	return FALSE;
+	return false;
 }
 
 void string_add_newline(char *buf)
@@ -374,7 +374,7 @@ FILE *open_output_file(char *filename, char *mode, int lock)
 	if (config.files_uid) owner = config.files_uid;
 	if (config.files_gid) group = config.files_gid;
 
-	ret = mkdir_multilevel(filename, TRUE, owner, group);
+	ret = mkdir_multilevel(filename, true, owner, group);
 	if (ret) {
 		Log(LOG_ERR, "ERROR ( %s/%s ): [%s] open_output_file(): mkdir_multilevel() failed.\n", config.name, config.type, filename);
 		return file;
@@ -404,7 +404,7 @@ FILE *open_output_file(char *filename, char *mode, int lock)
 
 void link_latest_output_file(char *link_filename, char *filename_to_link)
 {
-	int ret, rewrite_latest = FALSE;
+	int ret, rewrite_latest = false;
 	char buf[SRVBUFLEN];
 	uid_t owner = -1;
 	gid_t group = -1;
@@ -415,7 +415,7 @@ void link_latest_output_file(char *link_filename, char *filename_to_link)
 	if (config.files_gid) group = config.files_gid;
 
 	/* create dir structure to get to file, if needed */
-	ret = mkdir_multilevel(link_filename, TRUE, owner, group);
+	ret = mkdir_multilevel(link_filename, true, owner, group);
 	if (ret) {
 		Log(LOG_ERR, "ERROR ( %s/%s ): [%s] link_latest_output_file(): mkdir_multilevel() failed.\n", config.name, config.type, buf);
 		return;
@@ -434,8 +434,8 @@ void link_latest_output_file(char *link_filename, char *filename_to_link)
 		/* filename_to_link is newer than buf or buf is un-existing */
 		stat(buf, &s1);
 		stat(filename_to_link, &s2);
-		if (s2.st_mtime >= s1.st_mtime) rewrite_latest = TRUE;
-	} else rewrite_latest = TRUE;
+		if (s2.st_mtime >= s1.st_mtime) rewrite_latest = true;
+	} else rewrite_latest = true;
 
 	if (rewrite_latest) {
 		unlink(link_filename);
@@ -731,11 +731,11 @@ int sanitize_buf_net(char *filename, char *buf, int rows)
 	if (!sanitize_buf(buf)) {
 		if (!strchr(buf, '/')) {
 			Log(LOG_ERR, "ERROR ( %s/%s ): [%s:%u] Missing '/' separator. Ignoring.\n", config.name, config.type, filename, rows);
-			return TRUE;
+			return true;
 		}
-	} else return TRUE;
+	} else return true;
 
-	return FALSE;
+	return false;
 }
 
 int sanitize_buf(char *buf)
@@ -747,48 +747,48 @@ int sanitize_buf(char *buf)
 		if (!isspace(buf[x])) valid_char++;
 		x++;
 	}
-	if (!valid_char) return TRUE;
-	if (buf[0] == '!') return TRUE;
+	if (!valid_char) return true;
+	if (buf[0] == '!') return true;
 
-	return FALSE;
+	return false;
 }
 
 int check_not_valid_char(char *filename, char *buf, int c)
 {
-	if (!buf) return FALSE;
+	if (!buf) return false;
 
 	if (strchr(buf, c)) {
 		Log(LOG_ERR, "ERROR ( %s/%s ): [%s] Invalid symbol '%c' detected.\n", config.name, config.type, filename, c);
-		return TRUE;
-	} else return FALSE;
+		return true;
+	} else return false;
 }
 
 void mark_columns(char *buf)
 {
-	int len, x, word = FALSE, quotes = FALSE;
+	int len, x, word = false, quotes = false;
 
 	if (!buf) return;
 
 	len = strlen(buf);
 	for (x = 0; x < len; x++) {
 		if (buf[x] == '\'') {
-			if (!quotes) quotes = TRUE;
-			else if (quotes) quotes = FALSE;
+			if (!quotes) quotes = true;
+			else if (quotes) quotes = false;
 		}
-		if ((isalpha(buf[x])||isdigit(buf[x])||ispunct(buf[x])) && !word) word = TRUE;
+		if ((isalpha(buf[x])||isdigit(buf[x])||ispunct(buf[x])) && !word) word = true;
 		if (isspace(buf[x]) && word && !quotes) {
 			buf[x] = '|';
-			word = FALSE;
+			word = false;
 		}
 	}
 
 	/* removing trailing '|' if any */
 	x = strlen(buf);
-	word = FALSE;
+	word = false;
 
 	while (x > 0) {
 		if (buf[x] == '|' && !word) buf[x] = '\0';
-		if ((isalpha(buf[x])||isdigit(buf[x])||ispunct(buf[x])) && !word) word = TRUE;
+		if ((isalpha(buf[x])||isdigit(buf[x])||ispunct(buf[x])) && !word) word = true;
 		x--;
 	}
 }
@@ -842,35 +842,35 @@ void lower_string(char *string)
 
 void evaluate_sums(u_int64_t *wtc, u_int64_t *wtc_2, char *name, char *type)
 {
-	int tag = FALSE;
-	int tag2 = FALSE;
-	int class = FALSE;
-	int ndpi_class = FALSE;
-	int flows = FALSE;
+	int tag = false;
+	int tag2 = false;
+	int class = false;
+	int ndpi_class = false;
+	int flows = false;
 
 	if (*wtc & COUNT_TAG) {
 		*wtc ^= COUNT_TAG;
-		tag = TRUE;
+		tag = true;
 	}
 
 	if (*wtc & COUNT_TAG2) {
 		*wtc ^= COUNT_TAG2;
-		tag2 = TRUE;
+		tag2 = true;
 	}
 
 	if (*wtc & COUNT_CLASS) {
 		*wtc ^= COUNT_CLASS;
-		class = TRUE;
+		class = true;
 	}
 
 	if (*wtc_2 & COUNT_NDPI_CLASS) {
 		*wtc_2 ^= COUNT_NDPI_CLASS;
-		ndpi_class = TRUE;
+		ndpi_class = true;
 	}
 
 	if (*wtc & COUNT_FLOWS) {
 		*wtc ^= COUNT_FLOWS;
-		flows = TRUE;
+		flows = true;
 	}
 
 	if (*wtc & COUNT_SUM_MAC) {
@@ -968,8 +968,8 @@ int check_bosbit(u_char *label)
 
 	ptr = label+2;
 
-	if (*ptr & 0x1) return TRUE;
-	else return FALSE;
+	if (*ptr & 0x1) return true;
+	else return false;
 }
 
 u_int32_t decode_mpls_label(char *label)
@@ -1035,28 +1035,28 @@ void exit_plugin(int status)
 
 void reset_tag_label_status(struct packet_ptrs_vector *pptrsv)
 {
-	pptrsv->v4.tag = FALSE;
-	pptrsv->vlan4.tag = FALSE;
-	pptrsv->mpls4.tag = FALSE;
-	pptrsv->vlanmpls4.tag = FALSE;
-	pptrsv->v4.tag2 = FALSE;
-	pptrsv->vlan4.tag2 = FALSE;
-	pptrsv->mpls4.tag2 = FALSE;
-	pptrsv->vlanmpls4.tag2 = FALSE;
+	pptrsv->v4.tag = false;
+	pptrsv->vlan4.tag = false;
+	pptrsv->mpls4.tag = false;
+	pptrsv->vlanmpls4.tag = false;
+	pptrsv->v4.tag2 = false;
+	pptrsv->vlan4.tag2 = false;
+	pptrsv->mpls4.tag2 = false;
+	pptrsv->vlanmpls4.tag2 = false;
 	pretag_free_label(&pptrsv->v4.label);
 	pretag_free_label(&pptrsv->vlan4.label);
 	pretag_free_label(&pptrsv->mpls4.label);
 	pretag_free_label(&pptrsv->vlanmpls4.label);
 
 #if defined ENABLE_IPV6
-	pptrsv->v6.tag = FALSE;
-	pptrsv->vlan6.tag = FALSE;
-	pptrsv->mpls6.tag = FALSE;
-	pptrsv->vlanmpls6.tag = FALSE;
-	pptrsv->v6.tag2 = FALSE;
-	pptrsv->vlan6.tag2 = FALSE;
-	pptrsv->mpls6.tag2 = FALSE;
-	pptrsv->vlanmpls6.tag2 = FALSE;
+	pptrsv->v6.tag = false;
+	pptrsv->vlan6.tag = false;
+	pptrsv->mpls6.tag = false;
+	pptrsv->vlanmpls6.tag = false;
+	pptrsv->v6.tag2 = false;
+	pptrsv->vlan6.tag2 = false;
+	pptrsv->mpls6.tag2 = false;
+	pptrsv->vlanmpls6.tag2 = false;
 	pretag_free_label(&pptrsv->v6.label);
 	pretag_free_label(&pptrsv->vlan6.label);
 	pretag_free_label(&pptrsv->mpls6.label);
@@ -1066,69 +1066,69 @@ void reset_tag_label_status(struct packet_ptrs_vector *pptrsv)
 
 void reset_net_status(struct packet_ptrs *pptrs)
 {
-	pptrs->lm_mask_src = FALSE;
-	pptrs->lm_mask_dst = FALSE;
-	pptrs->lm_method_src = FALSE;
-	pptrs->lm_method_dst = FALSE;
+	pptrs->lm_mask_src = false;
+	pptrs->lm_mask_dst = false;
+	pptrs->lm_method_src = false;
+	pptrs->lm_method_dst = false;
 }
 
 void reset_net_status_v(struct packet_ptrs_vector *pptrsv)
 {
-	pptrsv->v4.lm_mask_src = FALSE;
-	pptrsv->vlan4.lm_mask_src = FALSE;
-	pptrsv->mpls4.lm_mask_src = FALSE;
-	pptrsv->vlanmpls4.lm_mask_src = FALSE;
-	pptrsv->v4.lm_mask_dst = FALSE;
-	pptrsv->vlan4.lm_mask_dst = FALSE;
-	pptrsv->mpls4.lm_mask_dst = FALSE;
-	pptrsv->vlanmpls4.lm_mask_dst = FALSE;
-	pptrsv->v4.lm_method_src = FALSE;
-	pptrsv->vlan4.lm_method_src = FALSE;
-	pptrsv->mpls4.lm_method_src = FALSE;
-	pptrsv->vlanmpls4.lm_method_src = FALSE;
-	pptrsv->v4.lm_method_dst = FALSE;
-	pptrsv->vlan4.lm_method_dst = FALSE;
-	pptrsv->mpls4.lm_method_dst = FALSE;
-	pptrsv->vlanmpls4.lm_method_dst = FALSE;
+	pptrsv->v4.lm_mask_src = false;
+	pptrsv->vlan4.lm_mask_src = false;
+	pptrsv->mpls4.lm_mask_src = false;
+	pptrsv->vlanmpls4.lm_mask_src = false;
+	pptrsv->v4.lm_mask_dst = false;
+	pptrsv->vlan4.lm_mask_dst = false;
+	pptrsv->mpls4.lm_mask_dst = false;
+	pptrsv->vlanmpls4.lm_mask_dst = false;
+	pptrsv->v4.lm_method_src = false;
+	pptrsv->vlan4.lm_method_src = false;
+	pptrsv->mpls4.lm_method_src = false;
+	pptrsv->vlanmpls4.lm_method_src = false;
+	pptrsv->v4.lm_method_dst = false;
+	pptrsv->vlan4.lm_method_dst = false;
+	pptrsv->mpls4.lm_method_dst = false;
+	pptrsv->vlanmpls4.lm_method_dst = false;
 
 #if defined ENABLE_IPV6
-	pptrsv->v6.lm_mask_src = FALSE;
-	pptrsv->vlan6.lm_mask_src = FALSE;
-	pptrsv->mpls6.lm_mask_src = FALSE;
-	pptrsv->vlanmpls6.lm_mask_src = FALSE;
-	pptrsv->v6.lm_mask_dst = FALSE;
-	pptrsv->vlan6.lm_mask_dst = FALSE;
-	pptrsv->mpls6.lm_mask_dst = FALSE;
-	pptrsv->vlanmpls6.lm_mask_dst = FALSE;
-	pptrsv->v6.lm_method_src = FALSE;
-	pptrsv->vlan6.lm_method_src = FALSE;
-	pptrsv->mpls6.lm_method_src = FALSE;
-	pptrsv->vlanmpls6.lm_method_src = FALSE;
-	pptrsv->v6.lm_method_dst = FALSE;
-	pptrsv->vlan6.lm_method_dst = FALSE;
-	pptrsv->mpls6.lm_method_dst = FALSE;
-	pptrsv->vlanmpls6.lm_method_dst = FALSE;
+	pptrsv->v6.lm_mask_src = false;
+	pptrsv->vlan6.lm_mask_src = false;
+	pptrsv->mpls6.lm_mask_src = false;
+	pptrsv->vlanmpls6.lm_mask_src = false;
+	pptrsv->v6.lm_mask_dst = false;
+	pptrsv->vlan6.lm_mask_dst = false;
+	pptrsv->mpls6.lm_mask_dst = false;
+	pptrsv->vlanmpls6.lm_mask_dst = false;
+	pptrsv->v6.lm_method_src = false;
+	pptrsv->vlan6.lm_method_src = false;
+	pptrsv->mpls6.lm_method_src = false;
+	pptrsv->vlanmpls6.lm_method_src = false;
+	pptrsv->v6.lm_method_dst = false;
+	pptrsv->vlan6.lm_method_dst = false;
+	pptrsv->mpls6.lm_method_dst = false;
+	pptrsv->vlanmpls6.lm_method_dst = false;
 #endif
 }
 
 void reset_shadow_status(struct packet_ptrs_vector *pptrsv)
 {
-	pptrsv->v4.shadow = FALSE;
-	pptrsv->vlan4.shadow = FALSE;
-	pptrsv->mpls4.shadow = FALSE;
-	pptrsv->vlanmpls4.shadow = FALSE;
+	pptrsv->v4.shadow = false;
+	pptrsv->vlan4.shadow = false;
+	pptrsv->mpls4.shadow = false;
+	pptrsv->vlanmpls4.shadow = false;
 
 #if defined ENABLE_IPV6
-	pptrsv->v6.shadow = FALSE;
-	pptrsv->vlan6.shadow = FALSE;
-	pptrsv->mpls6.shadow = FALSE;
-	pptrsv->vlanmpls6.shadow = FALSE;
+	pptrsv->v6.shadow = false;
+	pptrsv->vlan6.shadow = false;
+	pptrsv->mpls6.shadow = false;
+	pptrsv->vlanmpls6.shadow = false;
 #endif
 }
 
 void reset_fallback_status(struct packet_ptrs *pptrs)
 {
-	pptrs->renormalized = FALSE;
+	pptrs->renormalized = false;
 }
 
 void set_default_preferences(struct configuration *cfg)
@@ -1151,7 +1151,7 @@ void set_default_preferences(struct configuration *cfg)
 
 void set_shadow_status(struct packet_ptrs *pptrs)
 {
-	pptrs->shadow = TRUE;
+	pptrs->shadow = true;
 }
 
 void set_sampling_table(struct packet_ptrs_vector *pptrsv, u_char *t)
@@ -1253,18 +1253,18 @@ int check_allow(struct hosts_table *allow, struct sockaddr *sa)
 		if (((struct sockaddr *)sa)->sa_family == allow->table[index].family) {
 			if (allow->table[index].family == AF_INET) {
 				if (((struct sockaddr_in *)sa)->sin_addr.s_addr == allow->table[index].address.ipv4.s_addr)
-					return TRUE;
+					return true;
 			}
 #if defined ENABLE_IPV6
 			else if (allow->table[index].family == AF_INET6) {
 				if (!ip6_addr_cmp(&(((struct sockaddr_in6 *)sa)->sin6_addr), &allow->table[index].address.ipv6))
-					return TRUE;
+					return true;
 			}
 #endif
 		}
 	}
 
-	return FALSE;
+	return false;
 }
 
 int BTA_find_id(struct id_table *t, struct packet_ptrs *pptrs, pm_id_t *tag, pm_id_t *tag2)
@@ -1383,22 +1383,22 @@ int load_labels(char *filename, struct pretag_label_filter *filter, char *value_
 }
 
 /* return value:
-   TRUE: We want it!
-   FALSE: Discard it!
+   true: We want it!
+   false: Discard it!
 */
 
 int evaluate_tags(struct pretag_filter *filter, pm_id_t tag)
 {
 	int index;
 
-	if (filter->num == 0) return FALSE; /* no entries in the filter array: tag filtering disabled */
+	if (filter->num == 0) return false; /* no entries in the filter array: tag filtering disabled */
 
 	for (index = 0; index < filter->num; index++) {
-		if (filter->table[index].n <= tag && filter->table[index].r >= tag) return (FALSE | filter->table[index].neg);
-		else if (filter->table[index].neg) return FALSE;
+		if (filter->table[index].n <= tag && filter->table[index].r >= tag) return (false | filter->table[index].neg);
+		else if (filter->table[index].neg) return false;
 	}
 
-	return TRUE;
+	return true;
 }
 
 int evaluate_labels(struct pretag_label_filter *filter, pt_label_t *label)
@@ -1406,17 +1406,17 @@ int evaluate_labels(struct pretag_label_filter *filter, pt_label_t *label)
 	char null_label[] = "null";
 	int index;
 
-	if (filter->num == 0) return FALSE; /* no entries in the filter array: tag filtering disabled */
+	if (filter->num == 0) return false; /* no entries in the filter array: tag filtering disabled */
 	if (!label->val) label->val = null_label;
 
 	for (index = 0; index < filter->num; index++) {
-		if (!memcmp(filter->table[index].v, label->val, filter->table[index].len)) return (FALSE | filter->table[index].neg);
+		if (!memcmp(filter->table[index].v, label->val, filter->table[index].len)) return (false | filter->table[index].neg);
 		else {
-			if (filter->table[index].neg) return FALSE;
+			if (filter->table[index].neg) return false;
 		}
 	}
 
-	return TRUE;
+	return true;
 }
 
 void load_pkt_len_distrib_bins()
@@ -1600,7 +1600,7 @@ void write_avro_schema_to_file(char *filename, avro_schema_t schema)
 	FILE *avro_fp;
 	avro_writer_t avro_schema_writer;
 
-	avro_fp = open_output_file(filename, "w", TRUE);
+	avro_fp = open_output_file(filename, "w", true);
 
 	if (avro_fp) {
 		avro_schema_writer = avro_writer_file(avro_fp);
@@ -2292,8 +2292,8 @@ void set_truefalse_nonzero(int *value)
 {
 	if (!value) return;
 
-	if (!(*value)) (*value) = TRUE;
-	else if ((*value) == FALSE_NONZERO) (*value) = FALSE;
+	if (!(*value)) (*value) = true;
+	else if ((*value) == FALSE_NONZERO) (*value) = false;
 }
 
 void hash_init_key(pm_hash_key_t *key)
@@ -2429,7 +2429,7 @@ void dump_writers_init()
 	dump_writers.active = 0;
 	dump_writers.max = config.dump_max_writers;
 	if (dump_writers.list) memset(dump_writers.list, 0, (dump_writers.max * sizeof(pid_t)));
-	dump_writers.flags = FALSE;
+	dump_writers.flags = false;
 }
 
 void dump_writers_count()
@@ -2445,7 +2445,7 @@ void dump_writers_count()
 
 	dump_writers.active = count;
 	if (dump_writers.active == dump_writers.max) dump_writers.flags = CHLD_ALERT;
-	else dump_writers.flags = FALSE;
+	else dump_writers.flags = false;
 }
 
 u_int32_t dump_writers_get_flags()
@@ -2466,7 +2466,7 @@ u_int16_t dump_writers_get_max()
 int dump_writers_add(pid_t pid)
 {
 	u_int16_t idx;
-	int ret = FALSE;
+	int ret = false;
 
 	if (dump_writers.flags != CHLD_ALERT) {
 		for (idx = 0; idx < dump_writers.max; idx++) {
@@ -2476,7 +2476,7 @@ int dump_writers_add(pid_t pid)
 			}
 		}
 
-		ret = TRUE;
+		ret = true;
 	}
 
 	return ret;

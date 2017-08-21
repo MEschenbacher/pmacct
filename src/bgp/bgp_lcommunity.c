@@ -250,7 +250,7 @@ char *
 lcommunity_lcom2str (struct bgp_peer *peer, struct lcommunity *lcom)
 {
 	struct bgp_misc_structs *bms;
-	int idx, str_pnt, str_size, first = TRUE;
+	int idx, str_pnt, str_size, first = true;
 	u_int32_t npart1, npart2, npart3;
 	u_int32_t hpart1, hpart2, hpart3;
 	char *str_buf;
@@ -290,7 +290,7 @@ lcommunity_lcom2str (struct bgp_peer *peer, struct lcommunity *lcom)
 		sprintf(&str_buf[str_pnt], "%u:%u:%u", hpart1, hpart2, hpart3);
 		str_pnt = strlen(str_buf);
 
-		first = FALSE;
+		first = false;
 	}
 
 	return str_buf;

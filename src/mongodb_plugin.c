@@ -67,7 +67,7 @@ void mongodb_plugin(int pipe_fd, struct configuration *cfgptr, void *ptr)
 	struct networks_file_data nfd;
 
 	unsigned char *rgptr;
-	int pollagain = TRUE;
+	int pollagain = true;
 	u_int32_t seq = 1, rg_err_count = 0;
 
 	struct extra_primitives extras;
@@ -160,7 +160,7 @@ void mongodb_plugin(int pipe_fd, struct configuration *cfgptr, void *ptr)
 	/* plugin main loop */
 	for(;;) {
 poll_again:
-		status->wakeup = TRUE;
+		status->wakeup = true;
 		calc_refresh_timeout(refresh_deadline, idata.now, &refresh_timeout);
 
 		pfd.fd = pipe_fd;
@@ -197,7 +197,7 @@ read_data:
 				if (!pollagain) {
 					seq++;
 					seq %= MAX_SEQNUM;
-					if (seq == 0) rg_err_count = FALSE;
+					if (seq == 0) rg_err_count = false;
 				} else {
 					if ((ret = read(pipe_fd, &rgptr, sizeof(rgptr))) == 0)
 						exit_plugin(1); /* we exit silently; something happened at the write end */
@@ -207,7 +207,7 @@ read_data:
 
 				if (((struct ch_buf_hdr *)rg->ptr)->seq != seq) {
 					if (!pollagain) {
-						pollagain = TRUE;
+						pollagain = true;
 						goto poll_again;
 					} else {
 						rg_err_count++;
@@ -223,7 +223,7 @@ read_data:
 					}
 				}
 
-				pollagain = FALSE;
+				pollagain = false;
 				memcpy(pipebuf, rg->ptr, bufsz);
 				rg->ptr += bufsz;
 			}
@@ -365,13 +365,13 @@ void MongoDB_cache_purge(struct chained_cache *queue[], int index, int safe_acti
 	}
 
 	if (strchr(config.sql_table, '%') || strchr(config.sql_table, '$')) {
-		dyn_table = TRUE;
+		dyn_table = true;
 
-		if (!strchr(config.sql_table, '$')) dyn_table_time_only = TRUE;
-		else dyn_table_time_only = FALSE;
+		if (!strchr(config.sql_table, '$')) dyn_table_time_only = true;
+		else dyn_table_time_only = false;
 	} else {
-		dyn_table = FALSE;
-		dyn_table_time_only = FALSE;
+		dyn_table = false;
+		dyn_table_time_only = false;
 	}
 
 	bson_batch = (bson **) malloc(sizeof(bson *) * index);
@@ -419,7 +419,7 @@ start:
 	}
 
 	for (j = 0, batch_idx = 0; j < index; j++) {
-		go_to_pending = FALSE;
+		go_to_pending = false;
 
 		if (queue[j]->valid != PRINT_CACHE_COMMITTED) continue;
 
@@ -441,7 +441,7 @@ start:
 				pending_queries_queue[pqq_ptr] = queue[j];
 
 				pqq_ptr++;
-				go_to_pending = TRUE;
+				go_to_pending = true;
 			}
 		}
 
@@ -764,7 +764,7 @@ start:
 				if (config.timestamps_since_epoch) {
 					char tstamp_str[SRVBUFLEN];
 
-					compose_timestamp(tstamp_str, SRVBUFLEN, &pnat->timestamp_start, TRUE, config.timestamps_since_epoch);
+					compose_timestamp(tstamp_str, SRVBUFLEN, &pnat->timestamp_start, true, config.timestamps_since_epoch);
 					bson_append_string(bson_elem, "timestamp_start", tstamp_str);
 				} else {
 					bson_date_t bdate;
@@ -779,7 +779,7 @@ start:
 				if (config.timestamps_since_epoch) {
 					char tstamp_str[SRVBUFLEN];
 
-					compose_timestamp(tstamp_str, SRVBUFLEN, &pnat->timestamp_end, TRUE, config.timestamps_since_epoch);
+					compose_timestamp(tstamp_str, SRVBUFLEN, &pnat->timestamp_end, true, config.timestamps_since_epoch);
 					bson_append_string(bson_elem, "timestamp_end", tstamp_str);
 				} else {
 					bson_date_t bdate;
@@ -794,7 +794,7 @@ start:
 				if (config.timestamps_since_epoch) {
 					char tstamp_str[SRVBUFLEN];
 
-					compose_timestamp(tstamp_str, SRVBUFLEN, &pnat->timestamp_arrival, TRUE, config.timestamps_since_epoch);
+					compose_timestamp(tstamp_str, SRVBUFLEN, &pnat->timestamp_arrival, true, config.timestamps_since_epoch);
 					bson_append_string(bson_elem, "timestamp_arrival", tstamp_str);
 				} else {
 					bson_date_t bdate;
@@ -810,10 +810,10 @@ start:
 				if (config.timestamps_since_epoch) {
 					char tstamp_str[SRVBUFLEN];
 
-					compose_timestamp(tstamp_str, SRVBUFLEN, &queue[j]->stitch->timestamp_min, TRUE, config.timestamps_since_epoch);
+					compose_timestamp(tstamp_str, SRVBUFLEN, &queue[j]->stitch->timestamp_min, true, config.timestamps_since_epoch);
 					bson_append_string(bson_elem, "timestamp_min", tstamp_str);
 
-					compose_timestamp(tstamp_str, SRVBUFLEN, &queue[j]->stitch->timestamp_max, TRUE, config.timestamps_since_epoch);
+					compose_timestamp(tstamp_str, SRVBUFLEN, &queue[j]->stitch->timestamp_max, true, config.timestamps_since_epoch);
 					bson_append_string(bson_elem, "timestamp_max", tstamp_str);
 				} else {
 					bson_date_t bdate_min, bdate_max;
@@ -839,7 +839,7 @@ start:
 					if (config.cpptrs.primitive[cp_idx].ptr->len != PM_VARIABLE_LENGTH) {
 						char cp_str[SRVBUFLEN];
 
-						custom_primitive_value_print(cp_str, SRVBUFLEN, pcust, &config.cpptrs.primitive[cp_idx], FALSE);
+						custom_primitive_value_print(cp_str, SRVBUFLEN, pcust, &config.cpptrs.primitive[cp_idx], false);
 						bson_append_string(bson_elem, config.cpptrs.primitive[cp_idx].name, cp_str);
 					} else {
 						char *label_ptr = NULL;
@@ -930,7 +930,7 @@ int MongoDB_get_database(char *db, int dblen, char *db_table)
 
 	if (!collection_sep) {
 		Log(LOG_WARNING, "WARN ( %s/%s ): mongo_table '%s' is not in <database>.<collection> format.\n", config.name, config.type, config.sql_table);
-		return TRUE;
+		return true;
 	}
 
 	memset(db, 0, dblen);
@@ -938,7 +938,7 @@ int MongoDB_get_database(char *db, int dblen, char *db_table)
 	strlcpy(db, db_table, dblen);
 	*collection_sep = '.';
 
-	return FALSE;
+	return false;
 }
 
 void MongoDB_create_indexes(mongo *db_conn, const char *table)

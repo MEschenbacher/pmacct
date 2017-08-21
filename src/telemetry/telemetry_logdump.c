@@ -310,7 +310,7 @@ void telemetry_handle_dump_event(struct telemetry_data *t_data)
 								link_latest_output_file(latest_filename, last_filename);
 							}
 						}
-						peer->log->fd = open_output_file(current_filename, "w", TRUE);
+						peer->log->fd = open_output_file(current_filename, "w", true);
 						if (fd_buf) {
 							if (setvbuf(peer->log->fd, fd_buf, _IOFBF, OUTPUT_FILE_BUFSZ))
 								Log(LOG_WARNING, "WARN ( %s/%s ): [%s] setvbuf() failed: %s\n", config.name, t_data->log_str, current_filename, errno);
@@ -359,12 +359,12 @@ void telemetry_handle_dump_event(struct telemetry_data *t_data)
 
 #ifdef WITH_RABBITMQ
 		if (config.telemetry_dump_amqp_routing_key)
-			p_amqp_close(&telemetry_dump_amqp_host, FALSE);
+			p_amqp_close(&telemetry_dump_amqp_host, false);
 #endif
 
 #ifdef WITH_KAFKA
 		if (config.telemetry_dump_kafka_topic)
-			p_kafka_close(&telemetry_dump_kafka_host, FALSE);
+			p_kafka_close(&telemetry_dump_kafka_host, false);
 #endif
 
 		if (config.telemetry_dump_latest_file && peer) {

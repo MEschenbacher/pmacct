@@ -98,7 +98,7 @@ int bgp_lookup_node_match_cmp_bmp(struct bgp_info *info, struct node_match_cmp_t
 {
 	struct bmp_peer *bmpp = info->peer->bmp_se;
 	struct bgp_peer *peer_local = &bmpp->self;
-	int no_match = FALSE;
+	int no_match = false;
 
 	if (peer_local == nmct2->peer) {
 		if (nmct2->safi == SAFI_MPLS_VPN) no_match++;
@@ -118,8 +118,8 @@ int bgp_lookup_node_match_cmp_bmp(struct bgp_info *info, struct node_match_cmp_t
 			}
 		}
 
-		if (!no_match) return FALSE;
+		if (!no_match) return false;
 	}
 
-	return TRUE;
+	return true;
 }

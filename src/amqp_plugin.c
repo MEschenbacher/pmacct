@@ -54,7 +54,7 @@ void amqp_plugin(int pipe_fd, struct configuration *cfgptr, void *ptr)
 	struct networks_file_data nfd;
 
 	unsigned char *rgptr;
-	int pollagain = TRUE;
+	int pollagain = true;
 	u_int32_t seq = 1, rg_err_count = 0;
 
 	struct extra_primitives extras;
@@ -188,7 +188,7 @@ void amqp_plugin(int pipe_fd, struct configuration *cfgptr, void *ptr)
 	/* plugin main loop */
 	for(;;) {
 poll_again:
-		status->wakeup = TRUE;
+		status->wakeup = true;
 		calc_refresh_timeout(refresh_deadline, idata.now, &refresh_timeout);
 		if (config.amqp_avro_schema_routing_key) calc_refresh_timeout(avro_schema_deadline, idata.now, &avro_schema_timeout);
 
@@ -234,7 +234,7 @@ read_data:
 				if (!pollagain) {
 					seq++;
 					seq %= MAX_SEQNUM;
-					if (seq == 0) rg_err_count = FALSE;
+					if (seq == 0) rg_err_count = false;
 				} else {
 					if ((ret = read(pipe_fd, &rgptr, sizeof(rgptr))) == 0)
 						exit_plugin(1); /* we exit silently; something happened at the write end */
@@ -244,7 +244,7 @@ read_data:
 
 				if (((struct ch_buf_hdr *)rg->ptr)->seq != seq) {
 					if (!pollagain) {
-						pollagain = TRUE;
+						pollagain = true;
 						goto poll_again;
 					} else {
 						rg_err_count++;
@@ -260,7 +260,7 @@ read_data:
 					}
 				}
 
-				pollagain = FALSE;
+				pollagain = false;
 				memcpy(pipebuf, rg->ptr, bufsz);
 				rg->ptr += bufsz;
 			}
@@ -339,7 +339,7 @@ void amqp_cache_purge(struct chained_cache *queue[], int index, int safe_action)
 	char *empty_pcust = NULL;
 	char src_mac[18], dst_mac[18], src_host[INET6_ADDRSTRLEN], dst_host[INET6_ADDRSTRLEN], ip_address[INET6_ADDRSTRLEN];
 	char rd_str[SRVBUFLEN], misc_str[SRVBUFLEN], dyn_amqp_routing_key[SRVBUFLEN], *orig_amqp_routing_key = NULL;
-	int i, j, stop, batch_idx, is_routing_key_dyn = FALSE, qn = 0, ret, saved_index = index;
+	int i, j, stop, batch_idx, is_routing_key_dyn = false, qn = 0, ret, saved_index = index;
 	int mv_num = 0, mv_num_save = 0;
 	time_t start, duration;
 	pid_t writer_pid = getpid();
@@ -350,7 +350,7 @@ void amqp_cache_purge(struct chained_cache *queue[], int index, int safe_action)
 #ifdef WITH_AVRO
 	avro_writer_t avro_writer;
 	char *avro_buf = NULL;
-	int avro_buffer_full = FALSE;
+	int avro_buffer_full = false;
 #endif
 
 	/* setting some defaults */
@@ -362,7 +362,7 @@ void amqp_cache_purge(struct chained_cache *queue[], int index, int safe_action)
 	if (!config.sql_table) config.sql_table = default_amqp_routing_key;
 	else {
 		if (strchr(config.sql_table, '$')) {
-			is_routing_key_dyn = TRUE;
+			is_routing_key_dyn = true;
 			orig_amqp_routing_key = config.sql_table;
 			config.sql_table = dyn_amqp_routing_key;
 		}
@@ -509,7 +509,7 @@ void amqp_cache_purge(struct chained_cache *queue[], int index, int safe_action)
 				    config.name, config.type);
 				exit_plugin(1);
 			} else if (avro_value_size >= (config.avro_buffer_size - avro_writer_tell(avro_writer))) {
-				avro_buffer_full = TRUE;
+				avro_buffer_full = true;
 				j--;
 			} else if (avro_value_write(avro_writer, &avro_value)) {
 				Log(LOG_ERR, "ERROR ( %s/%s ): ARVO: unable to write value: %s\n", config.name, config.type, avro_strerror());
@@ -599,7 +599,7 @@ void amqp_cache_purge(struct chained_cache *queue[], int index, int safe_action)
 
 				ret = p_amqp_publish_binary(&amqpp_amqp_host, avro_buf, avro_writer_tell(avro_writer));
 				avro_writer_reset(avro_writer);
-				avro_buffer_full = FALSE;
+				avro_buffer_full = false;
 				mv_num_save = mv_num;
 				mv_num = 0;
 
@@ -651,7 +651,7 @@ void amqp_cache_purge(struct chained_cache *queue[], int index, int safe_action)
 		}
 	}
 
-	p_amqp_close(&amqpp_amqp_host, FALSE);
+	p_amqp_close(&amqpp_amqp_host, false);
 
 	Log(LOG_INFO, "INFO ( %s/%s ): *** Purging cache - END (PID: %u, QN: %u/%u, ET: %u) ***\n",
 	    config.name, config.type, writer_pid, qn, saved_index, duration);
@@ -698,6 +698,6 @@ void amqp_avro_schema_purge(char *avro_schema_str)
 
 	ret = p_amqp_publish_string(&amqp_avro_schema_host, avro_schema_str);
 
-	p_amqp_close(&amqp_avro_schema_host, FALSE);
+	p_amqp_close(&amqp_avro_schema_host, false);
 }
 #endif

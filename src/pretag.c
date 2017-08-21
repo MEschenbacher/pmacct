@@ -106,7 +106,7 @@ void load_id_file(int acct_type, char *filename, struct id_table *t, struct plug
 					Log(LOG_ERR, "ERROR ( %s/%s ): [%s] malloc() failed.\n", config.name, config.type, filename);
 					goto handle_error;
 				}
-				*map_allocated = TRUE;
+				*map_allocated = true;
 			} else {
 				ptr = t->e ;
 
@@ -123,7 +123,7 @@ void load_id_file(int acct_type, char *filename, struct id_table *t, struct plug
 				t->e = ptr ;
 			}
 		} else {
-			*map_allocated = TRUE;
+			*map_allocated = true;
 		}
 
 		tmp.e = (struct id_entry *) malloc(sz);
@@ -140,7 +140,7 @@ void load_id_file(int acct_type, char *filename, struct id_table *t, struct plug
 
 		/* first stage: reading Agent ID file and arranging it in a temporary memory table */
 		while (!feof(file)) {
-			ignoring = FALSE;
+			ignoring = false;
 			req->line_num = ++tot_lines;
 
 			if (tmp.num >= map_entries) {
@@ -164,9 +164,9 @@ void load_id_file(int acct_type, char *filename, struct id_table *t, struct plug
 						/* resetting the entry and enforcing defaults */
 						if (acct_type == MAP_IGP) memset(&ime, 0, sizeof(ime));
 						memset(&tmp.e[tmp.num], 0, sizeof(struct id_entry));
-						tmp.e[tmp.num].ret = FALSE;
+						tmp.e[tmp.num].ret = false;
 
-						err = FALSE;
+						err = false;
 						key = NULL;
 						value = NULL;
 						start = buf;
@@ -187,7 +187,7 @@ void load_id_file(int acct_type, char *filename, struct id_table *t, struct plug
 								buf[x] = '\0';
 								if (value || !key) {
 									Log(LOG_WARNING, "WARN ( %s/%s ): [%s:%u] malformed line. Ignored.\n", config.name, config.type, filename, tot_lines);
-									err = TRUE;
+									err = true;
 									break;
 								} else value = start;
 								x++;
@@ -287,7 +287,7 @@ void load_id_file(int acct_type, char *filename, struct id_table *t, struct plug
 											                           config.name, config.type, filename, tot_lines, key);
 										else {
 											Log(LOG_WARNING, "WARN ( %s/%s ): [%s:%u] Line ignored.\n", config.name, config.type, filename, tot_lines);
-											ignoring = TRUE;
+											ignoring = true;
 										}
 									}
 									key = NULL;
@@ -303,7 +303,7 @@ void load_id_file(int acct_type, char *filename, struct id_table *t, struct plug
 										if (err == E_NOTFOUND) Log(LOG_WARNING, "WARN ( %s/%s ): [%s:%u] unknown key '%s'. Ignored.\n",
 											                           config.name, config.type, filename, tot_lines, key);
 										else Log(LOG_WARNING, "WARN ( %s/%s ): [%s:%u] Line ignored.\n", config.name, config.type, filename, tot_lines);
-										ignoring = TRUE;
+										ignoring = true;
 										break;
 									}
 									key = NULL;
@@ -345,7 +345,7 @@ void load_id_file(int acct_type, char *filename, struct id_table *t, struct plug
 									int j, z, recirculate;
 									struct id_entry recirc_e;
 
-									recirculate = FALSE;
+									recirculate = false;
 recirculate_ipv6:
 
 									if (!tmp.e[tmp.num].key.agent_ip.a.family) {
@@ -357,7 +357,7 @@ recirculate_ipv6:
 
 #if defined ENABLE_IPV6
 											memcpy(&recirc_e, &tmp.e[tmp.num], sizeof(struct id_entry));
-											recirculate = TRUE;
+											recirculate = true;
 #endif
 										}
 #if defined ENABLE_IPV6
@@ -366,7 +366,7 @@ recirculate_ipv6:
 											tmp.e[tmp.num].key.agent_ip.a.family = AF_INET6;
 											tmp.e[tmp.num].key.agent_mask.family = AF_INET6;
 
-											recirculate = FALSE;
+											recirculate = false;
 										}
 #endif
 									}
@@ -519,17 +519,17 @@ recirculate_ipv6:
 			   generate errors. */
 			for (ptr = t->ipv4_base, x = 0; x < t->ipv4_num; ptr++, x++) {
 				if (ptr->jeq.label) {
-					label_solved = FALSE;
+					label_solved = false;
 
 					/* honouring reserved labels (ie. "next"). Then resolving unknown labels */
 					if (!strcmp(ptr->jeq.label, "next")) {
 						ptr->jeq.ptr = ptr+1;
-						label_solved = TRUE;
+						label_solved = true;
 					} else {
 						for (ptr2 = ptr+1, index = x+1; index < t->ipv4_num; ptr2++, index++) {
 							if (!strcmp(ptr->jeq.label, ptr2->entry_label)) {
 								ptr->jeq.ptr = ptr2;
-								label_solved = TRUE;
+								label_solved = true;
 								break;
 							}
 						}
@@ -547,11 +547,11 @@ recirculate_ipv6:
 #if defined ENABLE_IPV6
 			for (ptr = t->ipv6_base, x = 0; x < t->ipv6_num; ptr++, x++) {
 				if (ptr->jeq.label) {
-					label_solved = FALSE;
+					label_solved = false;
 					for (ptr2 = ptr+1, index = x+1; index < t->ipv6_num; ptr2++, index++) {
 						if (!strcmp(ptr->jeq.label, ptr2->entry_label)) {
 							ptr->jeq.ptr = ptr2;
-							label_solved = TRUE;
+							label_solved = true;
 							break;
 						}
 					}
@@ -645,8 +645,8 @@ u_int8_t pt_check_neg(char **value, u_int32_t *flags)
 
 		if (flags) *flags |= PRETAG_FLAG_NEG;
 
-		return TRUE;
-	} else return FALSE;
+		return true;
+	} else return false;
 }
 
 char *pt_check_range(char *str)
@@ -671,8 +671,8 @@ void load_pre_tag_map(int acct_type, char *filename, struct id_table *t, struct 
 	load_id_file(acct_type, filename, t, req, map_allocated);
 
 	if (req) {
-		req->map_entries = FALSE;
-		req->map_row_len = FALSE;
+		req->map_entries = false;
+		req->map_row_len = false;
 	}
 }
 
@@ -685,7 +685,7 @@ void pretag_init_vars(struct packet_ptrs *pptrs, struct id_table *t)
 
 	if (pptrs->label.val) {
 		pretag_free_label(&pptrs->label);
-		pptrs->have_label = FALSE;
+		pptrs->have_label = false;
 	}
 }
 
@@ -762,50 +762,50 @@ int pretag_entry_process(struct id_entry *e, struct packet_ptrs *pptrs, pm_id_t 
 	pm_id_t id = 0, stop = 0, ret = 0;
 	pt_label_t label_local;
 
-	e->last_matched = FALSE;
+	e->last_matched = false;
 
-	for (j = 0, stop = 0, ret = 0; ((!ret || ret > TRUE) && (*e->func[j])); j++) {
+	for (j = 0, stop = 0, ret = 0; ((!ret || ret > true) && (*e->func[j])); j++) {
 		if (e->func_type[j] == PRETAG_SET_LABEL) {
 			ret = (*e->func[j])(pptrs, &label_local, e);
 		} else {
 			ret = (*e->func[j])(pptrs, &id, e);
 		}
 
-		if (ret > TRUE) stop |= ret;
+		if (ret > true) stop |= ret;
 		else stop = ret;
 	}
 
-	if (!stop || stop > TRUE) {
+	if (!stop || stop > true) {
 		if (stop & PRETAG_MAP_RCODE_ID) {
 			if (e->stack.func) id = (*e->stack.func)(id, *tag);
 			*tag = id;
-			pptrs->have_tag = TRUE;
+			pptrs->have_tag = true;
 		} else if (stop & PRETAG_MAP_RCODE_ID2) {
 			if (e->stack.func) id = (*e->stack.func)(id, *tag2);
 			*tag2 = id;
-			pptrs->have_tag2 = TRUE;
+			pptrs->have_tag2 = true;
 		} else if (stop & PRETAG_MAP_RCODE_LABEL) {
 			/* auto-stacking if value exists */
 			if (pptrs->label.len) {
 				char default_sep[] = ",";
 
-				if (pretag_realloc_label(&pptrs->label, label_local.len + pptrs->label.len + 1 /* sep */ + 1 /* null */)) return TRUE;
+				if (pretag_realloc_label(&pptrs->label, label_local.len + pptrs->label.len + 1 /* sep */ + 1 /* null */)) return true;
 				strncat(pptrs->label.val, default_sep, 1);
 				strncat(pptrs->label.val, label_local.val, label_local.len);
 				pptrs->label.val[pptrs->label.len] = '\0';
 			} else {
-				if (pretag_malloc_label(&pptrs->label, label_local.len + 1 /* null */)) return TRUE;
+				if (pretag_malloc_label(&pptrs->label, label_local.len + 1 /* null */)) return true;
 				strncpy(pptrs->label.val, label_local.val, label_local.len);
 				pptrs->label.val[pptrs->label.len] = '\0';
 			}
 
-			pptrs->have_label = TRUE;
+			pptrs->have_label = true;
 		} else if (stop == BTA_MAP_RCODE_ID_ID2) {
 			// stack not applicable here
 			*tag = id;
 			*tag2 = e->id2;
-			pptrs->have_tag = TRUE;
-			pptrs->have_tag2 = TRUE;
+			pptrs->have_tag = true;
+			pptrs->have_tag2 = true;
 		}
 
 		if (e->jeq.ptr) {
@@ -816,9 +816,9 @@ int pretag_entry_process(struct id_entry *e, struct packet_ptrs *pptrs, pm_id_t 
 				*tag2 = 0;
 				if (pptrs->label.val) pretag_free_label(&pptrs->label);
 
-				pptrs->have_tag = FALSE;
-				pptrs->have_tag2 = FALSE;
-				pptrs->have_label = FALSE;
+				pptrs->have_tag = false;
+				pptrs->have_tag2 = false;
+				pptrs->have_label = false;
 			}
 			stop |= PRETAG_MAP_RCODE_JEQ;
 		}
@@ -850,17 +850,17 @@ int pretag_index_insert_bitmap(struct id_table *t, pt_bitmap_t idx_bmap)
 {
 	u_int32_t iterator = 0;
 
-	if (!t) return TRUE;
+	if (!t) return true;
 
 	for (iterator = 0; iterator < t->index_num; iterator++) {
 		if (!t->index[iterator].entries || t->index[iterator].bitmap == idx_bmap) {
 			t->index[iterator].bitmap = idx_bmap;
 			t->index[iterator].entries++;
-			return FALSE;
+			return false;
 		}
 	}
 
-	return TRUE;
+	return true;
 }
 
 int pretag_index_set_handlers(struct id_table *t)
@@ -868,7 +868,7 @@ int pretag_index_set_handlers(struct id_table *t)
 	pt_bitmap_t residual_idx_bmap = 0;
 	u_int32_t index = 0, iterator = 0, handler_index = 0;
 
-	if (!t) return TRUE;
+	if (!t) return true;
 
 	for (iterator = 0; iterator < t->index_num; iterator++) {
 		residual_idx_bmap = t->index[iterator].bitmap;
@@ -903,16 +903,16 @@ int pretag_index_set_handlers(struct id_table *t)
 		}
 	}
 
-	return FALSE;
+	return false;
 }
 
 int pretag_index_allocate(struct id_table *t)
 {
 	pt_bitmap_t idx_t_size = 0;
 	u_int32_t iterator = 0, j = 0;
-	int ret, destroy = FALSE;
+	int ret, destroy = false;
 
-	if (!t) return TRUE;
+	if (!t) return true;
 
 	for (iterator = 0; iterator < t->index_num; iterator++) {
 		if (t->index[iterator].entries) {
@@ -928,7 +928,7 @@ int pretag_index_allocate(struct id_table *t)
 				    config.type, t->filename, t->index[iterator].bitmap);
 				t->index[iterator].bitmap = 0;
 				t->index[iterator].entries = 0;
-				destroy = TRUE;
+				destroy = true;
 				break;
 			} else {
 				memset(t->index[iterator].idx_t, 0, idx_t_size);
@@ -941,7 +941,7 @@ int pretag_index_allocate(struct id_table *t)
 				if (ret == ERR) {
 					Log(LOG_WARNING, "WARN ( %s/%s ): [%s] maps_index: unable to allocate hash serializer for index %x.\n", config.name,
 					    config.type, t->filename, t->index[iterator].bitmap);
-					destroy = TRUE;
+					destroy = true;
 					break;
 				}
 			}
@@ -994,14 +994,14 @@ int pretag_index_fill(struct id_table *t, pt_bitmap_t idx_bmap, struct id_entry 
 				/* removing duplicates */
 				else {
 					pm_id_t saved_pos_idie, saved_pos_ptr;
-					int match = FALSE;
+					int match = false;
 
 					saved_pos_idie = idie->result[index]->pos;
 					idie->result[index]->pos = 0;
 					saved_pos_ptr = ptr->pos;
 					ptr->pos = 0;
 
-					if (!memcmp(idie->result[index], ptr, sizeof(struct id_entry))) match = TRUE;
+					if (!memcmp(idie->result[index], ptr, sizeof(struct id_entry))) match = true;
 
 					idie->result[index]->pos = saved_pos_idie;
 					ptr->pos = saved_pos_ptr;

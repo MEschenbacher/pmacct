@@ -43,17 +43,17 @@ u_int32_t bmp_process_packet(char *bmp_packet, u_int32_t len, struct bmp_peer *b
 
 	struct bmp_common_hdr *bch = NULL;
 
-	if (!bmpp) return FALSE;
+	if (!bmpp) return false;
 
 	peer = &bmpp->self;
 	bms = bgp_select_misc_db(peer->type);
 
-	if (!bms) return FALSE;
+	if (!bms) return false;
 
 	if (len < sizeof(struct bmp_common_hdr)) {
 		Log(LOG_INFO, "INFO ( %s/%s ): [%s] packet discarded: failed bmp_get_and_check_length() BMP common hdr\n",
 		    config.name, bms->log_str, peer->addr_str);
-		return FALSE;
+		return false;
 	}
 
 	for (msg_start_len = pkt_remaining_len = len; pkt_remaining_len; msg_start_len = pkt_remaining_len) {
@@ -63,7 +63,7 @@ u_int32_t bmp_process_packet(char *bmp_packet, u_int32_t len, struct bmp_peer *b
 		if (bch->version != BMP_V3) {
 			Log(LOG_INFO, "INFO ( %s/%s ): [%s] packet discarded: BMP version != %u\n",
 			    config.name, bms->log_str, peer->addr_str, BMP_V3);
-			return FALSE;
+			return false;
 		}
 
 		bmp_common_hdr_get_len(bch, &msg_len);
@@ -108,7 +108,7 @@ u_int32_t bmp_process_packet(char *bmp_packet, u_int32_t len, struct bmp_peer *b
 		}
 	}
 
-	return FALSE;
+	return false;
 }
 
 void bmp_process_msg_init(char **bmp_packet, u_int32_t *len, u_int32_t bmp_hdr_len, struct bmp_peer *bmpp)
@@ -323,12 +323,12 @@ void bmp_process_msg_peer_up(char **bmp_packet, u_int32_t *len, struct bmp_peer 
 			bgp_msg_data_set_data_bmp(&bmed_bmp, &bdata);
 
 			/* XXX: checks, ie. marker, message length, etc., bypassed */
-			bgp_open_len = bgp_parse_open_msg(&bmd, (*bmp_packet), FALSE, FALSE);
+			bgp_open_len = bgp_parse_open_msg(&bmd, (*bmp_packet), false, false);
 			bmp_get_and_check_length(bmp_packet, len, bgp_open_len);
 			memcpy(&bgp_peer_loc.addr, &blpu.local_ip, sizeof(struct host_addr));
 
 			bmd.peer = &bgp_peer_rem;
-			bgp_open_len = bgp_parse_open_msg(&bmd, (*bmp_packet), FALSE, FALSE);
+			bgp_open_len = bgp_parse_open_msg(&bmd, (*bmp_packet), false, false);
 			bmp_get_and_check_length(bmp_packet, len, bgp_open_len);
 			memcpy(&bgp_peer_rem.addr, &bdata.peer_ip, sizeof(struct host_addr));
 
@@ -478,7 +478,7 @@ void bmp_process_msg_route_monitor(char **bmp_packet, u_int32_t *len, struct bmp
 		/* If no timestamp in BMP then let's generate one */
 		if (!bdata.tstamp.tv_sec) gettimeofday(&bdata.tstamp, NULL);
 
-		compose_timestamp(tstamp_str, SRVBUFLEN, &bdata.tstamp, TRUE, config.timestamps_since_epoch);
+		compose_timestamp(tstamp_str, SRVBUFLEN, &bdata.tstamp, true, config.timestamps_since_epoch);
 		addr_to_str(peer_ip, &bdata.peer_ip);
 
 		ret = pm_tfind(&bdata.peer_ip, &bmpp->bgp_peers, bgp_peer_host_addr_cmp);
@@ -577,7 +577,7 @@ void bmp_process_msg_stats(char **bmp_packet, u_int32_t *len, struct bmp_peer *b
 			bmp_stats_cnt_hdr_get_type(bsch, &cnt_type);
 			bmp_stats_cnt_hdr_get_len(bsch, &cnt_len);
 			cnt_data32 = 0;
-			cnt_data64 = 0, got_data = TRUE;
+			cnt_data64 = 0, got_data = true;
 
 			switch (cnt_type) {
 			case BMP_STATS_TYPE0:
@@ -612,7 +612,7 @@ void bmp_process_msg_stats(char **bmp_packet, u_int32_t *len, struct bmp_peer *b
 				else if (cnt_len == 8) bmp_stats_cnt_get_data64(bmp_packet, len, &cnt_data64);
 				else {
 					bmp_get_and_check_length(bmp_packet, len, cnt_len);
-					got_data = FALSE;
+					got_data = false;
 				}
 				break;
 			}
@@ -674,7 +674,7 @@ void bmp_peer_hdr_get_v_flag(struct bmp_peer_hdr *bph, u_int8_t *family)
 
 	if (bph && family) {
 		version = (bph->flags & 0x80);
-		(*family) = FALSE;
+		(*family) = false;
 
 		if (version == 0) (*family) = AF_INET;
 #if defined ENABLE_IPV6

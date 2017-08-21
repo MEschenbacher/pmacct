@@ -163,7 +163,7 @@ isis_area_get (const char *area_tag)
 	area = isis_area_lookup (area_tag);
 
 	if (area) {
-		return FALSE;
+		return false;
 	}
 
 	area = isis_area_create ();
@@ -172,7 +172,7 @@ isis_area_get (const char *area_tag)
 
 	Log(LOG_DEBUG, "DEBUG ( %s/core/ISIS ): New IS-IS area instance %s\n", config.name, area->area_tag);
 
-	return FALSE;
+	return false;
 }
 
 int
@@ -186,7 +186,7 @@ isis_area_destroy (const char *area_tag)
 
 	if (area == NULL) {
 		Log(LOG_WARNING, "WARN ( %s/core/ISIS ): Can't find ISIS instance %s\n", config.name, area_tag);
-		return TRUE;
+		return true;
 	}
 
 	if (area->circuit_list) {
@@ -211,7 +211,7 @@ isis_area_destroy (const char *area_tag)
 
 	isis->sysid_set=0;
 
-	return FALSE;
+	return false;
 }
 
 int
@@ -225,14 +225,14 @@ area_net_title (struct isis_area *area, const u_char *net_title)
 
 	if (!area) {
 		Log(LOG_WARNING, "WARN ( %s/core/ISIS ): Can't find ISIS instance\n", config.name);
-		return TRUE;
+		return true;
 	}
 
 	/* We check that we are not over the maximal number of addresses */
 	if (listcount (area->area_addrs) >= isis->max_area_addrs) {
 		Log(LOG_WARNING, "WARN ( %s/core/ISIS ): Maximum of area addresses (%d) already reached\n",
 		    config.name, isis->max_area_addrs);
-		return TRUE;
+		return true;
 	}
 
 	addr = calloc(1, sizeof (struct area_addr));
@@ -242,7 +242,7 @@ area_net_title (struct isis_area *area, const u_char *net_title)
 		Log(LOG_WARNING, "WARN ( %s/core/ISIS ): area address must be at least 8..20 octets long (%d)\n",
 		    config.name, addr->addr_len);
 		free(addr);
-		return TRUE;
+		return true;
 	}
 
 	if (isis->sysid_set == 0) {
@@ -260,7 +260,7 @@ area_net_title (struct isis_area *area, const u_char *net_title)
 		            ISIS_SYS_ID_LEN)) {
 			Log(LOG_WARNING, "WARN ( %s/core/ISIS ): System ID must not change when defining additional area addresses\n", config.name);
 			free(addr);
-			return TRUE;
+			return true;
 		}
 
 		/* now we see that we don't already have this address */
@@ -269,7 +269,7 @@ area_net_title (struct isis_area *area, const u_char *net_title)
 				continue;
 			if (!memcmp (addrp->area_addr, addr->area_addr, addr->addr_len)) {
 				free(addr);
-				return FALSE;	/* silent fail */
+				return false;	/* silent fail */
 			}
 		}
 
@@ -286,7 +286,7 @@ area_net_title (struct isis_area *area, const u_char *net_title)
 		lsp_l2_generate (area);
 	}
 
-	return FALSE;
+	return false;
 }
 
 int
@@ -298,13 +298,13 @@ area_clear_net_title (struct isis_area *area, const u_char *net_title)
 
 	if (!area) {
 		Log(LOG_WARNING, "WARN ( %s/core/ISIS ): Can't find ISIS instance\n", config.name);
-		return TRUE;
+		return true;
 	}
 
 	addr.addr_len = dotformat2buff (buff, net_title);
 	if (addr.addr_len < 8 || addr.addr_len > 20) {
 		Log(LOG_WARNING, "WARN ( %s/core/ISIS ): Unsupported area address length %d, should be 8...20\n", config.name, addr.addr_len);
-		return TRUE;
+		return true;
 	}
 
 	memcpy (addr.area_addr, buff, (int) addr.addr_len);
@@ -317,10 +317,10 @@ area_clear_net_title (struct isis_area *area, const u_char *net_title)
 	if (!addrp) {
 		Log(LOG_WARNING, "WARN ( %s/core/ISIS ): No area address %s for area %s\n",
 		    config.name, net_title, area->area_tag);
-		return TRUE;
+		return true;
 	}
 
 	isis_listnode_delete (area->area_addrs, addrp);
 
-	return FALSE;
+	return false;
 }

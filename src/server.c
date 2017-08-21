@@ -201,11 +201,11 @@ void process_query_data(int sd, unsigned char *buf, int len, struct extra_primit
 			if (acc_elem->next != NULL) {
 				Log(LOG_DEBUG, "DEBUG ( %s/%s ): Following chain in reply ...\n", config.name, config.type);
 				acc_elem = acc_elem->next;
-				following_chain = TRUE;
+				following_chain = true;
 				idx--;
 			} else {
 				elem += sizeof(struct acc);
-				following_chain = FALSE;
+				following_chain = false;
 			}
 		}
 		if (rb.packed) send(sd, rb.buf, rb.packed, 0); /* send remainder data */
@@ -213,7 +213,7 @@ void process_query_data(int sd, unsigned char *buf, int len, struct extra_primit
 		for (idx = 0; idx < config.buckets; idx++) {
 
 			/* Administrativia */
-			following_chain = FALSE;
+			following_chain = false;
 			bd.num = 0;
 			bd.howmany = 0;
 			acc_elem = (struct acc *) elem;
@@ -222,7 +222,7 @@ void process_query_data(int sd, unsigned char *buf, int len, struct extra_primit
 				if (following_chain) acc_elem = acc_elem->next;
 				if (!test_zero_elem(acc_elem)) bd.howmany++;
 				bd.num = idx; /* we need to avoid this redundancy */
-				following_chain = TRUE;
+				following_chain = true;
 			} while (acc_elem->next != NULL);
 
 			enQueue_elem(sd, &rb, &bd, sizeof(struct bucket_desc), sizeof(struct bucket_desc));
@@ -355,7 +355,7 @@ void process_query_data(int sd, unsigned char *buf, int len, struct extra_primit
 				struct pkt_mpls_primitives mbuf;
 				struct pkt_tunnel_primitives ubuf;
 				struct pkt_data abuf;
-				following_chain = FALSE;
+				following_chain = false;
 				elem = (unsigned char *) a;
 				memset(&abuf, 0, sizeof(abuf));
 
@@ -408,11 +408,11 @@ void process_query_data(int sd, unsigned char *buf, int len, struct extra_primit
 					}
 					if (acc_elem->next) {
 						acc_elem = acc_elem->next;
-						following_chain = TRUE;
+						following_chain = true;
 						idx--;
 					} else {
 						elem += sizeof(struct acc);
-						following_chain = FALSE;
+						following_chain = false;
 					}
 				}
 				if (q->type & WANT_COUNTER) enQueue_elem(sd, &rb, &abuf, PdataSz, PdataSz); /* enqueue accumulated data */
@@ -626,20 +626,20 @@ void Accumulate_Counters(struct pkt_data *abuf, struct acc *elem)
 
 int test_zero_elem(struct acc *elem)
 {
-	if (elem && elem->flow_type && !elem->reset_flag) return FALSE;
+	if (elem && elem->flow_type && !elem->reset_flag) return false;
 
 	/*
 	  if (elem) {
 	    if (elem->flow_type == NF9_FTYPE_NAT_EVENT) {
-	      if (elem->pnat && elem->pnat->nat_event) return FALSE;
-	      else return TRUE;
+	      if (elem->pnat && elem->pnat->nat_event) return false;
+	      else return true;
 	    }
 	    else {
-	      if (elem->bytes_counter && !elem->reset_flag) return FALSE;
-	      else return TRUE;
+	      if (elem->bytes_counter && !elem->reset_flag) return false;
+	      else return true;
 	    }
 	  }
 	*/
 
-	return TRUE;
+	return true;
 }

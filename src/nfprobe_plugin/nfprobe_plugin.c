@@ -113,7 +113,7 @@ void nfprobe_exit_gracefully(int signum)
 
 	if (config.pcap_savefile) timeout = 3*1000;
 
-	graceful_shutdown_request = TRUE;
+	graceful_shutdown_request = true;
 }
 
 /*
@@ -721,7 +721,7 @@ bad:
 			return (PP_MALLOC_FAIL);
 		flow->expiry->flow = flow;
 		/* Expiration note: 0 means expire immediately; we prefer this to happen
-		   when attaching to nfacctd - ie. dont_summarize is TRUE */
+		   when attaching to nfacctd - ie. dont_summarize is true */
 		if (!dont_summarize) flow->expiry->expires_at = 1;
 		else flow->expiry->expires_at = 0;
 		flow->expiry->reason = R_GENERAL;
@@ -1392,7 +1392,7 @@ void nfprobe_plugin(int pipe_fd, struct configuration *cfgptr, void *ptr)
 	struct networks_file_data nfd;
 
 	unsigned char *rgptr, *dataptr;
-	int pollagain = TRUE;
+	int pollagain = true;
 	u_int32_t seq = 1, rg_err_count = 0;
 
 	char *capfile = NULL, dest_addr[256], dest_serv[256];
@@ -1419,7 +1419,7 @@ void nfprobe_plugin(int pipe_fd, struct configuration *cfgptr, void *ptr)
 	if (config.pidfile) write_pid_file_plugin(config.pidfile, config.type, config.name);
 	if (config.logfile) {
 		fclose(config.logfile_fd);
-		config.logfile_fd = open_output_file(config.logfile, "a", FALSE);
+		config.logfile_fd = open_output_file(config.logfile, "a", false);
 	}
 
 	if (config.proc_priority) {
@@ -1433,7 +1433,7 @@ void nfprobe_plugin(int pipe_fd, struct configuration *cfgptr, void *ptr)
 	Log(LOG_INFO, "INFO ( %s/%s ): NetFlow probe plugin is originally based on softflowd 0.9.7 software, Copyright 2002 Damien Miller <djm@mindrot.org> All rights reserved.\n",
 	    config.name, config.type);
 
-	reload_map = FALSE;
+	reload_map = false;
 
 	/* signal handling */
 	signal(SIGINT, nfprobe_exit_gracefully);
@@ -1463,7 +1463,7 @@ void nfprobe_plugin(int pipe_fd, struct configuration *cfgptr, void *ptr)
 	if (!config.nfprobe_maxflows) max_flows = DEFAULT_MAX_FLOWS;
 	else max_flows = config.nfprobe_maxflows;
 
-	if (config.debug) verbose_flag = TRUE;
+	if (config.debug) verbose_flag = true;
 	if (config.pcap_savefile) capfile = config.pcap_savefile;
 
 	dest_len = sizeof(dest);
@@ -1549,7 +1549,7 @@ sort_version:
 	}
 
 	for(;;) {
-		status->wakeup = TRUE;
+		status->wakeup = true;
 
 		pfd.fd = pipe_fd;
 		pfd.events = POLLIN;
@@ -1574,7 +1574,7 @@ sort_version:
 		if (reload_map) {
 			load_networks(config.networks_file, &nt, &nc);
 			load_ports(config.ports_file, &pt);
-			reload_map = FALSE;
+			reload_map = false;
 		}
 
 		now = time(NULL);
@@ -1585,7 +1585,7 @@ read_data:
 				if (!pollagain) {
 					seq++;
 					seq %= MAX_SEQNUM;
-					if (seq == 0) rg_err_count = FALSE;
+					if (seq == 0) rg_err_count = false;
 				} else {
 					if ((ret = read(pipe_fd, &rgptr, sizeof(rgptr))) == 0)
 						exit_plugin(1); /* we exit silently; something happened at the write end */
@@ -1595,7 +1595,7 @@ read_data:
 
 				if (((struct ch_buf_hdr *)rg->ptr)->seq != seq) {
 					if (!pollagain) {
-						pollagain = TRUE;
+						pollagain = true;
 						goto handle_flow_expiration;
 					} else {
 						rg_err_count++;
@@ -1611,7 +1611,7 @@ read_data:
 					}
 				}
 
-				pollagain = FALSE;
+				pollagain = false;
 				memcpy(pipebuf, rg->ptr, bufsz);
 				rg->ptr += bufsz;
 			}

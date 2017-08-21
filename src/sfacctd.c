@@ -160,17 +160,17 @@ int main(int argc,char **argv, char **envp)
 	compute_once();
 
 	/* a bunch of default definitions */
-	reload_map = FALSE;
-	reload_geoipv2_file = FALSE;
-	reload_log_sf_cnt = FALSE;
-	bpas_map_allocated = FALSE;
-	blp_map_allocated = FALSE;
-	bmed_map_allocated = FALSE;
-	biss_map_allocated = FALSE;
-	bta_map_allocated = FALSE;
-	bitr_map_allocated = FALSE;
-	bta_map_caching = TRUE;
-	sampling_map_caching = TRUE;
+	reload_map = false;
+	reload_geoipv2_file = false;
+	reload_log_sf_cnt = false;
+	bpas_map_allocated = false;
+	blp_map_allocated = false;
+	bmed_map_allocated = false;
+	biss_map_allocated = false;
+	bta_map_allocated = false;
+	bitr_map_allocated = false;
+	bta_map_caching = true;
+	sampling_map_caching = true;
 	find_id_func = SF_find_id;
 	plugins_list = NULL;
 
@@ -231,7 +231,7 @@ int main(int argc,char **argv, char **envp)
 			rows++;
 			break;
 		case 'd':
-			debug = TRUE;
+			debug = true;
 			strlcpy(cfg_cmdline[rows], "debug: true", SRVBUFLEN);
 			rows++;
 			break;
@@ -385,7 +385,7 @@ int main(int argc,char **argv, char **envp)
 	}
 
 	if (config.logfile) {
-		config.logfile_fd = open_output_file(config.logfile, "a", FALSE);
+		config.logfile_fd = open_output_file(config.logfile, "a", false);
 		list = plugins_list;
 		while (list) {
 			list->cfg.logfile_fd = config.logfile_fd ;
@@ -491,8 +491,8 @@ int main(int argc,char **argv, char **envp)
 				}
 
 				if (list->cfg.what_to_count_2 & COUNT_NDPI_CLASS) {
-					config.handle_fragments = TRUE;
-					config.classifier_ndpi = TRUE;
+					config.handle_fragments = true;
+					config.classifier_ndpi = true;
 				}
 
 				if ((list->cfg.what_to_count & COUNT_CLASS) && (list->cfg.what_to_count_2 & COUNT_NDPI_CLASS)) {
@@ -647,7 +647,7 @@ int main(int argc,char **argv, char **envp)
 #if defined ENABLE_THREADS
 	/* starting the ISIS threa */
 	if (config.nfacctd_isis) {
-		req.bpf_filter = TRUE;
+		req.bpf_filter = true;
 
 		nfacctd_isis_wrapper();
 
@@ -660,7 +660,7 @@ int main(int argc,char **argv, char **envp)
 	                   &config.nfacctd_bgp_lrgcomm_pattern, &config.nfacctd_bgp_stdcomm_pattern_to_asn);
 
 	if (config.nfacctd_bgp) {
-		req.bpf_filter = TRUE;
+		req.bpf_filter = true;
 
 		if (config.nfacctd_bgp_peer_as_src_type == BGP_SRC_PRIMITIVES_MAP) {
 			if (config.nfacctd_bgp_peer_as_src_map) {
@@ -705,7 +705,7 @@ int main(int argc,char **argv, char **envp)
 
 	/* starting the BMP thread */
 	if (config.nfacctd_bmp) {
-		req.bpf_filter = TRUE;
+		req.bpf_filter = true;
 
 		nfacctd_bmp_wrapper();
 
@@ -731,13 +731,13 @@ int main(int argc,char **argv, char **envp)
 
 #if defined WITH_GEOIP
 	if (config.geoip_ipv4_file || config.geoip_ipv6_file) {
-		req.bpf_filter = TRUE;
+		req.bpf_filter = true;
 	}
 #endif
 
 #if defined WITH_GEOIPV2
 	if (config.geoipv2_file) {
-		req.bpf_filter = TRUE;
+		req.bpf_filter = true;
 	}
 #endif
 
@@ -751,7 +751,7 @@ int main(int argc,char **argv, char **envp)
 
 #if defined (WITH_NDPI)
 	if (config.classifier_ndpi) {
-		config.handle_fragments = TRUE;
+		config.handle_fragments = true;
 		pm_ndpi_wfl = pm_ndpi_workflow_init();
 		pm_ndpi_export_proto_to_class(pm_ndpi_wfl);
 	} else pm_ndpi_wfl = NULL;
@@ -909,7 +909,7 @@ int main(int argc,char **argv, char **envp)
 		sa_to_addr((struct sockaddr *)&server, &srv_addr, &srv_port);
 		addr_to_str(srv_string, &srv_addr);
 		Log(LOG_INFO, "INFO ( %s/core ): waiting for sFlow data on %s:%u\n", config.name, srv_string, srv_port);
-		allowed = TRUE;
+		allowed = true;
 	}
 
 	if (config.sfacctd_counter_file || config.sfacctd_counter_amqp_routing_key || config.sfacctd_counter_kafka_topic) {
@@ -983,8 +983,8 @@ int main(int argc,char **argv, char **envp)
 		if (!allowed) continue;
 
 		if (reload_map) {
-			bta_map_caching = TRUE;
-			sampling_map_caching = TRUE;
+			bta_map_caching = true;
+			sampling_map_caching = true;
 
 			load_networks(config.networks_file, &nt, &nc);
 
@@ -1003,7 +1003,7 @@ int main(int argc,char **argv, char **envp)
 				set_sampling_table(&pptrs, (u_char *) &sampling_table);
 			}
 
-			reload_map = FALSE;
+			reload_map = false;
 			gettimeofday(&reload_map_tstamp, NULL);
 		}
 
@@ -1013,17 +1013,17 @@ int main(int argc,char **argv, char **envp)
 			for (nodes_idx = 0; nodes_idx < config.sfacctd_counter_max_nodes; nodes_idx++) {
 				if (sf_cnt_misc_db->peers_log[nodes_idx].fd) {
 					fclose(sf_cnt_misc_db->peers_log[nodes_idx].fd);
-					sf_cnt_misc_db->peers_log[nodes_idx].fd = open_output_file(sf_cnt_misc_db->peers_log[nodes_idx].filename, "a", FALSE);
+					sf_cnt_misc_db->peers_log[nodes_idx].fd = open_output_file(sf_cnt_misc_db->peers_log[nodes_idx].filename, "a", false);
 					setlinebuf(sf_cnt_misc_db->peers_log[nodes_idx].fd);
 				} else break;
 			}
 
-			reload_log_sf_cnt = FALSE;
+			reload_log_sf_cnt = false;
 		}
 
 		if (sfacctd_counter_backend_methods) {
 			gettimeofday(&sf_cnt_misc_db->log_tstamp, NULL);
-			compose_timestamp(sf_cnt_misc_db->log_tstamp_str, SRVBUFLEN, &sf_cnt_misc_db->log_tstamp, TRUE, config.timestamps_since_epoch);
+			compose_timestamp(sf_cnt_misc_db->log_tstamp_str, SRVBUFLEN, &sf_cnt_misc_db->log_tstamp, true, config.timestamps_since_epoch);
 
 #ifdef WITH_RABBITMQ
 			if (config.sfacctd_counter_amqp_routing_key) {
@@ -1201,16 +1201,16 @@ SFv5_read_sampleType:
 
 		switch (sampleType) {
 		case SFLFLOW_SAMPLE:
-			readv5FlowSample(spp, FALSE, pptrsv, req, TRUE);
+			readv5FlowSample(spp, false, pptrsv, req, true);
 			break;
 		case SFLCOUNTERS_SAMPLE:
-			readv5CountersSample(spp, FALSE, pptrsv);
+			readv5CountersSample(spp, false, pptrsv);
 			break;
 		case SFLFLOW_SAMPLE_EXPANDED:
-			readv5FlowSample(spp, TRUE, pptrsv, req, TRUE);
+			readv5FlowSample(spp, true, pptrsv, req, true);
 			break;
 		case SFLCOUNTERS_SAMPLE_EXPANDED:
-			readv5CountersSample(spp, TRUE, pptrsv);
+			readv5CountersSample(spp, true, pptrsv);
 			break;
 		case SFLACL_BROCADE_SAMPLE:
 			getData32(spp); /* trash: sample length */
@@ -1273,7 +1273,7 @@ void process_SF_raw_packet(SFSample *spp, struct packet_ptrs_vector *pptrsv,
 
 			memset(&dissect, 0, sizeof(dissect));
 			pptrs->tee_dissect = (char *) &dissect;
-			req->ptm_c.exec_ptm_res = TRUE;
+			req->ptm_c.exec_ptm_res = true;
 
 			dissect.hdrBasePtr = spp->rawSample;
 			skipBytes(spp, 4); /* sysUpTime */
@@ -1299,10 +1299,10 @@ void process_SF_raw_packet(SFSample *spp, struct packet_ptrs_vector *pptrsv,
 
 				switch (sampleType) {
 				case SFLFLOW_SAMPLE:
-					readv5FlowSample(spp, FALSE, pptrsv, req, FALSE);
+					readv5FlowSample(spp, false, pptrsv, req, false);
 					break;
 				case SFLFLOW_SAMPLE_EXPANDED:
-					readv5FlowSample(spp, TRUE, pptrsv, req, FALSE);
+					readv5FlowSample(spp, true, pptrsv, req, false);
 					break;
 				default:
 					/* we just trash counter samples and all when dissecting */
@@ -1341,7 +1341,7 @@ void process_SF_raw_packet(SFSample *spp, struct packet_ptrs_vector *pptrsv,
 	/* If dissecting, we may also send the full packet in case multiple tee
 	   plugins are instantiated and any of them does not require dissection */
 	pptrs->tee_dissect = NULL;
-	req->ptm_c.exec_ptm_res = FALSE;
+	req->ptm_c.exec_ptm_res = false;
 
 	exec_plugins(pptrs, req);
 }
@@ -1798,8 +1798,8 @@ int SF_find_id(struct id_table *t, struct packet_ptrs *pptrs, pm_id_t *tag, pm_i
 	if (tag) *tag = 0;
 	if (tag2) *tag2 = 0;
 	if (pptrs) {
-		pptrs->have_tag = FALSE;
-		pptrs->have_tag2 = FALSE;
+		pptrs->have_tag = false;
+		pptrs->have_tag2 = false;
 	}
 
 	/* Giving a first try with index(es) */
@@ -1837,7 +1837,7 @@ int SF_find_id(struct id_table *t, struct packet_ptrs *pptrs, pm_id_t *tag, pm_i
 		if (host_addr_mask_sa_cmp(&t->e[x].key.agent_ip.a, &t->e[x].key.agent_mask, &sa_local) == 0) {
 			ret = pretag_entry_process(&t->e[x], pptrs, tag, tag2);
 
-			if (!ret || ret > TRUE) {
+			if (!ret || ret > true) {
 				if (ret & PRETAG_MAP_RCODE_JEQ) {
 					x = t->e[x].jeq.ptr->pos;
 					x--; // yes, it will be automagically incremented by the for() cycle

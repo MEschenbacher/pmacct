@@ -88,7 +88,7 @@ void log_notifications_init(struct _log_notifications *ln)
 int log_notification_set(struct log_notification *ln, time_t now, int timeout)
 {
 	if (ln) {
-		ln->knob = TRUE;
+		ln->knob = true;
 		if (now) ln->stamp = now;
 		else ln->stamp = time(NULL);
 		ln->timeout = timeout;
@@ -117,16 +117,16 @@ int log_notification_isset(struct log_notification *ln, time_t now)
 
 			if (now_local < (ln->stamp + ln->timeout)) {
 				/* valid */
-				if (ln->knob == TRUE) return TRUE;
-				else return FALSE;
+				if (ln->knob == true) return true;
+				else return false;
 			} else {
 				/* expired */
 				log_notification_unset(ln);
-				return FALSE;
+				return false;
 			}
 		} else {
-			if (ln->knob == TRUE) return TRUE;
-			else return FALSE;
+			if (ln->knob == true) return true;
+			else return false;
 		}
 	}
 }

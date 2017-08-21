@@ -45,7 +45,7 @@ void PG_init_default_values(struct insert_data *);
 void PG_postgresql_get_version();
 
 /* global vars */
-int typed = TRUE;
+int typed = true;
 
 /* variables */
 static char pgsql_user[] = "pmacct";

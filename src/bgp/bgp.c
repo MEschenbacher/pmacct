@@ -90,8 +90,8 @@ void skinny_bgp_daemon_online()
 	int fd, select_fd, bkp_select_fd, recalc_fds, select_num;
 
 	/* initial cleanups */
-	reload_map_bgp_thread = FALSE;
-	reload_log_bgp_thread = FALSE;
+	reload_map_bgp_thread = false;
+	reload_log_bgp_thread = false;
 	memset(&server, 0, sizeof(server));
 	memset(&client, 0, sizeof(client));
 	memset(&allow, 0, sizeof(struct hosts_table));
@@ -334,7 +334,7 @@ void skinny_bgp_daemon_online()
 			dump_refresh_deadline += config.bgp_table_dump_refresh_time; /* it's a deadline not a basetime */
 		} else {
 			config.bgp_table_dump_file = NULL;
-			bgp_misc_db->dump_backend_methods = FALSE;
+			bgp_misc_db->dump_backend_methods = false;
 			Log(LOG_WARNING, "WARN ( %s/%s ): Invalid 'bgp_table_dump_refresh_time'.\n", config.name, bgp_misc_db->log_str);
 		}
 
@@ -343,7 +343,7 @@ void skinny_bgp_daemon_online()
 	}
 
 	select_fd = bkp_select_fd = (config.bgp_sock + 1);
-	recalc_fds = FALSE;
+	recalc_fds = false;
 
 	bgp_link_misc_structs(bgp_misc_db);
 
@@ -362,7 +362,7 @@ select_again:
 			max_peers_idx++;
 
 			bkp_select_fd = select_fd;
-			recalc_fds = FALSE;
+			recalc_fds = false;
 		} else select_fd = bkp_select_fd;
 
 		memcpy(&read_descs, &bkp_read_descs, sizeof(bkp_read_descs));
@@ -390,30 +390,30 @@ select_again:
 				if (bgp_md5.num) bgp_md5_file_process(config.bgp_sock, &bgp_md5); // process load
 			}
 
-			reload_map_bgp_thread = FALSE;
+			reload_map_bgp_thread = false;
 		}
 
 		if (reload_log_bgp_thread) {
 			for (peers_idx = 0; peers_idx < config.nfacctd_bgp_max_peers; peers_idx++) {
 				if (bgp_misc_db->peers_log[peers_idx].fd) {
 					fclose(bgp_misc_db->peers_log[peers_idx].fd);
-					bgp_misc_db->peers_log[peers_idx].fd = open_output_file(bgp_misc_db->peers_log[peers_idx].filename, "a", FALSE);
+					bgp_misc_db->peers_log[peers_idx].fd = open_output_file(bgp_misc_db->peers_log[peers_idx].filename, "a", false);
 					setlinebuf(bgp_misc_db->peers_log[peers_idx].fd);
 				} else break;
 			}
 
-			reload_log_bgp_thread = FALSE;
+			reload_log_bgp_thread = false;
 		}
 
 		if (bgp_misc_db->msglog_backend_methods || bgp_misc_db->dump_backend_methods) {
 			gettimeofday(&bgp_misc_db->log_tstamp, NULL);
-			compose_timestamp(bgp_misc_db->log_tstamp_str, SRVBUFLEN, &bgp_misc_db->log_tstamp, TRUE, config.timestamps_since_epoch);
+			compose_timestamp(bgp_misc_db->log_tstamp_str, SRVBUFLEN, &bgp_misc_db->log_tstamp, true, config.timestamps_since_epoch);
 
 			if (bgp_misc_db->dump_backend_methods) {
 				while (bgp_misc_db->log_tstamp.tv_sec > dump_refresh_deadline) {
 					bgp_misc_db->dump.tstamp.tv_sec = dump_refresh_deadline;
 					bgp_misc_db->dump.tstamp.tv_usec = 0;
-					compose_timestamp(bgp_misc_db->dump.tstamp_str, SRVBUFLEN, &bgp_misc_db->dump.tstamp, FALSE, config.timestamps_since_epoch);
+					compose_timestamp(bgp_misc_db->dump.tstamp_str, SRVBUFLEN, &bgp_misc_db->dump.tstamp, false, config.timestamps_since_epoch);
 					bgp_misc_db->dump.period = config.bgp_table_dump_refresh_time;
 
 					bgp_handle_dump_event();
@@ -462,7 +462,7 @@ select_again:
 
 			/* If an ACL is defined, here we check against and enforce it */
 			if (allow.num) allowed = check_allow(&allow, (struct sockaddr *)&client);
-			else allowed = TRUE;
+			else allowed = true;
 
 			if (!allowed) {
 				close(fd);
@@ -480,7 +480,7 @@ select_again:
 					if (bgp_batch_is_admitted(&bp_batch, now)) {
 						peer = &peers[peers_idx];
 						if (bgp_peer_init(peer, FUNC_TYPE_BGP)) peer = NULL;
-						else recalc_fds = TRUE;
+						else recalc_fds = true;
 
 						log_notification_unset(&log_notifications.bgp_peers_throttling);
 
@@ -494,7 +494,7 @@ select_again:
 						/* We briefly accept the new connection to be able to drop it */
 						if (!log_notification_isset(&log_notifications.bgp_peers_throttling, now)) {
 							Log(LOG_INFO, "INFO ( %s/%s ): throttling at BGP peer #%u\n", config.name, bgp_misc_db->log_str, peers_idx);
-							log_notification_set(&log_notifications.bgp_peers_throttling, now, FALSE);
+							log_notification_set(&log_notifications.bgp_peers_throttling, now, false);
 						}
 
 						close(fd);
@@ -539,13 +539,13 @@ select_again:
 						Log(LOG_INFO, "INFO ( %s/%s ): [%s] Replenishing stale connection by peer.\n",
 						    config.name, bgp_misc_db->log_str, bgp_peer_str);
 						FD_CLR(peers[peers_check_idx].fd, &bkp_read_descs);
-						bgp_peer_close(&peers[peers_check_idx], FUNC_TYPE_BGP, FALSE, FALSE, FALSE, FALSE, NULL);
+						bgp_peer_close(&peers[peers_check_idx], FUNC_TYPE_BGP, false, false, false, false, NULL);
 					} else {
 						Log(LOG_ERR, "ERROR ( %s/%s ): [%s] Refusing new connection from existing peer (residual holdtime: %u).\n",
 						    config.name, bgp_misc_db->log_str, bgp_peer_str,
 						    (peers[peers_check_idx].ht - (now - peers[peers_check_idx].last_keepalive)));
 						FD_CLR(peer->fd, &bkp_read_descs);
-						bgp_peer_close(peer, FUNC_TYPE_BGP, FALSE, FALSE, FALSE, FALSE, NULL);
+						bgp_peer_close(peer, FUNC_TYPE_BGP, false, false, false, false, NULL);
 						// bgp_batch_rollback(&bp_batch);
 						goto read_data;
 					}
@@ -585,8 +585,8 @@ read_data:
 			bgp_peer_print(peer, bgp_peer_str, INET6_ADDRSTRLEN);
 			Log(LOG_INFO, "INFO ( %s/%s ): [%s] BGP connection reset by peer (%d).\n", config.name, bgp_misc_db->log_str, bgp_peer_str, errno);
 			FD_CLR(peer->fd, &bkp_read_descs);
-			bgp_peer_close(peer, FUNC_TYPE_BGP, FALSE, FALSE, FALSE, FALSE, NULL);
-			recalc_fds = TRUE;
+			bgp_peer_close(peer, FUNC_TYPE_BGP, false, false, false, false, NULL);
+			recalc_fds = true;
 			goto select_again;
 		} else {
 			/* Appears a valid peer with a valid BGP message: before
@@ -599,14 +599,14 @@ read_data:
 				peer->last_keepalive = now;
 			}
 
-			ret = bgp_parse_msg(peer, now, TRUE);
+			ret = bgp_parse_msg(peer, now, true);
 			if (ret) {
 				FD_CLR(peer->fd, &bkp_read_descs);
 
-				if (ret < 0) bgp_peer_close(peer, FUNC_TYPE_BGP, FALSE, FALSE, FALSE, FALSE, NULL);
-				else bgp_peer_close(peer, FUNC_TYPE_BGP, FALSE, TRUE, ret, BGP_NOTIFY_SUBCODE_UNSPECIFIC, NULL);
+				if (ret < 0) bgp_peer_close(peer, FUNC_TYPE_BGP, false, false, false, false, NULL);
+				else bgp_peer_close(peer, FUNC_TYPE_BGP, false, true, ret, BGP_NOTIFY_SUBCODE_UNSPECIFIC, NULL);
 
-				recalc_fds = TRUE;
+				recalc_fds = true;
 				goto select_again;
 			}
 		}
@@ -623,11 +623,11 @@ void skinny_bgp_daemon_offline()
 	safi_t safi;
 
 	/* initial cleanups */
-	reload_map_bgp_thread = FALSE;
-	reload_log_bgp_thread = FALSE;
+	reload_map_bgp_thread = false;
+	reload_log_bgp_thread = false;
 
-	file_spool_refresh_deadline = FALSE;
-	saved_file_spool_refresh_deadline = FALSE;
+	file_spool_refresh_deadline = false;
+	saved_file_spool_refresh_deadline = false;
 	offline_peers = NULL;
 	now = time(NULL);
 
@@ -741,7 +741,7 @@ void bgp_prepare_thread()
 	bgp_misc_db = &inter_domain_misc_dbs[FUNC_TYPE_BGP];
 	memset(bgp_misc_db, 0, sizeof(struct bgp_misc_structs));
 
-	bgp_misc_db->is_thread = TRUE;
+	bgp_misc_db->is_thread = true;
 	bgp_misc_db->log_str = malloc(strlen("core/BGP") + 1);
 	strcpy(bgp_misc_db->log_str, "core/BGP");
 }
@@ -751,7 +751,7 @@ void bgp_prepare_daemon()
 	bgp_misc_db = &inter_domain_misc_dbs[FUNC_TYPE_BGP];
 	memset(bgp_misc_db, 0, sizeof(struct bgp_misc_structs));
 
-	bgp_misc_db->is_thread = FALSE;
+	bgp_misc_db->is_thread = false;
 	bgp_misc_db->log_str = malloc(strlen("core") + 1);
 	strcpy(bgp_misc_db->log_str, "core");
 }

@@ -113,7 +113,7 @@ int telemetry_recv_json(telemetry_peer *peer, u_int32_t len, int *flags)
 	int ret = 0, idx;
 	if (!flags) return ret;
 
-	(*flags) = FALSE;
+	(*flags) = false;
 	ret = telemetry_recv_generic(peer, len);
 
 	telemetry_basic_process_json(peer);
@@ -129,7 +129,7 @@ int telemetry_recv_zjson(telemetry_peer *peer, telemetry_peer_z *peer_z, u_int32
 
 #if defined (HAVE_ZLIB)
 	if (!flags) return ret;
-	(*flags) = FALSE;
+	(*flags) = false;
 
 	ret = telemetry_recv_generic(peer, len);
 
@@ -144,7 +144,7 @@ int telemetry_recv_zjson(telemetry_peer *peer, telemetry_peer_z *peer_z, u_int32
 		peer_z->stm.avail_in = (uInt) peer->msglen;
 		peer_z->stm.next_in = (Bytef *) peer->buf.base;
 
-		ret = FALSE;
+		ret = false;
 		zret = inflate(&peer_z->stm, Z_NO_FLUSH);
 		if (zret == Z_OK || zret == Z_STREAM_END) {
 			strlcpy(peer->buf.base, peer_z->inflate_buf, peer->buf.len);
@@ -182,8 +182,8 @@ int telemetry_recv_cisco_zjson(telemetry_peer *peer, telemetry_peer_z *peer_z, i
 {
 	int ret = 0;
 	u_int32_t len;
-	if (!flags) return FALSE;
-	*flags = FALSE;
+	if (!flags) return false;
+	*flags = false;
 
 	ret = telemetry_recv_generic(peer, TELEMETRY_CISCO_HDR_LEN);
 	if (ret == TELEMETRY_CISCO_HDR_LEN) {
@@ -200,7 +200,7 @@ int telemetry_recv_cisco(telemetry_peer *peer, int *flags, int *data_decoder)
 	u_int32_t type, len;
 
 	if (!flags || !data_decoder) return ret;
-	*flags = FALSE;
+	*flags = false;
 	*data_decoder = TELEMETRY_DATA_DECODER_UNKNOWN;
 
 	ret = telemetry_recv_generic(peer, TELEMETRY_CISCO_HDR_LEN);
@@ -279,5 +279,5 @@ int telemetry_basic_validate_json(telemetry_peer *peer)
 		peer->stats.msg_errors++;
 		return ERR;
 	} else
-		return FALSE;
+		return false;
 }

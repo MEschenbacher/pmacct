@@ -50,7 +50,7 @@ int lengthCheck(SFSample *sample, u_char *start, int len)
 		return ERR;
 	}
 
-	return FALSE;
+	return false;
 }
 
 /*_________________---------------------------__________________
@@ -72,8 +72,8 @@ void decodeLinkLayer(SFSample *sample)
 	u_int16_t caplen = end - (u_char *)sample->datap;
 
 	/* assume not found */
-	sample->gotIPV4 = FALSE;
-	sample->gotIPV6 = FALSE;
+	sample->gotIPV4 = false;
+	sample->gotIPV6 = false;
 
 	if (caplen < NFT_ETHHDR_SIZ) return; /* not enough for an Ethernet header */
 	caplen -= NFT_ETHHDR_SIZ;
@@ -145,13 +145,13 @@ void decodeLinkLayer(SFSample *sample)
 	}
 
 	if (sample->eth_type == ETHERTYPE_IP) {
-		sample->gotIPV4 = TRUE;
+		sample->gotIPV4 = true;
 		sample->offsetToIPV4 = (ptr - start);
 	}
 
 #if defined ENABLE_IPV6
 	if (sample->eth_type == ETHERTYPE_IPV6) {
-		sample->gotIPV6 = TRUE;
+		sample->gotIPV6 = true;
 		sample->offsetToIPV6 = (ptr - start);
 	}
 #endif
@@ -263,7 +263,7 @@ void decodeIPV4(SFSample *sample)
 			ptr += (ip.version_and_headerLen & 0x0f) * 4;
 
 			if (ip.protocol == 4 /* ipencap */ || ip.protocol == 94 /* ipip */) {
-				sample->got_inner_IPV4 = TRUE;
+				sample->got_inner_IPV4 = true;
 				decodeIPV4_inner(sample, ptr);
 			} else decodeIPLayer4(sample, ptr, ip.protocol);
 		}
@@ -345,7 +345,7 @@ void decodeIPV6(SFSample *sample)
 		sample->dcd_ipProtocol = nextHeader;
 
 		if (sample->dcd_ipProtocol == 4 /* ipencap */ || sample->dcd_ipProtocol == 94 /* ipip */) {
-			sample->got_inner_IPV4 = TRUE;
+			sample->got_inner_IPV4 = true;
 			decodeIPV4_inner(sample, ptr);
 		} else decodeIPLayer4(sample, ptr, sample->dcd_ipProtocol);
 	}
@@ -815,12 +815,12 @@ void decodeMpls(SFSample *sample)
 	sample->eth_type = mpls_handler(ptr, &caplen, &nl, &dummy_pptrs);
 
 	if (sample->eth_type == ETHERTYPE_IP) {
-		sample->gotIPV4 = TRUE;
+		sample->gotIPV4 = true;
 		sample->offsetToIPV4 = nl+(ptr-sample->header);
 	}
 #if defined ENABLE_IPV6
 	else if (sample->eth_type == ETHERTYPE_IPV6) {
-		sample->gotIPV6 = TRUE;
+		sample->gotIPV6 = true;
 		sample->offsetToIPV6 = nl+(ptr-sample->header);
 	}
 #endif
@@ -852,12 +852,12 @@ void decodePPP(SFSample *sample)
 		}
 	}
 	if (sample->eth_type == ETHERTYPE_IP) {
-		sample->gotIPV4 = TRUE;
+		sample->gotIPV4 = true;
 		sample->offsetToIPV4 = dummy_pptrs.iph_ptr - sample->header;
 	}
 #if defined ENABLE_IPV6
 	else if (sample->eth_type == ETHERTYPE_IPV6) {
-		sample->gotIPV6 = TRUE;
+		sample->gotIPV6 = true;
 		sample->offsetToIPV6 = dummy_pptrs.iph_ptr - sample->header;
 	}
 #endif
@@ -883,12 +883,12 @@ void readFlowSample_header(SFSample *sample)
 		decodeLinkLayer(sample);
 		break;
 	case SFLHEADER_IPv4:
-		sample->gotIPV4 = TRUE;
+		sample->gotIPV4 = true;
 		sample->offsetToIPV4 = 0;
 		break;
 #if defined ENABLE_IPV6
 	case SFLHEADER_IPv6:
-		sample->gotIPV6 = TRUE;
+		sample->gotIPV6 = true;
 		sample->offsetToIPV6 = 0;
 		break;
 #endif
@@ -933,9 +933,9 @@ void readFlowSample_ethernet(SFSample *sample)
 	skipBytes(sample, 6);
 	sample->eth_type = getData32(sample);
 
-	if (sample->eth_type == ETHERTYPE_IP) sample->gotIPV4 = TRUE;
+	if (sample->eth_type == ETHERTYPE_IP) sample->gotIPV4 = true;
 #if defined ENABLE_IPV6
-	else if (sample->eth_type == ETHERTYPE_IPV6) sample->gotIPV6 = TRUE;
+	else if (sample->eth_type == ETHERTYPE_IPV6) sample->gotIPV6 = true;
 #endif
 
 	/* Commit eth_len to packet length: will be overwritten if we get
@@ -968,7 +968,7 @@ void readFlowSample_IPv4(SFSample *sample)
 		sample->dcd_dport = ntohl(nfKey.dst_port);
 	}
 
-	sample->gotIPV4 = TRUE;
+	sample->gotIPV4 = true;
 }
 
 /*_________________---------------------------__________________
@@ -998,7 +998,7 @@ void readFlowSample_IPv6(SFSample *sample)
 		sample->dcd_dport = ntohl(nfKey6.dst_port);
 	}
 
-	sample->gotIPV6 = TRUE;
+	sample->gotIPV6 = true;
 #endif
 }
 
@@ -1268,7 +1268,7 @@ void readv2v4CountersSample(SFSample *sample, struct packet_ptrs_vector *pptrsv)
 {
 	struct xflow_status_entry *xse = NULL;
 	struct bgp_peer *peer = NULL;
-	int have_sample = FALSE;
+	int have_sample = false;
 	u_int32_t length = 0;
 
 	if (sfacctd_counter_backend_methods) {
@@ -1305,10 +1305,10 @@ void readv2v4CountersSample(SFSample *sample, struct packet_ptrs_vector *pptrsv)
 	/* now see if there are any specific counter blocks to add */
 	switch(sample->counterBlockVersion) {
 	case INMCOUNTERSVERSION_GENERIC:
-		have_sample = TRUE;
+		have_sample = true;
 		break;
 	case INMCOUNTERSVERSION_ETHERNET:
-		have_sample = TRUE;
+		have_sample = true;
 		length += 52;
 		break;
 	case INMCOUNTERSVERSION_TOKENRING:
@@ -1322,7 +1322,7 @@ void readv2v4CountersSample(SFSample *sample, struct packet_ptrs_vector *pptrsv)
 	case INMCOUNTERSVERSION_WAN:
 		break;
 	case INMCOUNTERSVERSION_VLAN:
-		have_sample = TRUE;
+		have_sample = true;
 		length += 28;
 		break;
 	default:

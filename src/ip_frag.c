@@ -89,12 +89,12 @@ int find_fragment(u_int32_t now, struct packet_ptrs *pptrs)
 					// pptrs->tlh_ptr = fp->tlhdr;
 					memcpy(pptrs->tlh_ptr, fp->tlhdr, MyTLHdrSz);
 
-					pptrs->frag_first_found = TRUE;
-					return TRUE;
+					pptrs->frag_first_found = true;
+					return true;
 				} else {
 					if (!(iphp->ip_off & htons(IP_OFFMASK))) {
 						/* we got our first fragment */
-						fp->got_first = TRUE;
+						fp->got_first = true;
 						memcpy(fp->tlhdr, pptrs->tlh_ptr, MyTLHdrSz);
 
 						pptrs->frag_sum_bytes = fp->a;
@@ -102,16 +102,16 @@ int find_fragment(u_int32_t now, struct packet_ptrs *pptrs)
 						fp->pa = 0;
 						fp->a = 0;
 
-						pptrs->frag_first_found = TRUE;
-						return TRUE;
+						pptrs->frag_first_found = true;
+						return true;
 					} else { /* we still don't have the first fragment; increase accumulators */
 						if (!config.ext_sampling_rate) {
 							fp->pa++;
 							fp->a += ntohs(iphp->ip_len);
 						}
 
-						pptrs->frag_first_found = FALSE;
-						return FALSE;
+						pptrs->frag_first_found = false;
+						return false;
 					}
 				}
 			} else {
@@ -128,8 +128,8 @@ int find_fragment(u_int32_t now, struct packet_ptrs *pptrs)
 	}
 
 create:
-	if (candidate) ret = create_fragment(now, candidate, TRUE, bucket, pptrs);
-	else ret = create_fragment(now, last_seen, FALSE, bucket, pptrs);
+	if (candidate) ret = create_fragment(now, candidate, true, bucket, pptrs);
+	else ret = create_fragment(now, last_seen, false, bucket, pptrs);
 
 	pptrs->frag_first_found = ret;
 	return ret;
@@ -146,7 +146,7 @@ int create_fragment(u_int32_t now, struct ip_fragment *fp, u_int8_t is_candidate
 			emergency_prune = now;
 			prune_old_fragments(now, 0);
 		}
-		return FALSE;
+		return false;
 	}
 
 	if (fp) {
@@ -160,7 +160,7 @@ int create_fragment(u_int32_t now, struct ip_fragment *fp, u_int8_t is_candidate
 					emergency_prune = now;
 					prune_old_fragments(now, 0);
 				}
-				return FALSE;
+				return false;
 			} else ipft_total_nodes--;
 			memset(newf, 0, sizeof(struct ip_fragment));
 			fp->next = newf;
@@ -189,7 +189,7 @@ int create_fragment(u_int32_t now, struct ip_fragment *fp, u_int8_t is_candidate
 				emergency_prune = now;
 				prune_old_fragments(now, 0);
 			}
-			return FALSE;
+			return false;
 		} else ipft_total_nodes--;
 		memset(fp, 0, sizeof(struct ip_fragment));
 		ipft[bucket] = fp;
@@ -207,16 +207,16 @@ int create_fragment(u_int32_t now, struct ip_fragment *fp, u_int8_t is_candidate
 
 	if (!(iphp->ip_off & htons(IP_OFFMASK))) {
 		/* it's a first fragment */
-		fp->got_first = TRUE;
+		fp->got_first = true;
 		memcpy(fp->tlhdr, pptrs->tlh_ptr, MyTLHdrSz);
-		return TRUE;
+		return true;
 	} else {
 		/* not a first fragment; increase accumulators */
 		if (!config.ext_sampling_rate) {
 			fp->pa++;
 			fp->a = ntohs(iphp->ip_len);
 		}
-		return FALSE;
+		return false;
 	}
 }
 
@@ -345,24 +345,24 @@ int find_fragment6(u_int32_t now, struct packet_ptrs *pptrs, struct ip6_frag *fh
 				if (fp->got_first) {
 					// pptrs->tlh_ptr = fp->tlhdr;
 					memcpy(pptrs->tlh_ptr, fp->tlhdr, MyTLHdrSz);
-					return TRUE;
+					return true;
 				} else {
 					if (!(fhdr->ip6f_offlg & htons(IP6F_OFF_MASK))) {
 						/* we got our first fragment */
-						fp->got_first = TRUE;
+						fp->got_first = true;
 						memcpy(fp->tlhdr, pptrs->tlh_ptr, MyTLHdrSz);
 
 						pptrs->frag_sum_bytes = fp->a;
 						pptrs->frag_sum_pkts = fp->pa;
 						fp->pa = 0;
 						fp->a = 0;
-						return TRUE;
+						return true;
 					} else { /* we still don't have the first fragment; increase accumulators */
 						if (!config.ext_sampling_rate) {
 							fp->pa++;
 							fp->a += IP6HdrSz+ntohs(iphp->ip6_plen);
 						}
-						return FALSE;
+						return false;
 					}
 				}
 			} else {
@@ -379,8 +379,8 @@ int find_fragment6(u_int32_t now, struct packet_ptrs *pptrs, struct ip6_frag *fh
 	}
 
 create:
-	if (candidate) return create_fragment6(now, candidate, TRUE, bucket, pptrs, fhdr);
-	else return create_fragment6(now, last_seen, FALSE, bucket, pptrs, fhdr);
+	if (candidate) return create_fragment6(now, candidate, true, bucket, pptrs, fhdr);
+	else return create_fragment6(now, last_seen, false, bucket, pptrs, fhdr);
 }
 
 int create_fragment6(u_int32_t now, struct ip6_fragment *fp, u_int8_t is_candidate, unsigned int bucket,
@@ -395,7 +395,7 @@ int create_fragment6(u_int32_t now, struct ip6_fragment *fp, u_int8_t is_candida
 			emergency_prune6 = now;
 			prune_old_fragments6(now, 0);
 		}
-		return FALSE;
+		return false;
 	}
 
 	if (fp) {
@@ -409,7 +409,7 @@ int create_fragment6(u_int32_t now, struct ip6_fragment *fp, u_int8_t is_candida
 					emergency_prune6 = now;
 					prune_old_fragments6(now, 0);
 				}
-				return FALSE;
+				return false;
 			} else ipft6_total_nodes--;
 			memset(newf, 0, sizeof(struct ip6_fragment));
 			fp->next = newf;
@@ -438,7 +438,7 @@ int create_fragment6(u_int32_t now, struct ip6_fragment *fp, u_int8_t is_candida
 				emergency_prune6 = now;
 				prune_old_fragments6(now, 0);
 			}
-			return FALSE;
+			return false;
 		} else ipft6_total_nodes--;
 		memset(fp, 0, sizeof(struct ip6_fragment));
 		ipft6[bucket] = fp;
@@ -455,16 +455,16 @@ int create_fragment6(u_int32_t now, struct ip6_fragment *fp, u_int8_t is_candida
 
 	if (!(fhdr->ip6f_offlg & htons(IP6F_OFF_MASK))) {
 		/* it's a first fragment */
-		fp->got_first = TRUE;
+		fp->got_first = true;
 		memcpy(fp->tlhdr, pptrs->tlh_ptr, MyTLHdrSz);
-		return TRUE;
+		return true;
 	} else {
 		/* not a first fragment; increase accumulators */
 		if (!config.ext_sampling_rate) {
 			fp->pa++;
 			fp->a = IP6HdrSz+ntohs(iphp->ip6_plen);
 		}
-		return FALSE;
+		return false;
 	}
 }
 

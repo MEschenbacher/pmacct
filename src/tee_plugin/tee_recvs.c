@@ -38,28 +38,28 @@ int tee_recvs_map_id_handler(char *filename, struct id_entry *e, char *value, st
 
 			if (!pool_id || pool_id > UINT32_MAX) {
 				Log(LOG_ERR, "ERROR ( %s/%s ): [%s] Invalid Pool ID specified.\n", config.name, config.type, filename);
-				return TRUE;
+				return true;
 			}
 
 			/* Ensure no pool ID duplicates */
 			for (pool_idx = 0; pool_idx < table->num; pool_idx++) {
 				if (pool_id == table->pools[table->num].id) {
 					Log(LOG_ERR, "ERROR ( %s/%s ): [%s] Duplicate Pool ID specified: %u.\n", config.name, config.type, filename, pool_id);
-					return TRUE;
+					return true;
 				}
 			}
 
 			table->pools[table->num].id = pool_id;
 		} else {
 			Log(LOG_ERR, "ERROR ( %s/%s ): [%s] Maximum amount of receivers pool reached: %u.\n", config.name, config.type, filename, config.tee_max_receiver_pools);
-			return TRUE;
+			return true;
 		}
 	} else {
 		Log(LOG_ERR, "ERROR ( %s/%s ): [%s] Receivers table not allocated.\n", config.name, config.type, filename);
-		return TRUE;
+		return true;
 	}
 
-	return FALSE;
+	return false;
 }
 
 int tee_recvs_map_ip_handler(char *filename, struct id_entry *e, char *value, struct plugin_requests *req, int acct_type)
@@ -89,14 +89,14 @@ int tee_recvs_map_ip_handler(char *filename, struct id_entry *e, char *value, st
 
 		if (!recv_idx) {
 			Log(LOG_ERR, "ERROR ( %s/%s ): [%s] No valid receivers.\n", config.name, config.type, filename);
-			return TRUE;
+			return true;
 		} else table->pools[table->num].num = recv_idx;
 	} else {
 		Log(LOG_ERR, "ERROR ( %s/%s ): [%s] Receivers table not allocated.\n", config.name, config.type, filename);
-		return TRUE;
+		return true;
 	}
 
-	return FALSE;
+	return false;
 }
 
 int tee_recvs_map_tag_handler(char *filename, struct id_entry *e, char *value, struct plugin_requests *req, int acct_type)
@@ -107,11 +107,11 @@ int tee_recvs_map_tag_handler(char *filename, struct id_entry *e, char *value, s
 	if (table && table->pools) ret = load_tags(filename, &table->pools[table->num].tag_filter, value);
 	else {
 		Log(LOG_ERR, "ERROR ( %s/%s ): [%s] Receivers table not allocated.\n", config.name, config.type, filename);
-		return TRUE;
+		return true;
 	}
 
-	if (!ret) return TRUE;
-	else return FALSE;
+	if (!ret) return true;
+	else return false;
 }
 
 int tee_recvs_map_balance_alg_handler(char *filename, struct id_entry *e, char *value, struct plugin_requests *req, int acct_type)
@@ -135,10 +135,10 @@ int tee_recvs_map_balance_alg_handler(char *filename, struct id_entry *e, char *
 		}
 	} else {
 		Log(LOG_ERR, "ERROR ( %s/%s ): [%s] Receivers table not allocated.\n", config.name, config.type, filename);
-		return TRUE;
+		return true;
 	}
 
-	return FALSE;
+	return false;
 }
 
 int tee_recvs_map_src_port_handler(char *filename, struct id_entry *e, char *value, struct plugin_requests *req, int acct_type)
@@ -155,21 +155,21 @@ int tee_recvs_map_src_port_handler(char *filename, struct id_entry *e, char *val
 		}
 	} else {
 		Log(LOG_ERR, "ERROR ( %s/%s ): [%s] Receivers table not allocated.\n", config.name, config.type, filename);
-		return TRUE;
+		return true;
 	}
 
-	return FALSE;
+	return false;
 }
 
 void tee_recvs_map_validate(char *filename, struct plugin_requests *req)
 {
 	struct tee_receivers *table = (struct tee_receivers *) req->key_value_table;
-	int valid = FALSE;
+	int valid = false;
 
 	if (table && table->pools && table->pools[table->num].receivers) {
 		/* If we have got: a) a valid pool ID and b) at least a receiver THEN ok */
-		if (table->pools[table->num].id && table->pools[table->num].num > 0) valid = TRUE;
-		else valid = FALSE;
+		if (table->pools[table->num].id && table->pools[table->num].num > 0) valid = true;
+		else valid = false;
 
 		if (valid) table->num++;
 		else {

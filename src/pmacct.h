@@ -194,7 +194,7 @@
 struct ptm_complex {
 	int load_ptm_plugin;		/* load_pre_tag_map(): input plugin type ID */
 	int load_ptm_res;		/* load_pre_tag_map(): result */
-	int exec_ptm_dissect;		/* exec_plugins(): TRUE if at least one plugin returned load_ptm_res == TRUE */
+	int exec_ptm_dissect;		/* exec_plugins(): true if at least one plugin returned load_ptm_res == true */
 	int exec_ptm_res;		/* exec_plugins(): input to be matched against list->cfg.ptm_complex */
 };
 

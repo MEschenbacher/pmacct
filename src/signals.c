@@ -117,7 +117,7 @@ void my_sigint_handler(int signum)
 
 		for (idx = 0; idx < config.nfacctd_bgp_max_peers; idx++) {
 			if (peers[idx].fd)
-				bgp_peer_close(&peers[idx], FUNC_TYPE_BGP, TRUE, TRUE, BGP_NOTIFY_CEASE, BGP_NOTIFY_CEASE_ADMIN_SHUTDOWN, shutdown_msg);
+				bgp_peer_close(&peers[idx], FUNC_TYPE_BGP, true, true, BGP_NOTIFY_CEASE, BGP_NOTIFY_CEASE_ADMIN_SHUTDOWN, shutdown_msg);
 		}
 	}
 
@@ -180,13 +180,13 @@ void reload()
 
 	if (config.logfile) {
 		fclose(config.logfile_fd);
-		config.logfile_fd = open_output_file(config.logfile, "a", FALSE);
+		config.logfile_fd = open_output_file(config.logfile, "a", false);
 	}
 
-	if (config.nfacctd_bgp_msglog_file) reload_log_bgp_thread = TRUE;
-	if (config.nfacctd_bmp_msglog_file) reload_log_bmp_thread = TRUE;
-	if (config.sfacctd_counter_file) reload_log_sf_cnt = TRUE;
-	if (config.telemetry_msglog_file) reload_log_telemetry_thread = TRUE;
+	if (config.nfacctd_bgp_msglog_file) reload_log_bgp_thread = true;
+	if (config.nfacctd_bmp_msglog_file) reload_log_bmp_thread = true;
+	if (config.sfacctd_counter_file) reload_log_sf_cnt = true;
+	if (config.telemetry_msglog_file) reload_log_telemetry_thread = true;
 
 	signal(SIGHUP, reload);
 }
@@ -212,16 +212,16 @@ void push_stats()
 
 void reload_maps()
 {
-	reload_map = FALSE;
-	reload_map_bgp_thread = FALSE;
-	reload_map_exec_plugins = FALSE;
-	reload_geoipv2_file = FALSE;
+	reload_map = false;
+	reload_map_bgp_thread = false;
+	reload_map_exec_plugins = false;
+	reload_geoipv2_file = false;
 
 	if (config.maps_refresh) {
-		reload_map = TRUE;
-		reload_map_bgp_thread = TRUE;
-		reload_map_exec_plugins = TRUE;
-		reload_geoipv2_file = TRUE;
+		reload_map = true;
+		reload_map_bgp_thread = true;
+		reload_map_exec_plugins = true;
+		reload_geoipv2_file = true;
 	}
 
 	signal(SIGUSR2, reload_maps);

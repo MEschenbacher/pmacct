@@ -149,18 +149,18 @@ int main(int argc,char **argv, char **envp)
 	compute_once();
 
 	/* a bunch of default definitions */
-	reload_map = FALSE;
-	reload_geoipv2_file = FALSE;
-	sampling_map_allocated = FALSE;
-	bpas_map_allocated = FALSE;
-	blp_map_allocated = FALSE;
-	bmed_map_allocated = FALSE;
-	biss_map_allocated = FALSE;
-	bta_map_allocated = FALSE;
-	bitr_map_allocated = FALSE;
-	custom_primitives_allocated = FALSE;
-	bta_map_caching = TRUE;
-	sampling_map_caching = TRUE;
+	reload_map = false;
+	reload_geoipv2_file = false;
+	sampling_map_allocated = false;
+	bpas_map_allocated = false;
+	blp_map_allocated = false;
+	bmed_map_allocated = false;
+	biss_map_allocated = false;
+	bta_map_allocated = false;
+	bitr_map_allocated = false;
+	custom_primitives_allocated = false;
+	bta_map_caching = true;
+	sampling_map_caching = true;
 	find_id_func = NF_find_id;
 	plugins_list = NULL;
 
@@ -219,7 +219,7 @@ int main(int argc,char **argv, char **envp)
 			rows++;
 			break;
 		case 'd':
-			debug = TRUE;
+			debug = true;
 			strlcpy(cfg_cmdline[rows], "debug: true", SRVBUFLEN);
 			rows++;
 			break;
@@ -373,7 +373,7 @@ int main(int argc,char **argv, char **envp)
 	}
 
 	if (config.logfile) {
-		config.logfile_fd = open_output_file(config.logfile, "a", FALSE);
+		config.logfile_fd = open_output_file(config.logfile, "a", false);
 		list = plugins_list;
 		while (list) {
 			list->cfg.logfile_fd = config.logfile_fd ;
@@ -625,7 +625,7 @@ int main(int argc,char **argv, char **envp)
 #if defined ENABLE_THREADS
 	/* starting the ISIS threa */
 	if (config.nfacctd_isis) {
-		req.bpf_filter = TRUE;
+		req.bpf_filter = true;
 
 		nfacctd_isis_wrapper();
 
@@ -635,7 +635,7 @@ int main(int argc,char **argv, char **envp)
 
 	/* starting the BGP thread */
 	if (config.nfacctd_bgp) {
-		req.bpf_filter = TRUE;
+		req.bpf_filter = true;
 		load_comm_patterns(&config.nfacctd_bgp_stdcomm_pattern, &config.nfacctd_bgp_extcomm_pattern,
 		                   &config.nfacctd_bgp_lrgcomm_pattern, &config.nfacctd_bgp_stdcomm_pattern_to_asn);
 
@@ -682,7 +682,7 @@ int main(int argc,char **argv, char **envp)
 
 	/* starting the BMP thread */
 	if (config.nfacctd_bmp) {
-		req.bpf_filter = TRUE;
+		req.bpf_filter = true;
 
 		nfacctd_bmp_wrapper();
 
@@ -721,13 +721,13 @@ int main(int argc,char **argv, char **envp)
 
 #if defined WITH_GEOIP
 	if (config.geoip_ipv4_file || config.geoip_ipv6_file) {
-		req.bpf_filter = TRUE;
+		req.bpf_filter = true;
 	}
 #endif
 
 #if defined WITH_GEOIPV2
 	if (config.geoipv2_file) {
-		req.bpf_filter = TRUE;
+		req.bpf_filter = true;
 	}
 #endif
 
@@ -893,7 +893,7 @@ int main(int argc,char **argv, char **envp)
 		sa_to_addr((struct sockaddr *)&server, &srv_addr, &srv_port);
 		addr_to_str(srv_string, &srv_addr);
 		Log(LOG_INFO, "INFO ( %s/core ): waiting for NetFlow data on %s:%u\n", config.name, srv_string, srv_port);
-		allowed = TRUE;
+		allowed = true;
 	}
 
 	/* fixing NetFlow v9/IPFIX template func pointers */
@@ -916,8 +916,8 @@ int main(int argc,char **argv, char **envp)
 		if (!allowed) continue;
 
 		if (reload_map) {
-			bta_map_caching = TRUE;
-			sampling_map_caching = TRUE;
+			bta_map_caching = true;
+			sampling_map_caching = true;
 			req.key_value_table = NULL;
 
 			load_networks(config.networks_file, &nt, &nc);
@@ -937,7 +937,7 @@ int main(int argc,char **argv, char **envp)
 				set_sampling_table(&pptrs, (u_char *) &sampling_table);
 			}
 
-			reload_map = FALSE;
+			reload_map = false;
 			gettimeofday(&reload_map_tstamp, NULL);
 		}
 
@@ -1260,9 +1260,9 @@ void process_v9_packet(unsigned char *pkt, u_int16_t len, struct packet_ptrs_vec
 	pptrs->f_header = pkt;
 	pkt += HdrSz;
 	off += HdrSz;
-	pptrsv->v4.f_status = nfv9_check_status(pptrs, SourceId, 0, FlowSeq, TRUE);
+	pptrsv->v4.f_status = nfv9_check_status(pptrs, SourceId, 0, FlowSeq, true);
 	set_vector_f_status(pptrsv);
-	pptrsv->v4.f_status_g = nfv9_check_status(pptrs, 0, NF9_OPT_SCOPE_SYSTEM, 0, FALSE);
+	pptrsv->v4.f_status_g = nfv9_check_status(pptrs, 0, NF9_OPT_SCOPE_SYSTEM, 0, false);
 	set_vector_f_status_g(pptrsv);
 
 process_flowset:
@@ -1405,7 +1405,7 @@ process_flowset:
 						sampler_id = pm_ntohll(t64); /* XXX: sampler_id to be moved to 64 bit */
 					}
 
-					if (entry) sentry = search_smp_id_status_table(entry->sampling, sampler_id, FALSE);
+					if (entry) sentry = search_smp_id_status_table(entry->sampling, sampler_id, false);
 					if (!sentry) sentry = create_smp_entry_status_table(entry);
 					else ssaved = sentry->next;
 
@@ -2139,7 +2139,7 @@ void process_raw_packet(unsigned char *pkt, u_int16_t len, struct packet_ptrs_ve
 		    config.name, debug_agent_addr, debug_agent_port, nfv, pptrsv->v4.seqno);
 	}
 
-	req->ptm_c.exec_ptm_res = FALSE;
+	req->ptm_c.exec_ptm_res = false;
 	exec_plugins(pptrs, req);
 }
 
@@ -2192,7 +2192,7 @@ void compute_once()
 u_int8_t NF_evaluate_flow_type(struct template_cache_entry *tpl, struct packet_ptrs *pptrs)
 {
 	u_int8_t ret = NF9_FTYPE_TRAFFIC;
-	u_int8_t have_ip_proto = FALSE;
+	u_int8_t have_ip_proto = false;
 
 	/* first round: event vs traffic */
 	if (!tpl->tpl[NF9_IN_BYTES].len && !tpl->tpl[NF9_OUT_BYTES].len && !tpl->tpl[NF9_FLOW_BYTES].len /* && packets? */) {
@@ -2205,19 +2205,19 @@ u_int8_t NF_evaluate_flow_type(struct template_cache_entry *tpl, struct packet_p
 		/* Explicit IP protocol definition first; a bit of heuristics as fallback */
 		if (tpl->tpl[NF9_IP_PROTOCOL_VERSION].len) {
 			if (*(pptrs->f_data+tpl->tpl[NF9_IP_PROTOCOL_VERSION].off) == 4) {
-				have_ip_proto = TRUE;
+				have_ip_proto = true;
 			} else if (*(pptrs->f_data+tpl->tpl[NF9_IP_PROTOCOL_VERSION].off) == 6) {
 				ret += NF9_FTYPE_TRAFFIC_IPV6;
-				have_ip_proto = TRUE;
+				have_ip_proto = true;
 			}
 		}
 
 		if (!have_ip_proto) {
 			if (tpl->tpl[NF9_IPV4_SRC_ADDR].len) {
-				have_ip_proto = TRUE;
+				have_ip_proto = true;
 			} else if (tpl->tpl[NF9_IPV6_SRC_ADDR].len) {
 				ret += NF9_FTYPE_TRAFFIC_IPV6;
-				have_ip_proto - TRUE;
+				have_ip_proto - true;
 			}
 		}
 	}
@@ -2304,8 +2304,8 @@ int NF_find_id(struct id_table *t, struct packet_ptrs *pptrs, pm_id_t *tag, pm_i
 	if (tag) *tag = 0;
 	if (tag2) *tag2 = 0;
 	if (pptrs) {
-		pptrs->have_tag = FALSE;
-		pptrs->have_tag2 = FALSE;
+		pptrs->have_tag = false;
+		pptrs->have_tag2 = false;
 	}
 
 	/* Giving a first try with index(es) */
@@ -2339,7 +2339,7 @@ int NF_find_id(struct id_table *t, struct packet_ptrs *pptrs, pm_id_t *tag, pm_i
 		if (host_addr_mask_sa_cmp(&t->e[x].key.agent_ip.a, &t->e[x].key.agent_mask, sa) == 0) {
 			ret = pretag_entry_process(&t->e[x], pptrs, tag, tag2);
 
-			if (!ret || ret > TRUE) {
+			if (!ret || ret > true) {
 				if (ret & PRETAG_MAP_RCODE_JEQ) {
 					x = t->e[x].jeq.ptr->pos;
 					x--; // yes, it will be automagically incremented by the for() cycle

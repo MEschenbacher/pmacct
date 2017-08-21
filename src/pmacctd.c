@@ -131,15 +131,15 @@ int main(int argc,char **argv, char **envp)
 	compute_once();
 
 	/* a bunch of default definitions */
-	reload_map = FALSE;
-	reload_geoipv2_file = FALSE;
-	bpas_map_allocated = FALSE;
-	blp_map_allocated = FALSE;
-	bmed_map_allocated = FALSE;
-	biss_map_allocated = FALSE;
-	bta_map_caching = FALSE;
-	sampling_map_caching = FALSE;
-	custom_primitives_allocated = FALSE;
+	reload_map = false;
+	reload_geoipv2_file = false;
+	bpas_map_allocated = false;
+	blp_map_allocated = false;
+	bmed_map_allocated = false;
+	biss_map_allocated = false;
+	bta_map_caching = false;
+	sampling_map_caching = false;
+	custom_primitives_allocated = false;
 	find_id_func = PM_find_id;
 	plugins_list = NULL;
 
@@ -187,7 +187,7 @@ int main(int argc,char **argv, char **envp)
 			rows++;
 			break;
 		case 'd':
-			debug = TRUE;
+			debug = true;
 			strlcpy(cfg_cmdline[rows], "debug: true", SRVBUFLEN);
 			rows++;
 			break;
@@ -380,7 +380,7 @@ int main(int argc,char **argv, char **envp)
 	}
 
 	if (config.logfile) {
-		config.logfile_fd = open_output_file(config.logfile, "a", FALSE);
+		config.logfile_fd = open_output_file(config.logfile, "a", false);
 		list = plugins_list;
 		while (list) {
 			list->cfg.logfile_fd = config.logfile_fd ;
@@ -432,7 +432,7 @@ int main(int argc,char **argv, char **envp)
 				   we cancel the sampling information from the probe plugin */
 				if (config.sfacctd_renormalize && list->cfg.ext_sampling_rate) list->cfg.ext_sampling_rate = 0;
 
-				config.handle_fragments = TRUE;
+				config.handle_fragments = true;
 				list->cfg.nfprobe_what_to_count = list->cfg.what_to_count;
 				list->cfg.nfprobe_what_to_count_2 = list->cfg.what_to_count_2;
 				list->cfg.what_to_count = 0;
@@ -464,7 +464,7 @@ int main(int argc,char **argv, char **envp)
 				if (list->cfg.nfprobe_version == 9 || list->cfg.nfprobe_version == 10) {
 					if (list->cfg.classifiers_path) {
 						list->cfg.what_to_count |= COUNT_CLASS;
-						config.handle_flows = TRUE;
+						config.handle_flows = true;
 					}
 					if (list->cfg.nfprobe_what_to_count_2 & COUNT_NDPI_CLASS)
 						list->cfg.what_to_count_2 |= COUNT_NDPI_CLASS;
@@ -507,8 +507,8 @@ int main(int argc,char **argv, char **envp)
 				list->cfg.what_to_count_2 = 0;
 				if (list->cfg.classifiers_path) {
 					list->cfg.what_to_count |= COUNT_CLASS;
-					config.handle_fragments = TRUE;
-					config.handle_flows = TRUE;
+					config.handle_fragments = true;
+					config.handle_flows = true;
 				}
 #if defined (WITH_NDPI)
 				{
@@ -569,14 +569,14 @@ int main(int argc,char **argv, char **envp)
 
 				evaluate_sums(&list->cfg.what_to_count, &list->cfg.what_to_count_2, list->name, list->type.string);
 				if (list->cfg.what_to_count & (COUNT_SRC_PORT|COUNT_DST_PORT|COUNT_SUM_PORT|COUNT_TCPFLAGS))
-					config.handle_fragments = TRUE;
+					config.handle_fragments = true;
 				if (list->cfg.what_to_count & COUNT_FLOWS) {
-					config.handle_fragments = TRUE;
-					config.handle_flows = TRUE;
+					config.handle_fragments = true;
+					config.handle_flows = true;
 				}
 				if (list->cfg.what_to_count & COUNT_CLASS) {
-					config.handle_fragments = TRUE;
-					config.handle_flows = TRUE;
+					config.handle_fragments = true;
+					config.handle_flows = true;
 				}
 				if (!list->cfg.what_to_count && !list->cfg.what_to_count_2 && !list->cfg.cpptrs.num) {
 					Log(LOG_WARNING, "WARN ( %s/%s ): defaulting to SRC HOST aggregation.\n", list->name, list->type.string);
@@ -627,8 +627,8 @@ int main(int argc,char **argv, char **envp)
 			/* applies to all plugins */
 			if ((list->cfg.what_to_count_2 & COUNT_NDPI_CLASS) ||
 			    (list->cfg.nfprobe_what_to_count_2 & COUNT_NDPI_CLASS)) {
-				config.handle_fragments = TRUE;
-				config.classifier_ndpi = TRUE;
+				config.handle_fragments = true;
+				config.classifier_ndpi = true;
 			}
 
 			if ((list->cfg.what_to_count & COUNT_CLASS) && (list->cfg.what_to_count_2 & COUNT_NDPI_CLASS)) {
@@ -647,7 +647,7 @@ int main(int argc,char **argv, char **envp)
 
 #if defined (WITH_NDPI)
 	if (config.classifier_ndpi) {
-		config.handle_fragments = TRUE;
+		config.handle_fragments = true;
 		pm_ndpi_wfl = pm_ndpi_workflow_init();
 		pm_ndpi_export_proto_to_class(pm_ndpi_wfl);
 	} else pm_ndpi_wfl = NULL;
@@ -709,7 +709,7 @@ throttle_startup:
 		}
 	}
 
-	device.active = TRUE;
+	device.active = true;
 	glob_pcapt = device.dev_desc; /* SIGINT/stats handling */
 	if (config.nfacctd_pipe_size) {
 		int slen = sizeof(config.nfacctd_pipe_size), x;
@@ -771,7 +771,7 @@ throttle_startup:
 #if defined ENABLE_THREADS
 	/* starting the ISIS threa */
 	if (config.nfacctd_isis) {
-		req.bpf_filter = TRUE;
+		req.bpf_filter = true;
 
 		nfacctd_isis_wrapper();
 
@@ -781,7 +781,7 @@ throttle_startup:
 
 	/* starting the BGP thread */
 	if (config.nfacctd_bgp) {
-		req.bpf_filter = TRUE;
+		req.bpf_filter = true;
 		load_comm_patterns(&config.nfacctd_bgp_stdcomm_pattern, &config.nfacctd_bgp_extcomm_pattern,
 		                   &config.nfacctd_bgp_lrgcomm_pattern, &config.nfacctd_bgp_stdcomm_pattern_to_asn);
 
@@ -848,13 +848,13 @@ throttle_startup:
 
 #if defined WITH_GEOIP
 	if (config.geoip_ipv4_file || config.geoip_ipv6_file) {
-		req.bpf_filter = TRUE;
+		req.bpf_filter = true;
 	}
 #endif
 
 #if defined WITH_GEOIPV2
 	if (config.geoipv2_file) {
-		req.bpf_filter = TRUE;
+		req.bpf_filter = true;
 	}
 #endif
 
@@ -895,7 +895,7 @@ throttle_loop:
 			if ((device.dev_desc = pcap_open_live(config.dev, psize, config.promisc, 1000, errbuf)) == NULL)
 				goto throttle_loop;
 			pcap_setfilter(device.dev_desc, &filter);
-			device.active = TRUE;
+			device.active = true;
 		}
 		pcap_loop(device.dev_desc, -1, pcap_cb, (u_char *) &cb_data);
 		pcap_close(device.dev_desc);
@@ -908,6 +908,6 @@ throttle_loop:
 			}
 			stop_all_childs();
 		}
-		device.active = FALSE;
+		device.active = false;
 	}
 }

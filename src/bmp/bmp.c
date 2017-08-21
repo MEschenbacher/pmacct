@@ -87,7 +87,7 @@ void skinny_bmp_daemon()
 
 
 	/* initial cleanups */
-	reload_log_bmp_thread = FALSE;
+	reload_log_bmp_thread = false;
 	memset(&server, 0, sizeof(server));
 	memset(&client, 0, sizeof(client));
 	memset(&allow, 0, sizeof(struct hosts_table));
@@ -331,7 +331,7 @@ void skinny_bmp_daemon()
 			dump_refresh_deadline += config.bmp_dump_refresh_time; /* it's a deadline not a basetime */
 		} else {
 			config.bmp_dump_file = NULL;
-			bmp_misc_db->dump_backend_methods = FALSE;
+			bmp_misc_db->dump_backend_methods = false;
 			Log(LOG_WARNING, "WARN ( %s/%s ): Invalid 'bmp_dump_refresh_time'.\n", config.name, bmp_misc_db->log_str);
 		}
 
@@ -340,7 +340,7 @@ void skinny_bmp_daemon()
 	}
 
 	select_fd = bkp_select_fd = (config.bmp_sock + 1);
-	recalc_fds = FALSE;
+	recalc_fds = false;
 
 	bmp_link_misc_structs(bmp_misc_db);
 
@@ -359,7 +359,7 @@ select_again:
 			max_peers_idx++;
 
 			bkp_select_fd = select_fd;
-			recalc_fds = FALSE;
+			recalc_fds = false;
 		} else select_fd = bkp_select_fd;
 
 		memcpy(&read_descs, &bkp_read_descs, sizeof(bkp_read_descs));
@@ -380,23 +380,23 @@ select_again:
 			for (peers_idx = 0; peers_idx < config.nfacctd_bmp_max_peers; peers_idx++) {
 				if (bmp_misc_db->peers_log[peers_idx].fd) {
 					fclose(bmp_misc_db->peers_log[peers_idx].fd);
-					bmp_misc_db->peers_log[peers_idx].fd = open_output_file(bmp_misc_db->peers_log[peers_idx].filename, "a", FALSE);
+					bmp_misc_db->peers_log[peers_idx].fd = open_output_file(bmp_misc_db->peers_log[peers_idx].filename, "a", false);
 					setlinebuf(bmp_misc_db->peers_log[peers_idx].fd);
 				} else break;
 			}
 
-			reload_log_bmp_thread = FALSE;
+			reload_log_bmp_thread = false;
 		}
 
 		if (bmp_misc_db->msglog_backend_methods || bmp_misc_db->dump_backend_methods) {
 			gettimeofday(&bmp_misc_db->log_tstamp, NULL);
-			compose_timestamp(bmp_misc_db->log_tstamp_str, SRVBUFLEN, &bmp_misc_db->log_tstamp, TRUE, config.timestamps_since_epoch);
+			compose_timestamp(bmp_misc_db->log_tstamp_str, SRVBUFLEN, &bmp_misc_db->log_tstamp, true, config.timestamps_since_epoch);
 
 			if (bmp_misc_db->dump_backend_methods) {
 				while (bmp_misc_db->log_tstamp.tv_sec > dump_refresh_deadline) {
 					bmp_misc_db->dump.tstamp.tv_sec = dump_refresh_deadline;
 					bmp_misc_db->dump.tstamp.tv_usec = 0;
-					compose_timestamp(bmp_misc_db->dump.tstamp_str, SRVBUFLEN, &bmp_misc_db->dump.tstamp, FALSE, config.timestamps_since_epoch);
+					compose_timestamp(bmp_misc_db->dump.tstamp_str, SRVBUFLEN, &bmp_misc_db->dump.tstamp, false, config.timestamps_since_epoch);
 					bmp_misc_db->dump.period = config.bmp_dump_refresh_time;
 
 					bmp_handle_dump_event();
@@ -445,7 +445,7 @@ select_again:
 
 			/* If an ACL is defined, here we check against and enforce it */
 			if (allow.num) allowed = check_allow(&allow, (struct sockaddr *)&client);
-			else allowed = TRUE;
+			else allowed = true;
 
 			if (!allowed) {
 				close(fd);
@@ -469,7 +469,7 @@ select_again:
 						if (bmp_peer_init(bmpp, FUNC_TYPE_BMP)) {
 							peer = NULL;
 							bmpp = NULL;
-						} else recalc_fds = TRUE;
+						} else recalc_fds = true;
 
 						log_notification_unset(&log_notifications.bgp_peers_throttling);
 
@@ -483,7 +483,7 @@ select_again:
 						/* We briefly accept the new connection to be able to drop it */
 						if (!log_notification_isset(&log_notifications.bmp_peers_throttling, now)) {
 							Log(LOG_INFO, "INFO ( %s/%s ): throttling at BMP peer #%u\n", config.name, bmp_misc_db->log_str, peers_idx);
-							log_notification_set(&log_notifications.bmp_peers_throttling, now, FALSE);
+							log_notification_set(&log_notifications.bmp_peers_throttling, now, false);
 						}
 
 						close(fd);
@@ -566,7 +566,7 @@ read_data:
 			Log(LOG_INFO, "INFO ( %s/%s ): [%s] BMP connection reset by peer (%d).\n", config.name, bmp_misc_db->log_str, peer->addr_str, errno);
 			FD_CLR(peer->fd, &bkp_read_descs);
 			bmp_peer_close(bmpp, FUNC_TYPE_BMP);
-			recalc_fds = TRUE;
+			recalc_fds = true;
 			goto select_again;
 		} else {
 			pkt_remaining_len = bmp_process_packet(peer->buf.base, peer->msglen, bmpp);
@@ -584,7 +584,7 @@ void bmp_prepare_thread()
 	bmp_misc_db = &inter_domain_misc_dbs[FUNC_TYPE_BMP];
 	memset(bmp_misc_db, 0, sizeof(struct bgp_misc_structs));
 
-	bmp_misc_db->is_thread = TRUE;
+	bmp_misc_db->is_thread = true;
 	bmp_misc_db->log_str = malloc(strlen("core/BMP") + 1);
 	strcpy(bmp_misc_db->log_str, "core/BMP");
 }
@@ -594,7 +594,7 @@ void bmp_prepare_daemon()
 	bmp_misc_db = &inter_domain_misc_dbs[FUNC_TYPE_BMP];
 	memset(bmp_misc_db, 0, sizeof(struct bgp_misc_structs));
 
-	bmp_misc_db->is_thread = FALSE;
+	bmp_misc_db->is_thread = false;
 	bmp_misc_db->log_str = malloc(strlen("core") + 1);
 	strcpy(bmp_misc_db->log_str, "core");
 }

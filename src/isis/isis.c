@@ -95,7 +95,7 @@ void skinny_isis_daemon()
 
 	memset(&ime, 0, sizeof(ime));
 	memset(&req, 0, sizeof(req));
-	reload_map = FALSE;
+	reload_map = false;
 	glob_isis_seq_num = 0;
 
 	/* initializing IS-IS structures */
@@ -136,7 +136,7 @@ void skinny_isis_daemon()
 	}
 
 	if (config.igp_daemon_map) {
-		int igp_map_allocated = FALSE;
+		int igp_map_allocated = false;
 
 		glob_isis_seq_num++;
 		req.key_value_table = (void *) &ime;
@@ -147,7 +147,7 @@ void skinny_isis_daemon()
 	area = isis_area_create();
 	area->area_tag = area_tag;
 	area->is_type = IS_LEVEL_2;
-	area->newmetric = TRUE;
+	area->newmetric = true;
 	isis_listnode_add(isis->area_list, area);
 	Log(LOG_DEBUG, "DEBUG ( %s/core/ISIS ): New IS-IS area instance %s\n", config.name, area->area_tag);
 	if (config.nfacctd_isis_net) area_net_title(area, config.nfacctd_isis_net);
@@ -215,12 +215,12 @@ void skinny_isis_daemon()
 			sleep(3);
 
 			if (reload_map) {
-				int igp_map_allocated = FALSE;
+				int igp_map_allocated = false;
 
 				glob_isis_seq_num++;
 				memset(&sysid_fragment_table, 0, sizeof(sysid_fragment_table));
 				load_id_file(MAP_IGP, config.igp_daemon_map, NULL, &req, &igp_map_allocated);
-				reload_map = FALSE;
+				reload_map = false;
 			}
 		}
 	}
@@ -432,10 +432,10 @@ int igp_daemon_map_node_handler(char *filename, struct id_entry *e, char *value,
 
 	if (!str_to_addr(value, &entry->node) || entry->node.family != AF_INET) {
 		Log(LOG_ERR, "ERROR ( %s ): Bad IPv4 address '%s'. ", filename, value);
-		return TRUE;
+		return true;
 	}
 
-	return FALSE;
+	return false;
 }
 
 int igp_daemon_map_area_id_handler(char *filename, struct id_entry *e, char *value, struct plugin_requests *req, int acct_type)
@@ -448,7 +448,7 @@ int igp_daemon_map_area_id_handler(char *filename, struct id_entry *e, char *val
 	while (x < len) {
 		if (!isdigit(value[x])) {
 			Log(LOG_ERR, "ERROR ( %s ): Bad 'area_id' value: '%s'. ", filename, value);
-			return TRUE;
+			return true;
 		}
 		x++;
 	}
@@ -456,12 +456,12 @@ int igp_daemon_map_area_id_handler(char *filename, struct id_entry *e, char *val
 	j = atoi(value);
 	if (j < 0 || j > 65535) {
 		Log(LOG_ERR, "ERROR ( %s ): Bad 'area_id' value (range: 0 >= value > 65536). ", filename);
-		return TRUE;
+		return true;
 	}
 
 	entry->area_id = j;
 
-	return FALSE;
+	return false;
 }
 
 int igp_daemon_map_adj_metric_handler(char *filename, struct id_entry *e, char *value, struct plugin_requests *req, int acct_type)
@@ -473,13 +473,13 @@ int igp_daemon_map_adj_metric_handler(char *filename, struct id_entry *e, char *
 	str_ptr = strdup(value);
 	if (!str_ptr) {
 		Log(LOG_ERR, "ERROR ( %s ): not enough memory to strdup(). ", filename);
-		return TRUE;
+		return true;
 	}
 
 	while (token = extract_token(&str_ptr, ';')) {
 		if (idx >= MAX_IGP_MAP_ELEM) {
 			Log(LOG_ERR, "ERROR ( %s ): maximum number of elements (%u) per adj_metric violated. ", filename, MAX_IGP_MAP_ELEM);
-			return TRUE;
+			return true;
 		}
 
 		sep = strchr(token, ',');
@@ -508,10 +508,10 @@ int igp_daemon_map_adj_metric_handler(char *filename, struct id_entry *e, char *
 
 	if (!idx) {
 		Log(LOG_ERR, "ERROR ( %s ): invalid or empty adj_metric entry '%s'. ", filename, value);
-		return TRUE;
+		return true;
 	} else entry->adj_metric_num = idx;
 
-	return FALSE;
+	return false;
 }
 
 int igp_daemon_map_reach_metric_handler(char *filename, struct id_entry *e, char *value, struct plugin_requests *req, int acct_type)
@@ -523,13 +523,13 @@ int igp_daemon_map_reach_metric_handler(char *filename, struct id_entry *e, char
 	str_ptr = strdup(value);
 	if (!str_ptr) {
 		Log(LOG_ERR, "ERROR ( %s ): not enough memory to strdup(). ", filename);
-		return TRUE;
+		return true;
 	}
 
 	while (token = extract_token(&str_ptr, ';')) {
 		if (idx >= MAX_IGP_MAP_ELEM) {
 			Log(LOG_ERR, "ERROR ( %s ): maximum number of elements (%u) per reach_metric violated. ", filename, MAX_IGP_MAP_ELEM);
-			return TRUE;
+			return true;
 		}
 
 		sep = strchr(token, ',');
@@ -558,10 +558,10 @@ int igp_daemon_map_reach_metric_handler(char *filename, struct id_entry *e, char
 
 	if (!idx) {
 		Log(LOG_ERR, "ERROR ( %s ): invalid or empty reach_metric entry '%s'. ", filename, value);
-		return TRUE;
+		return true;
 	} else entry->reach_metric_num = idx;
 
-	return FALSE;
+	return false;
 }
 
 #if defined ENABLE_IPV6
@@ -574,13 +574,13 @@ int igp_daemon_map_reach6_metric_handler(char *filename, struct id_entry *e, cha
 	str_ptr = strdup(value);
 	if (!str_ptr) {
 		Log(LOG_ERR, "ERROR ( %s ): not enough memory to strdup(). ", filename);
-		return TRUE;
+		return true;
 	}
 
 	while (token = extract_token(&str_ptr, ';')) {
 		if (idx >= MAX_IGP_MAP_ELEM) {
 			Log(LOG_ERR, "ERROR ( %s ): maximum number of elements (%u) per reach6_metric violated. ", filename, MAX_IGP_MAP_ELEM);
-			return TRUE;
+			return true;
 		}
 
 		sep = strchr(token, ',');
@@ -609,10 +609,10 @@ int igp_daemon_map_reach6_metric_handler(char *filename, struct id_entry *e, cha
 
 	if (!idx) {
 		Log(LOG_ERR, "ERROR ( %s ): invalid or empty reach6_metric entry '%s'. ", filename, value);
-		return TRUE;
+		return true;
 	} else entry->reach6_metric_num = idx;
 
-	return FALSE;
+	return false;
 }
 #endif
 
@@ -651,9 +651,9 @@ void igp_daemon_map_validate(char *filename, struct plugin_requests *req)
 			isis_hdr = (struct isis_fixed_hdr *) isis_dgram_ptr;
 			isis_hdr->idrp = ISO10589_ISIS;
 			isis_hdr->length = 27; /* fixed: IS-IS header + LSP header */
-			isis_hdr->version1 = TRUE;
+			isis_hdr->version1 = true;
 			isis_hdr->pdu_type = 0x14;
-			isis_hdr->version2 = TRUE;
+			isis_hdr->version2 = true;
 
 			isis_dgram_ptr += sizeof(struct isis_fixed_hdr);
 			if (igp_daemon_map_handle_len(&rem_len, sizeof(struct isis_fixed_hdr), req, filename)) return;
@@ -832,10 +832,10 @@ int igp_daemon_map_handle_len(int *rem_len, int len, struct plugin_requests *req
 	if (*rem_len < 0) {
 		Log(LOG_ERR, "ERROR ( %s/core/ISIS ): Resulting LSP longer than %u. Ignoring line %d in map '%s'.\n",
 		    config.name, RECEIVE_LSP_BUFFER_SIZE, req->line_num, filename);
-		return TRUE;
+		return true;
 	}
 
-	return FALSE;
+	return false;
 }
 
 int igp_daemon_map_handle_lsp_id(char *lsp_id, struct host_addr *addr)
@@ -853,13 +853,13 @@ int igp_daemon_map_handle_lsp_id(char *lsp_id, struct host_addr *addr)
 				Log(LOG_WARNING, "WARN ( %s/core/ISIS ): Maximum segment number (255) reached for sysid: '%s'\n", config.name, sysid);
 				memset(lsp_id, 0, ISIS_SYS_ID_LEN + 2);
 
-				return TRUE;
+				return true;
 			} else {
 				memcpy(lsp_id, sysid_fragment_table[idx].sysid, 4);
 				memcpy(lsp_id + ISIS_SYS_ID_LEN + 1, &sysid_fragment_table[idx].frag_num, 1);
 				sysid_fragment_table[idx].frag_num++;
 
-				return FALSE;
+				return false;
 			}
 		}
 	}
@@ -868,17 +868,17 @@ int igp_daemon_map_handle_lsp_id(char *lsp_id, struct host_addr *addr)
 	if (idx < MAX_IGP_MAP_NODES) {
 		memcpy(sysid_fragment_table[idx].sysid, sysid, ISIS_SYS_ID_LEN);
 		sysid_fragment_table[idx].frag_num = 0;
-		sysid_fragment_table[idx].valid = TRUE;
+		sysid_fragment_table[idx].valid = true;
 
 		memcpy(lsp_id, sysid_fragment_table[idx].sysid, 4);
 		memcpy(lsp_id + ISIS_SYS_ID_LEN + 1, &sysid_fragment_table[idx].frag_num, 1);
 		sysid_fragment_table[idx].frag_num++;
 
-		return FALSE;
+		return false;
 	} else {
 		Log(LOG_WARNING, "WARN ( %s/core/ISIS ): Maximum number of nodes (%u) reached in igp_daemon_map\n", config.name, MAX_IGP_MAP_NODES);
 		memset(lsp_id, 0, ISIS_SYS_ID_LEN + 2);
 
-		return TRUE;
+		return true;
 	}
 }

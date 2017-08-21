@@ -79,8 +79,8 @@ thread_pool_t *allocate_thread_pool(int count)
 
 		/* Default state */
 		worker->go = ERR;
-		worker->quit = FALSE;
-		worker->usage = FALSE;
+		worker->quit = false;
+		worker->usage = false;
 
 		/* Create the thread */
 		worker->thread = malloc(sizeof(pthread_t));
@@ -162,8 +162,8 @@ void deallocate_thread_pool(thread_pool_t **pool)
 	while (worker) {
 		/* Let him finish */
 		pthread_mutex_lock(worker->mutex);
-		worker->go = TRUE;
-		worker->quit = TRUE;
+		worker->go = true;
+		worker->quit = true;
 		pthread_mutex_unlock(worker->mutex);
 
 		pthread_cond_signal(worker->cond);
@@ -194,7 +194,7 @@ void *thread_runner(void *arg)
 	thread_pool_item_t *self = (thread_pool_item_t *) arg;
 
 	pthread_mutex_lock(self->mutex);
-	self->go = FALSE;
+	self->go = false;
 	pthread_cond_signal(self->cond);
 	pthread_mutex_unlock(self->mutex);
 
@@ -211,7 +211,7 @@ void *thread_runner(void *arg)
 		(*self->function)(self->data);
 
 		self->usage++;
-		self->go = FALSE;
+		self->go = false;
 		pthread_mutex_unlock(self->mutex);
 
 		pthread_mutex_lock(self->owner->mutex);
@@ -242,7 +242,7 @@ void send_to_pool(thread_pool_t *pool, void *function, void *data)
 
 	worker->function = function;
 	worker->data = data;
-	worker->go = TRUE;
+	worker->go = true;
 
 	pthread_cond_signal(worker->cond);
 	pthread_mutex_unlock(worker->mutex);

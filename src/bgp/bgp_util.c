@@ -79,7 +79,7 @@ int bgp_rd2str(char *str, rd_t *rd)
 		break;
 	}
 
-	return TRUE;
+	return true;
 }
 
 int bgp_str2rd(rd_t *output, char *value)
@@ -114,7 +114,7 @@ int bgp_str2rd(rd_t *output, char *value)
 				break;
 			default:
 				printf("ERROR: Invalid RD type specified\n");
-				return FALSE;
+				return false;
 			}
 		}
 		if (idx == 1) {
@@ -156,7 +156,7 @@ int bgp_str2rd(rd_t *output, char *value)
 
 	memcpy(output, &rd, sizeof(rd));
 
-	return TRUE;
+	return true;
 }
 
 int bgp_label2str(char *str, u_char *label)
@@ -172,7 +172,7 @@ int bgp_label2str(char *str, u_char *label)
 	tmp = strtoul(str, &endp, 16);
 	snprintf(str, 8, "%u", tmp);
 
-	return TRUE;
+	return true;
 }
 
 /* Allocate bgp_info_extra */
@@ -363,9 +363,9 @@ int attrhash_cmp(const void *p1, const void *p2)
 	    && attr1->pathlimit.ttl == attr2->pathlimit.ttl
 	    && attr1->pathlimit.as == attr2->pathlimit.as
 	    && !memcmp(&attr1->mp_nexthop, &attr2->mp_nexthop, sizeof(struct host_addr)))
-		return TRUE;
+		return true;
 
-	return FALSE;
+	return false;
 }
 
 void attrhash_init(int buckets, struct hash **loc_attrhash)
@@ -482,7 +482,7 @@ void *bgp_attr_hash_alloc(void *p)
 int bgp_peer_init(struct bgp_peer *peer, int type)
 {
 	struct bgp_misc_structs *bms;
-	int ret = TRUE;
+	int ret = true;
 	afi_t afi;
 	safi_t safi;
 
@@ -500,7 +500,7 @@ int bgp_peer_init(struct bgp_peer *peer, int type)
 		exit_all(1);
 	} else {
 		memset(peer->buf.base, 0, peer->buf.len);
-		ret = FALSE;
+		ret = false;
 	}
 
 	return ret;
@@ -743,7 +743,7 @@ as_t evaluate_last_asn(struct aspath *as)
 
 as_t evaluate_first_asn(char *src)
 {
-	int idx, is_space = FALSE, len = strlen(src), start, sub_as, iteration;
+	int idx, is_space = false, len = strlen(src), start, sub_as, iteration;
 	char *endptr, *ptr, saved;
 	as_t asn, real_first_asn;
 
@@ -754,20 +754,20 @@ as_t evaluate_first_asn(char *src)
 start_again:
 
 	asn = 0;
-	sub_as = FALSE;
+	sub_as = false;
 
 	for (idx = start; idx < len && (src[idx] != ' ' && src[idx] != ')'); idx++);
 
 	/* Mangling the AS_PATH string */
 	if (src[idx] == ' ' || src[idx] == ')') {
-		is_space = TRUE;
+		is_space = true;
 		saved =  src[idx];
 		src[idx] = '\0';
 	}
 
 	if (src[start] == '(') {
 		ptr = &src[start+1];
-		sub_as = TRUE;
+		sub_as = true;
 	} else ptr = &src[start];
 
 	asn = strtoul(ptr, &endptr, 10);
@@ -776,7 +776,7 @@ start_again:
 	if (is_space) {
 		src[idx] = saved;
 		saved = '\0';
-		is_space = FALSE;
+		is_space = false;
 	}
 
 	if (config.nfacctd_bgp_peer_as_skip_subas /* XXX */ && sub_as) {
@@ -1044,32 +1044,32 @@ int bgp_batch_is_admitted(struct bgp_peer_batch *bp_batch, time_t now)
 	if (bp_batch) {
 		/* bgp_batch_is_not_empty() maybe replaced by a linear
 		   distribution of the peers over the time interval */
-		if (bgp_batch_is_not_empty(bp_batch) || bgp_batch_is_expired(bp_batch, now)) return TRUE;
-		else return FALSE;
+		if (bgp_batch_is_not_empty(bp_batch) || bgp_batch_is_expired(bp_batch, now)) return true;
+		else return false;
 	} else return ERR;
 }
 
 int bgp_batch_is_enabled(struct bgp_peer_batch *bp_batch)
 {
 	if (bp_batch) {
-		if (bp_batch->num) return TRUE;
-		else return FALSE;
+		if (bp_batch->num) return true;
+		else return false;
 	} else return ERR;
 }
 
 int bgp_batch_is_expired(struct bgp_peer_batch *bp_batch, time_t now)
 {
 	if (bp_batch) {
-		if (now > (bp_batch->base_stamp + bp_batch->interval)) return TRUE;
-		else return FALSE;
+		if (now > (bp_batch->base_stamp + bp_batch->interval)) return true;
+		else return false;
 	} else return ERR;
 }
 
 int bgp_batch_is_not_empty(struct bgp_peer_batch *bp_batch)
 {
 	if (bp_batch) {
-		if (bp_batch->num_current) return TRUE;
-		else return FALSE;
+		if (bp_batch->num_current) return true;
+		else return false;
 	} else return ERR;
 }
 
@@ -1144,7 +1144,7 @@ void bgp_link_misc_structs(struct bgp_misc_structs *bms)
 	bms->bgp_lookup_find_peer = bgp_lookup_find_bgp_peer;
 	bms->bgp_lookup_node_match_cmp = bgp_lookup_node_match_cmp_bgp;
 
-	if (!bms->is_thread && !bms->dump_backend_methods) bms->skip_rib = TRUE;
+	if (!bms->is_thread && !bms->dump_backend_methods) bms->skip_rib = true;
 }
 
 int bgp_peer_cmp(const void *a, const void *b)
@@ -1170,7 +1170,7 @@ int bgp_peers_bintree_walk_print(const void *nodep, const pm_VISIT which, const 
 	peer = (*(struct bgp_peer **) nodep);
 	bms = bgp_select_misc_db(peer->type);
 
-	if (!bms) return FALSE;
+	if (!bms) return false;
 
 	if (!peer) Log(LOG_INFO, "INFO ( %s/%s ): bgp_peers_bintree_walk_print(): null\n", config.name, bms->log_str);
 	else {
@@ -1178,7 +1178,7 @@ int bgp_peers_bintree_walk_print(const void *nodep, const pm_VISIT which, const 
 		Log(LOG_INFO, "INFO ( %s/%s ): bgp_peers_bintree_walk_print(): %s\n", config.name, bms->log_str, peer_str);
 	}
 
-	return TRUE;
+	return true;
 }
 
 int bgp_peers_bintree_walk_delete(const void *nodep, const pm_VISIT which, const int depth, void *extra)
@@ -1189,11 +1189,11 @@ int bgp_peers_bintree_walk_delete(const void *nodep, const pm_VISIT which, const
 
 	peer = (*(struct bgp_peer **) nodep);
 
-	if (!peer) return FALSE;
+	if (!peer) return false;
 
 	bms = bgp_select_misc_db(peer->type);
 
-	if (!bms) return FALSE;
+	if (!bms) return false;
 
 	saved_peer_str = bms->peer_str;
 	bms->peer_str = peer_str;
@@ -1202,5 +1202,5 @@ int bgp_peers_bintree_walk_delete(const void *nodep, const pm_VISIT which, const
 
 	// XXX: count tree elements to index and free() later
 
-	return TRUE;
+	return true;
 }

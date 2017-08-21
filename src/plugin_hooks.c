@@ -59,7 +59,7 @@ void load_plugins(struct plugin_requests *req)
 			}
 
 			min_sz = ChBufHdrSz;
-			list->cfg.buffer_immediate = FALSE;
+			list->cfg.buffer_immediate = false;
 			if (list->cfg.data_type & PIPE_TYPE_METADATA) min_sz += PdataSz;
 			if (list->cfg.data_type & PIPE_TYPE_PAYLOAD) {
 				if (list->cfg.acct_type == ACCT_PM && list->cfg.snaplen) min_sz += (PpayloadSz+list->cfg.snaplen);
@@ -70,7 +70,7 @@ void load_plugins(struct plugin_requests *req)
 				min_sz += PmsgSz;
 				if (!list->cfg.buffer_size) {
 					extra_sz = PKT_MSG_SIZE;
-					list->cfg.buffer_immediate = TRUE;
+					list->cfg.buffer_immediate = true;
 				}
 			}
 			if (list->cfg.data_type & PIPE_TYPE_BGP) min_sz += sizeof(struct pkt_bgp_primitives);
@@ -83,7 +83,7 @@ void load_plugins(struct plugin_requests *req)
 				min_sz += sizeof(struct pkt_vlen_hdr_primitives);
 				if (!list->cfg.buffer_size) {
 					extra_sz = 1024; /* wild shot: 1Kb added for the actual variable-length data */
-					list->cfg.buffer_immediate = TRUE;
+					list->cfg.buffer_immediate = true;
 				}
 			}
 
@@ -167,7 +167,7 @@ void load_plugins(struct plugin_requests *req)
 			} else chptr->plugin = list;
 
 			/* sets new value to be assigned to 'wakeup'; 'TRUE' disables on-request wakeup */
-			if (list->type.id == PLUGIN_ID_MEMORY) chptr->request = TRUE;
+			if (list->type.id == PLUGIN_ID_MEMORY) chptr->request = true;
 
 			/* sets fixed/vlen offsets and cleaner routine; XXX: we should refine the cleaner
 			part: 1) ie. extras assumes it's automagically piled with metadata; 2) what if
@@ -272,7 +272,7 @@ void load_plugins(struct plugin_requests *req)
 			}
 
 			/* some residual check */
-			if (chptr && list->cfg.a_filter) req->bpf_filter = TRUE;
+			if (chptr && list->cfg.a_filter) req->bpf_filter = true;
 		}
 		list = list->next;
 	}
@@ -281,7 +281,7 @@ void load_plugins(struct plugin_requests *req)
 
 	/* define pre_tag_map(s) now so that they don't finish unnecessarily in plugin memory space */
 	{
-		int ptm_index = 0, ptm_global = FALSE;
+		int ptm_index = 0, ptm_global = false;
 		char *ptm_ptr = NULL;
 
 		list = plugins_list;
@@ -290,15 +290,15 @@ void load_plugins(struct plugin_requests *req)
 			if (list->cfg.pre_tag_map) {
 				if (!ptm_index) {
 					ptm_ptr = list->cfg.pre_tag_map;
-					ptm_global = TRUE;
+					ptm_global = true;
 				} else {
 					if (!ptm_ptr || strcmp(ptm_ptr, list->cfg.pre_tag_map))
-						ptm_global = FALSE;
+						ptm_global = false;
 				}
 
 				if (list->cfg.type_id == PLUGIN_ID_TEE) {
 					req->ptm_c.load_ptm_plugin = list->cfg.type_id;
-					req->ptm_c.load_ptm_res = FALSE;
+					req->ptm_c.load_ptm_res = false;
 				}
 
 				load_pre_tag_map(config.acct_type, list->cfg.pre_tag_map, &list->cfg.ptm, req, &list->cfg.ptm_alloc,
@@ -306,7 +306,7 @@ void load_plugins(struct plugin_requests *req)
 
 				if (list->cfg.type_id == PLUGIN_ID_TEE) {
 					list->cfg.ptm_complex = req->ptm_c.load_ptm_res;
-					if (req->ptm_c.load_ptm_res) req->ptm_c.exec_ptm_dissect = TRUE;
+					if (req->ptm_c.load_ptm_res) req->ptm_c.exec_ptm_dissect = true;
 				}
 			}
 
@@ -326,14 +326,14 @@ void load_plugins(struct plugin_requests *req)
 
 void exec_plugins(struct packet_ptrs *pptrs, struct plugin_requests *req)
 {
-	int saved_have_tag = FALSE, saved_have_tag2 = FALSE, saved_have_label = FALSE;
+	int saved_have_tag = false, saved_have_tag2 = false, saved_have_label = false;
 	pm_id_t saved_tag = 0, saved_tag2 = 0;
 	pt_label_t saved_label;
 
 	int num, ret, fixed_size;
 	u_int32_t savedptr;
 	char *bptr;
-	int index, got_tags = FALSE;
+	int index, got_tags = false;
 
 	pretag_init_label(&saved_label);
 
@@ -342,14 +342,14 @@ void exec_plugins(struct packet_ptrs *pptrs, struct plugin_requests *req)
 		pm_geoipv2_close();
 		pm_geoipv2_init();
 
-		reload_geoipv2_file = FALSE;
+		reload_geoipv2_file = false;
 	}
 #endif
 
 	for (index = 0; channels_list[index].aggregation || channels_list[index].aggregation_2; index++) {
 		struct plugins_list_entry *p = channels_list[index].plugin;
 
-		channels_list[index].already_reprocessed = FALSE;
+		channels_list[index].already_reprocessed = false;
 
 		if (p->cfg.pre_tag_map && find_id_func) {
 			if (p->cfg.type_id == PLUGIN_ID_TEE) {
@@ -378,7 +378,7 @@ void exec_plugins(struct packet_ptrs *pptrs, struct plugin_requests *req)
 					saved_have_tag2 = pptrs->have_tag2;
 					saved_have_label = pptrs->have_label;
 
-					got_tags = TRUE;
+					got_tags = true;
 				}
 			}
 		}
@@ -390,7 +390,7 @@ void exec_plugins(struct packet_ptrs *pptrs, struct plugin_requests *req)
 		    !check_shadow_status(pptrs, &channels_list[index])) {
 			/* arranging buffer: supported primitives + packet total length */
 reprocess:
-			channels_list[index].reprocess = FALSE;
+			channels_list[index].reprocess = false;
 			num = 0;
 
 			/* rg.ptr points to slot's base address into the ring (shared memory); bufptr works
@@ -407,7 +407,7 @@ reprocess:
 			}
 
 			if (channels_list[index].s.rate && !channels_list[index].s.sampled_pkts) {
-				channels_list[index].reprocess = FALSE;
+				channels_list[index].reprocess = false;
 				channels_list[index].bufptr = savedptr;
 				channels_list[index].hdr.num--; /* let's cheat this value as it will get increased later */
 				fixed_size = 0;
@@ -423,7 +423,7 @@ reprocess:
 					exit_all(1);
 				}
 
-				channels_list[index].already_reprocessed = TRUE;
+				channels_list[index].already_reprocessed = true;
 
 				/* Let's cheat the size in order to send out the current buffer */
 				fixed_size = channels_list[index].plugin->cfg.pipe_size;
@@ -508,7 +508,7 @@ reprocess:
 			if (p->cfg.pre_tag_map && find_id_func) {
 				if (p->cfg.type_id == PLUGIN_ID_TEE) {
 					req->ptm_c.load_ptm_plugin = p->cfg.type_id;
-					req->ptm_c.load_ptm_res = FALSE;
+					req->ptm_c.load_ptm_res = false;
 				}
 
 				load_pre_tag_map(config.acct_type, p->cfg.pre_tag_map, &p->cfg.ptm, req, &p->cfg.ptm_alloc,
@@ -516,14 +516,14 @@ reprocess:
 
 				if (p->cfg.type_id == PLUGIN_ID_TEE) {
 					p->cfg.ptm_complex = req->ptm_c.load_ptm_res;
-					if (req->ptm_c.load_ptm_res) req->ptm_c.exec_ptm_dissect = TRUE;
+					if (req->ptm_c.load_ptm_res) req->ptm_c.exec_ptm_dissect = true;
 				}
 			}
 		}
 	}
 
 	/* cleanups */
-	reload_map_exec_plugins = FALSE;
+	reload_map_exec_plugins = false;
 	pretag_free_label(&saved_label);
 }
 
@@ -596,8 +596,8 @@ void delete_pipe_channel(int pipe)
 		chptr = &channels_list[index];
 
 		if (chptr->pipe == pipe) {
-			chptr->aggregation = FALSE;
-			chptr->aggregation_2 = FALSE;
+			chptr->aggregation = false;
+			chptr->aggregation_2 = false;
 
 			/* we ensure that any plugin is depending on the one
 			being removed via the 'same_aggregate' flag */
@@ -608,7 +608,7 @@ void delete_pipe_channel(int pipe)
 
 					if (!chptr->aggregation && !chptr->aggregation_2) break; /* we finished channels */
 					if (chptr->same_aggregate) {
-						chptr->same_aggregate = FALSE;
+						chptr->same_aggregate = false;
 						break;
 					} else break; /* we have nothing to do */
 				}
@@ -644,7 +644,7 @@ void sort_pipe_channels()
 			if (!channels_list[y].aggregation && !channels_list[y].aggregation_2) break;
 			if (channels_list[x].aggregation == channels_list[y].aggregation &&
 			    channels_list[x].aggregation_2 == channels_list[y].aggregation_2) {
-				channels_list[y].same_aggregate = TRUE;
+				channels_list[y].same_aggregate = true;
 				if (y == x+1) x++;
 				else {
 					memcpy(&ctmp, &channels_list[x+1], sizeof(struct channels_list_entry));
@@ -720,20 +720,20 @@ pm_counter_t take_simple_systematic_skip(pm_counter_t mean)
 }
 
 /* return value:
-   TRUE: We want it!
-   FALSE: Discard it!
+   true: We want it!
+   false: Discard it!
 */
 int evaluate_filters(struct aggregate_filter *filter, char *pkt, struct pcap_pkthdr *pkthdr)
 {
 	int index;
 
-	if (*filter->num == 0) return TRUE;  /* no entries in the filter array: aggregate filtering disabled */
+	if (*filter->num == 0) return true;  /* no entries in the filter array: aggregate filtering disabled */
 
 	for (index = 0; index < *filter->num; index++) {
-		if (bpf_filter(filter->table[index]->bf_insns, pkt, pkthdr->len, pkthdr->caplen)) return TRUE;
+		if (bpf_filter(filter->table[index]->bf_insns, pkt, pkthdr->len, pkthdr->caplen)) return true;
 	}
 
-	return FALSE;
+	return false;
 }
 
 void recollect_pipe_memory(struct channels_list_entry *mychptr)
@@ -805,13 +805,13 @@ int check_pipe_buffer_space(struct channels_list_entry *mychptr, struct pkt_vlen
 	/* return virdict. if positive fix sizes. if negative take care of triggering a reprocess */
 	if (buf_space >= 0) {
 		mychptr->var_size += len;
-		return FALSE;
+		return false;
 	} else {
 		mychptr->bufptr += (mychptr->bufend - mychptr->bufptr);
-		mychptr->reprocess = TRUE;
+		mychptr->reprocess = true;
 		mychptr->var_size = 0;
 
-		return TRUE;
+		return true;
 	}
 }
 
@@ -827,10 +827,10 @@ void return_pipe_buffer_space(struct channels_list_entry *mychptr, int len)
 int check_shadow_status(struct packet_ptrs *pptrs, struct channels_list_entry *mychptr)
 {
 	if (pptrs->shadow) {
-		if (pptrs->tag && mychptr->aggregation & COUNT_TAG) return FALSE;
-		else if (pptrs->tag2 && mychptr->aggregation & COUNT_TAG2) return FALSE;
-		else return TRUE;
-	} else return FALSE;
+		if (pptrs->tag && mychptr->aggregation & COUNT_TAG) return false;
+		else if (pptrs->tag2 && mychptr->aggregation & COUNT_TAG2) return false;
+		else return true;
+	} else return false;
 }
 
 void load_plugin_filters(int link_type)
@@ -907,5 +907,5 @@ void plugin_pipe_zmq_compile_check()
 
 void plugin_pipe_check(struct configuration *cfg)
 {
-	if (!cfg->pipe_zmq) cfg->pipe_homegrown = TRUE;
+	if (!cfg->pipe_zmq) cfg->pipe_homegrown = true;
 }

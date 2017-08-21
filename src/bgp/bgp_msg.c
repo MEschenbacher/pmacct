@@ -231,7 +231,7 @@ int bgp_parse_open_msg(struct bgp_msg_data *bmd, char *bgp_packet_ptr, time_t no
 									Log(LOG_INFO, "INFO ( %s/%s ): [%s] Capability: MultiProtocol [%x] AFI [%x] SAFI [%x]\n",
 									    config.name, bms->log_str, bgp_peer_str, cap_type, ntohs(cap_data.afi), cap_data.safi);
 								}
-								peer->cap_mp = TRUE;
+								peer->cap_mp = true;
 
 								if (online) {
 									memcpy(bgp_open_cap_reply_ptr, bgp_open_cap_ptr, opt_len+2);
@@ -279,7 +279,7 @@ int bgp_parse_open_msg(struct bgp_msg_data *bmd, char *bgp_packet_ptr, time_t no
 								}
 
 								if (cap_data.sndrcv == 2 /* send */) {
-									peer->cap_add_paths = TRUE;
+									peer->cap_add_paths = true;
 									if (online) {
 										memcpy(bgp_open_cap_reply_ptr, bgp_open_cap_ptr, opt_len+2);
 										*(bgp_open_cap_reply_ptr+((opt_len+2)-1)) = 1; /* receive */
@@ -466,7 +466,7 @@ int bgp_write_notification_msg(char *msg, int msglen, u_int8_t n_major, u_int8_t
 {
 	struct bgp_notification *bn_reply = (struct bgp_notification *) msg;
 	struct bgp_notification_shutdown_msg *bnsm_reply;
-	int ret = FALSE, shutdown_msglen;
+	int ret = false, shutdown_msglen;
 	char *reply_msg_ptr;
 
 	if (bn_reply && msglen >= BGP_MIN_NOTIFICATION_MSG_SIZE) {
@@ -729,11 +729,11 @@ int bgp_attr_parse(struct bgp_peer *peer, struct bgp_attr *attr, char *ptr, int 
 			break;
 		case BGP_ATTR_MP_REACH_NLRI:
 			ret = bgp_attr_parse_mp_reach(peer, attr_len, attr, ptr, mp_update);
-			mp_nlri = TRUE;
+			mp_nlri = true;
 			break;
 		case BGP_ATTR_MP_UNREACH_NLRI:
 			ret = bgp_attr_parse_mp_unreach(peer, attr_len, attr, ptr, mp_withdraw);
-			mp_nlri = TRUE;
+			mp_nlri = true;
 			break;
 		default:
 			ret = 0;

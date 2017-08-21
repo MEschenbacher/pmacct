@@ -123,7 +123,7 @@ int p_zmq_plugin_pipe_set_profile(struct configuration *cfg, char *value)
 
 void p_zmq_plugin_pipe_publish(struct p_zmq_host *zmq_host)
 {
-	int ret, as_server = TRUE, only_one = 1, no_hwm = 0;
+	int ret, as_server = true, only_one = 1, no_hwm = 0;
 	size_t bind_strlen;
 
 	if (!zmq_host->ctx) zmq_host->ctx = zmq_ctx_new();
@@ -309,7 +309,7 @@ void p_zmq_zap_handler(void *zh)
 {
 	struct p_zmq_host *zmq_host = (struct p_zmq_host *) zh;
 
-	while (TRUE) {
+	while (true) {
 		char *version, *sequence, *domain, *address, *identity;
 		char *mechanism, *username, *password;
 

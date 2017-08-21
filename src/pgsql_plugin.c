@@ -49,7 +49,7 @@ void pgsql_plugin(int pipe_fd, struct configuration *cfgptr, void *ptr)
 	char *dataptr;
 
 	unsigned char *rgptr;
-	int pollagain = TRUE;
+	int pollagain = true;
 	u_int32_t seq = 1, rg_err_count = 0;
 
 	struct extra_primitives extras;
@@ -68,7 +68,7 @@ void pgsql_plugin(int pipe_fd, struct configuration *cfgptr, void *ptr)
 	if (config.pidfile) write_pid_file_plugin(config.pidfile, config.type, config.name);
 	if (config.logfile) {
 		fclose(config.logfile_fd);
-		config.logfile_fd = open_output_file(config.logfile, "a", FALSE);
+		config.logfile_fd = open_output_file(config.logfile, "a", false);
 	}
 
 	sql_set_signals();
@@ -78,7 +78,7 @@ void pgsql_plugin(int pipe_fd, struct configuration *cfgptr, void *ptr)
 	sql_set_insert_func();
 
 	/* some LOCAL initialization AFTER setting some default values */
-	reload_map = FALSE;
+	reload_map = false;
 	idata.now = time(NULL);
 	refresh_deadline = idata.now;
 	idata.cfg = &config;
@@ -112,7 +112,7 @@ void pgsql_plugin(int pipe_fd, struct configuration *cfgptr, void *ptr)
 	/* plugin main loop */
 	for(;;) {
 poll_again:
-		status->wakeup = TRUE;
+		status->wakeup = true;
 		calc_refresh_timeout(refresh_deadline, idata.now, &refresh_timeout);
 
 		pfd.fd = pipe_fd;
@@ -146,7 +146,7 @@ poll_again:
 
 		switch (ret) {
 		case 0: /* poll(): timeout */
-			if (qq_ptr) sql_cache_flush(queries_queue, qq_ptr, &idata, FALSE);
+			if (qq_ptr) sql_cache_flush(queries_queue, qq_ptr, &idata, false);
 			sql_cache_handle_flush_event(&idata, &refresh_deadline, &pt);
 			break;
 		default: /* poll(): received data */
@@ -155,7 +155,7 @@ read_data:
 				if (!pollagain) {
 					seq++;
 					seq %= MAX_SEQNUM;
-					if (seq == 0) rg_err_count = FALSE;
+					if (seq == 0) rg_err_count = false;
 					idata.now = time(NULL);
 					now = idata.now;
 				} else {
@@ -167,7 +167,7 @@ read_data:
 
 				if (((struct ch_buf_hdr *)rg->ptr)->seq != seq) {
 					if (!pollagain) {
-						pollagain = TRUE;
+						pollagain = true;
 						goto poll_again;
 					} else {
 						rg_err_count++;
@@ -183,7 +183,7 @@ read_data:
 					}
 				}
 
-				pollagain = FALSE;
+				pollagain = false;
 				memcpy(pipebuf, rg->ptr, bufsz);
 				rg->ptr += bufsz;
 			}
@@ -203,7 +203,7 @@ read_data:
 
 			/* lazy sql refresh handling */
 			if (idata.now > refresh_deadline) {
-				if (qq_ptr) sql_cache_flush(queries_queue, qq_ptr, &idata, FALSE);
+				if (qq_ptr) sql_cache_flush(queries_queue, qq_ptr, &idata, false);
 				sql_cache_handle_flush_event(&idata, &refresh_deadline, &pt);
 			} else {
 				if (config.sql_trigger_exec) {
@@ -265,7 +265,7 @@ int PG_cache_dbop_copy(struct DBdesc *db, struct db_cache *cache_elem, struct in
 	char default_delim[] = ",", delim_buf[SRVBUFLEN];
 	int num=0, have_flows=0;
 
-	if (config.what_to_count & COUNT_FLOWS) have_flows = TRUE;
+	if (config.what_to_count & COUNT_FLOWS) have_flows = true;
 
 	if (!config.sql_delimiter)
 		snprintf(delim_buf, SRVBUFLEN, "%s", default_delim);
@@ -306,14 +306,14 @@ int PG_cache_dbop_copy(struct DBdesc *db, struct db_cache *cache_elem, struct in
 		if (db->errmsg) Log(LOG_ERR, "ERROR ( %s/%s ): %s\n", config.name, config.type, db->errmsg);
 		sql_db_fail(db);
 
-		return TRUE;
+		return true;
 	}
 	idata->iqn++;
 	idata->een++;
 
 	Log(LOG_DEBUG, "DEBUG ( %s/%s ): %s\n", config.name, config.type, sql_data);
 
-	return FALSE;
+	return false;
 }
 
 int PG_cache_dbop(struct DBdesc *db, struct db_cache *cache_elem, struct insert_data *idata)
@@ -322,7 +322,7 @@ int PG_cache_dbop(struct DBdesc *db, struct db_cache *cache_elem, struct insert_
 	char *ptr_values, *ptr_where, *ptr_set, *ptr_insert;
 	int num=0, num_set=0, have_flows=0;
 
-	if (config.what_to_count & COUNT_FLOWS) have_flows = TRUE;
+	if (config.what_to_count & COUNT_FLOWS) have_flows = true;
 
 	/* constructing SQL query */
 	ptr_where = where_clause;
@@ -360,7 +360,7 @@ int PG_cache_dbop(struct DBdesc *db, struct db_cache *cache_elem, struct insert_
 			if (db->errmsg) Log(LOG_ERR, "ERROR ( %s/%s ): %s\n\n", config.name, config.type, db->errmsg);
 			sql_db_fail(db);
 
-			return TRUE;
+			return true;
 		}
 		PQclear(ret);
 	}
@@ -393,7 +393,7 @@ int PG_cache_dbop(struct DBdesc *db, struct db_cache *cache_elem, struct insert_
 			if (db->errmsg) Log(LOG_ERR, "ERROR ( %s/%s ): %s\n\n", config.name, config.type, db->errmsg);
 			sql_db_fail(db);
 
-			return TRUE;
+			return true;
 		}
 		PQclear(ret);
 		idata->iqn++;
@@ -402,7 +402,7 @@ int PG_cache_dbop(struct DBdesc *db, struct db_cache *cache_elem, struct insert_
 
 	Log(LOG_DEBUG, "DEBUG ( %s/%s ): %s\n\n", config.name, config.type, sql_data);
 
-	return FALSE;
+	return false;
 }
 
 void PG_cache_purge(struct db_cache *queue[], int index, struct insert_data *idata)
@@ -504,7 +504,7 @@ start:
 	bulk_reprocess_idx = 0;
 
 	for (j = 0; j < index; j++) {
-		go_to_pending = FALSE;
+		go_to_pending = false;
 
 		if (idata->dyn_table &&
 		    (!idata->dyn_table_time_only ||
@@ -524,7 +524,7 @@ start:
 				pending_queries_queue[pqq_ptr] = queue[idata->current_queue_elem];
 
 				pqq_ptr++;
-				go_to_pending = TRUE;
+				go_to_pending = true;
 			}
 		}
 
@@ -535,7 +535,7 @@ start:
 				/* note down all elements in case of a reprocess due to COMMIT failure */
 				bulk_reprocess_queries_queue[bulk_reprocess_idx] = queue[j];
 				bulk_reprocess_idx++;
-			} else r = FALSE; /* not valid elements are marked as not to be reprocessed */
+			} else r = false; /* not valid elements are marked as not to be reprocessed */
 			if (r) {
 				reprocess_queries_queue[reprocess_idx] = queue[j];
 				reprocess_idx++;
@@ -656,7 +656,7 @@ int PG_compose_static_queries()
 	        config.sql_table_version < SQL_TABLE_VERSION_BGP &&
 	        !config.sql_optimize_clauses)) {
 		config.what_to_count |= COUNT_FLOWS;
-		have_flows = TRUE;
+		have_flows = true;
 
 		if ((config.sql_table_version < 4 || config.sql_table_version >= SQL_TABLE_VERSION_BGP) && !config.sql_optimize_clauses) {
 			Log(LOG_ERR, "ERROR ( %s/%s ): The accounting of flows requires SQL table v4. Exiting.\n", config.name, config.type);
@@ -898,8 +898,8 @@ void PG_init_default_values(struct insert_data *idata)
 				Log(LOG_ERR, "ERROR ( %s/%s ): 'typed' PostgreSQL table in use: unable to mix HOST/NET and AS aggregations.\n", config.name, config.type);
 				exit_plugin(1);
 			}
-			typed = TRUE;
-		} else if (!strcmp(config.sql_data, "unified")) typed = FALSE;
+			typed = true;
+		} else if (!strcmp(config.sql_data, "unified")) typed = false;
 		else {
 			Log(LOG_ERR, "ERROR ( %s/%s ): Ignoring unknown 'sql_data' value '%s'.\n", config.name, config.type, config.sql_data);
 			exit_plugin(1);
@@ -945,14 +945,14 @@ void PG_init_default_values(struct insert_data *idata)
 		}
 	}
 	if (strchr(config.sql_table, '%') || strchr(config.sql_table, '$')) {
-		idata->dyn_table = TRUE;
-		if (!strchr(config.sql_table, '$')) idata->dyn_table_time_only = TRUE;
+		idata->dyn_table = true;
+		if (!strchr(config.sql_table, '$')) idata->dyn_table_time_only = true;
 	}
 	glob_dyn_table = idata->dyn_table;
 	glob_dyn_table_time_only = idata->dyn_table_time_only;
 
-	if (config.sql_backup_host) idata->recover = TRUE;
-	if (!config.sql_dont_try_update && config.sql_use_copy) config.sql_use_copy = FALSE;
+	if (config.sql_backup_host) idata->recover = true;
+	if (!config.sql_dont_try_update && config.sql_use_copy) config.sql_use_copy = false;
 
 	if (config.sql_locking_style) idata->locks = sql_select_locking_style(config.sql_locking_style);
 }

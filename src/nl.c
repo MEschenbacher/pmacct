@@ -95,8 +95,8 @@ void pcap_cb(u_char *user, const struct pcap_pkthdr *pkthdr, const u_char *buf)
 	}
 
 	if (reload_map) {
-		bta_map_caching = FALSE;
-		sampling_map_caching = FALSE;
+		bta_map_caching = false;
+		sampling_map_caching = false;
 
 		load_networks(config.networks_file, &nt, &nc);
 
@@ -109,7 +109,7 @@ void pcap_cb(u_char *user, const struct pcap_pkthdr *pkthdr, const u_char *buf)
 		if (config.nfacctd_bgp)
 			load_id_file(MAP_BGP_TO_XFLOW_AGENT, config.nfacctd_bgp_to_agent_map, (struct id_table *)cb_data->bta_table, &req, &bta_map_allocated);
 
-		reload_map = FALSE;
+		reload_map = false;
 		gettimeofday(&reload_map_tstamp, NULL);
 	}
 }
@@ -120,7 +120,7 @@ int ip_handler(register struct packet_ptrs *pptrs)
 	register u_int16_t caplen = ((struct pcap_pkthdr *)pptrs->pkthdr)->caplen;
 	register unsigned char *ptr;
 	register u_int16_t off = pptrs->iph_ptr-pptrs->packet_ptr, off_l4;
-	int ret = TRUE, num, is_fragment = 0;
+	int ret = true, num, is_fragment = 0;
 
 	/* len: number of 32bit words forming the header */
 	len = IP_HL(((struct pm_iphdr *) pptrs->iph_ptr));
@@ -129,7 +129,7 @@ int ip_handler(register struct packet_ptrs *pptrs)
 	off += len;
 
 	/* check len */
-	if (off > caplen) return FALSE; /* IP packet truncated */
+	if (off > caplen) return false; /* IP packet truncated */
 	pptrs->l4_proto = ((struct pm_iphdr *)pptrs->iph_ptr)->ip_p;
 	pptrs->payload_ptr = NULL;
 	off_l4 = off;
@@ -140,20 +140,20 @@ int ip_handler(register struct packet_ptrs *pptrs)
 			if (off+MyTLHdrSz > caplen) {
 				Log(LOG_INFO, "INFO ( %s/core ): short IPv4 packet read (%u/%u/frags). Snaplen issue ?\n",
 				    config.name, caplen, off+MyTLHdrSz);
-				return FALSE;
+				return false;
 			}
 			pptrs->tlh_ptr = ptr;
 
 			if (((struct pm_iphdr *)pptrs->iph_ptr)->ip_off & htons(IP_MF|IP_OFFMASK)) {
-				is_fragment = TRUE;
+				is_fragment = true;
 				ret = ip_fragment_handler(pptrs);
 				if (!ret) {
 					if (!config.ext_sampling_rate) goto quit;
 					else {
 						pptrs->tlh_ptr = dummy_tlhdr;
-						pptrs->tcp_flags = FALSE;
+						pptrs->tcp_flags = false;
 						if (off < caplen) pptrs->payload_ptr = ptr;
-						ret = TRUE;
+						ret = true;
 						goto quit;
 					}
 				}
@@ -177,13 +177,13 @@ int ip_handler(register struct packet_ptrs *pptrs)
 		}
 
 		if (config.handle_flows) {
-			pptrs->tcp_flags = FALSE;
+			pptrs->tcp_flags = false;
 
 			if (pptrs->l4_proto == IPPROTO_TCP) {
 				if (off_l4+TCPFlagOff+1 > caplen) {
 					Log(LOG_INFO, "INFO ( %s/core ): short IPv4 packet read (%u/%u/flows). Snaplen issue ?\n",
 					    config.name, caplen, off_l4+TCPFlagOff+1);
-					return FALSE;
+					return false;
 				}
 				if (((struct pm_tcphdr *)pptrs->tlh_ptr)->th_flags & TH_SYN) pptrs->tcp_flags |= TH_SYN;
 				if (((struct pm_tcphdr *)pptrs->tlh_ptr)->th_flags & TH_FIN) pptrs->tcp_flags |= TH_FIN;
@@ -195,7 +195,7 @@ int ip_handler(register struct packet_ptrs *pptrs)
 		}
 
 		/* XXX: optimize/short circuit here! */
-		pptrs->tcp_flags = FALSE;
+		pptrs->tcp_flags = false;
 		if (pptrs->l4_proto == IPPROTO_TCP && off_l4+TCPFlagOff+1 <= caplen)
 			pptrs->tcp_flags = ((struct pm_tcphdr *)pptrs->tlh_ptr)->th_flags;
 
@@ -232,13 +232,13 @@ int ip6_handler(register struct packet_ptrs *pptrs)
 	u_int32_t advance;
 	u_int8_t nh, fragmented = 0;
 	u_char *ptr = pptrs->iph_ptr;
-	int ret = TRUE;
+	int ret = true;
 
 	/* length checks */
-	if (off+IP6HdrSz > caplen) return FALSE; /* IP packet truncated */
+	if (off+IP6HdrSz > caplen) return false; /* IP packet truncated */
 	if (plen == 0 && ((struct ip6_hdr *)pptrs->iph_ptr)->ip6_nxt != IPPROTO_NONE) {
 		Log(LOG_INFO, "INFO ( %s/core ): NULL IPv6 payload length. Jumbo packets are currently not supported.\n", config.name);
-		return FALSE;
+		return false;
 	}
 
 	pptrs->l4_proto = 0;
@@ -284,7 +284,7 @@ end:
 			if (off+MyTLHdrSz > caplen) {
 				Log(LOG_INFO, "INFO ( %s/core ): short IPv6 packet read (%u/%u/frags). Snaplen issue ?\n",
 				    config.name, caplen, off+MyTLHdrSz);
-				return FALSE;
+				return false;
 			}
 
 			if (fhdr && (fhdr->ip6f_offlg & htons(IP6F_MORE_FRAG|IP6F_OFF_MASK))) {
@@ -293,9 +293,9 @@ end:
 					if (!config.ext_sampling_rate) goto quit;
 					else {
 						pptrs->tlh_ptr = dummy_tlhdr;
-						pptrs->tcp_flags = FALSE;
+						pptrs->tcp_flags = false;
 						if (off < caplen) pptrs->payload_ptr = ptr;
-						ret = TRUE;
+						ret = true;
 						goto quit;
 					}
 				}
@@ -319,13 +319,13 @@ end:
 		}
 
 		if (config.handle_flows) {
-			pptrs->tcp_flags = FALSE;
+			pptrs->tcp_flags = false;
 
 			if (pptrs->l4_proto == IPPROTO_TCP) {
 				if (off_l4+TCPFlagOff+1 > caplen) {
 					Log(LOG_INFO, "INFO ( %s/core ): short IPv6 packet read (%u/%u/flows). Snaplen issue ?\n",
 					    config.name, caplen, off_l4+TCPFlagOff+1);
-					return FALSE;
+					return false;
 				}
 				if (((struct pm_tcphdr *)pptrs->tlh_ptr)->th_flags & TH_SYN) pptrs->tcp_flags |= TH_SYN;
 				if (((struct pm_tcphdr *)pptrs->tlh_ptr)->th_flags & TH_FIN) pptrs->tcp_flags |= TH_FIN;
@@ -337,13 +337,13 @@ end:
 		}
 
 		/* XXX: optimize/short circuit here! */
-		pptrs->tcp_flags = FALSE;
+		pptrs->tcp_flags = false;
 		if (pptrs->l4_proto == IPPROTO_TCP && off_l4+TCPFlagOff+1 <= caplen)
 			pptrs->tcp_flags = ((struct pm_tcphdr *)pptrs->tlh_ptr)->th_flags;
 	}
 
 quit:
-	return TRUE;
+	return true;
 }
 #endif
 
@@ -358,8 +358,8 @@ int PM_find_id(struct id_table *t, struct packet_ptrs *pptrs, pm_id_t *tag, pm_i
 	if (tag) *tag = 0;
 	if (tag2) *tag2 = 0;
 	if (pptrs) {
-		pptrs->have_tag = FALSE;
-		pptrs->have_tag2 = FALSE;
+		pptrs->have_tag = false;
+		pptrs->have_tag2 = false;
 	}
 
 	/* Giving a first try with index(es) */
@@ -381,7 +381,7 @@ int PM_find_id(struct id_table *t, struct packet_ptrs *pptrs, pm_id_t *tag, pm_i
 	for (x = 0; x < t->ipv4_num; x++) {
 		ret = pretag_entry_process(&t->e[x], pptrs, tag, tag2);
 
-		if (!ret || ret > TRUE) {
+		if (!ret || ret > true) {
 			if (ret & PRETAG_MAP_RCODE_JEQ) {
 				x = t->e[x].jeq.ptr->pos;
 				x--; // yes, it will be automagically incremented by the for() cycle
@@ -485,7 +485,7 @@ int gtp_tunnel_func(register struct packet_ptrs *pptrs)
 		break;
 	default:
 		Log(LOG_INFO, "INFO ( %s/core ): unsupported GTP version %u\n", config.name, gtp_version);
-		return FALSE;
+		return false;
 	}
 
 	if (off + gtp_hdr_len < caplen) {
@@ -540,7 +540,7 @@ int gtp_tunnel_func(register struct packet_ptrs *pptrs)
 				break;
 #endif
 			default:
-				ret = FALSE;
+				ret = false;
 				break;
 			}
 
@@ -552,7 +552,7 @@ int gtp_tunnel_func(register struct packet_ptrs *pptrs)
 	} else {
 		Log(LOG_INFO, "INFO ( %s/core ): short GTP packet read (%u/%u/tunnel). Snaplen issue ?\n",
 		    config.name, caplen, off + gtp_hdr_len);
-		return FALSE;
+		return false;
 	}
 
 	return ret;

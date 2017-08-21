@@ -214,7 +214,7 @@ int bgp_peer_log_init(struct bgp_peer *peer, int output, int type)
 	for (peer_idx = 0, have_it = 0; peer_idx < bms->max_peers; peer_idx++) {
 		if (!bms->peers_log[peer_idx].refcnt) {
 			if (bms->msglog_file) {
-				bms->peers_log[peer_idx].fd = open_output_file(log_filename, "a", FALSE);
+				bms->peers_log[peer_idx].fd = open_output_file(log_filename, "a", false);
 				setlinebuf(bms->peers_log[peer_idx].fd);
 			}
 
@@ -229,10 +229,10 @@ int bgp_peer_log_init(struct bgp_peer *peer, int output, int type)
 #endif
 
 			strcpy(bms->peers_log[peer_idx].filename, log_filename);
-			have_it = TRUE;
+			have_it = true;
 			break;
 		} else if (!strcmp(log_filename, bms->peers_log[peer_idx].filename)) {
-			have_it = TRUE;
+			have_it = true;
 			break;
 		}
 	}
@@ -653,7 +653,7 @@ void bgp_handle_dump_event()
 								link_latest_output_file(latest_filename, last_filename);
 							}
 						}
-						peer->log->fd = open_output_file(current_filename, "w", TRUE);
+						peer->log->fd = open_output_file(current_filename, "w", true);
 						if (fd_buf) {
 							if (setvbuf(peer->log->fd, fd_buf, _IOFBF, OUTPUT_FILE_BUFSZ))
 								Log(LOG_WARNING, "WARN ( %s/%s ): [%s] setvbuf() failed: %s\n", config.name, bms->log_str, current_filename, errno);
@@ -722,12 +722,12 @@ void bgp_handle_dump_event()
 
 #ifdef WITH_RABBITMQ
 		if (config.bgp_table_dump_amqp_routing_key)
-			p_amqp_close(&bgp_table_dump_amqp_host, FALSE);
+			p_amqp_close(&bgp_table_dump_amqp_host, false);
 #endif
 
 #ifdef WITH_KAFKA
 		if (config.bgp_table_dump_kafka_topic)
-			p_kafka_close(&bgp_table_dump_kafka_host, FALSE);
+			p_kafka_close(&bgp_table_dump_kafka_host, false);
 #endif
 
 		if (config.bgp_table_dump_latest_file && peer) {

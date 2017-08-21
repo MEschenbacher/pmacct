@@ -35,7 +35,7 @@ struct pm_ndpi_workflow *pm_ndpi_workflow_init()
 	log_notification_init(&log_notifications.ndpi_cache_full);
 	log_notification_init(&log_notifications.ndpi_tmp_frag_warn);
 
-	workflow->prefs.decode_tunnels = FALSE;
+	workflow->prefs.decode_tunnels = false;
 
 	if (config.ndpi_num_roots) workflow->prefs.num_roots = config.ndpi_num_roots;
 	else workflow->prefs.num_roots = NDPI_NUM_ROOTS;
@@ -44,7 +44,7 @@ struct pm_ndpi_workflow *pm_ndpi_workflow_init()
 	else workflow->prefs.max_ndpi_flows = NDPI_MAXFLOWS;
 
 	if (config.ndpi_proto_guess) workflow->prefs.protocol_guess = config.ndpi_proto_guess;
-	else workflow->prefs.protocol_guess = FALSE;
+	else workflow->prefs.protocol_guess = false;
 
 	if (config.ndpi_idle_scan_period) workflow->prefs.idle_scan_period = config.ndpi_idle_scan_period;
 	else workflow->prefs.idle_scan_period = NDPI_IDLE_SCAN_PERIOD;

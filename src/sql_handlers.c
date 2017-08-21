@@ -558,7 +558,7 @@ void count_custom_primitives_handler(const struct db_cache *cache_elem, struct i
 	if (cp_entry->ptr->len != PM_VARIABLE_LENGTH) {
 		char cp_str[SRVBUFLEN];
 
-		custom_primitive_value_print(cp_str, SRVBUFLEN, cache_elem->pcust, cp_entry, FALSE);
+		custom_primitive_value_print(cp_str, SRVBUFLEN, cache_elem->pcust, cp_entry, false);
 		snprintf(*ptr_where, SPACELEFT(where_clause), where[num].string, cp_str);
 		snprintf(*ptr_values, SPACELEFT(values_clause), values[num].string, cp_str);
 	} else {

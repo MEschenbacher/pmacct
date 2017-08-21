@@ -35,8 +35,8 @@ void evaluate_configuration(char *filename, int rows)
 	int index = 0, dindex, valid_line, key_found = 0, res;
 
 	while (index < rows) {
-		if (*cfg[index] == '\0') valid_line = FALSE;
-		else valid_line = TRUE;
+		if (*cfg[index] == '\0') valid_line = false;
+		else valid_line = true;
 
 		if (valid_line) {
 			/* debugging the line if required */
@@ -59,15 +59,15 @@ void evaluate_configuration(char *filename, int rows)
 			/* parsing keys */
 			for (dindex = 0; strcmp(dictionary[dindex].key, ""); dindex++) {
 				if (!strcmp(dictionary[dindex].key, key)) {
-					res = FALSE;
+					res = false;
 					if ((*dictionary[dindex].func)) {
 						res = (*dictionary[dindex].func)(filename, name, value);
 						if (res < 0) Log(LOG_WARNING, "WARN: [%s:%u] Invalid value. Ignored.\n", filename, index+1);
 						else if (!res) Log(LOG_WARNING, "WARN: [%s:%u] Unknown symbol '%s'. Ignored.\n", filename, index+1, name);
 					} else Log(LOG_WARNING, "WARN: [%s:%u] Unable to handle key: %s. Ignored.\n", filename, index+1, key);
-					key_found = TRUE;
+					key_found = true;
 					break;
-				} else key_found = FALSE;
+				} else key_found = false;
 			}
 
 			if (!key_found) Log(LOG_WARNING, "WARN: [%s:%u] Unknown key: %s. Ignored.\n", filename, index+1, key);
@@ -85,7 +85,7 @@ int parse_configuration_file(char *filename)
 	char localbuf[10240];
 	char cmdline [] = "cmdline";
 	FILE *file;
-	int num = 0, cmdlineflag = FALSE, rows_cmdline = rows, idx;
+	int num = 0, cmdlineflag = false, rows_cmdline = rows, idx;
 	rows = 0;
 
 	/* NULL filename means we don't have a configuration file; 1st stage: read from
@@ -120,7 +120,7 @@ int parse_configuration_file(char *filename)
 		fclose(file);
 	} else {
 		filename = cmdline;
-		cmdlineflag = TRUE;
+		cmdlineflag = true;
 	}
 
 	if (rows_cmdline) {
@@ -137,11 +137,11 @@ int parse_configuration_file(char *filename)
 	   plugin names if 'pmacctd' has been invoked commandline;
 	   if any plugin has been activated we default to a single
 	   'imt' plugin */
-	if (!cmdlineflag) parse_core_process_name(filename, rows, FALSE);
-	else parse_core_process_name(filename, rows, TRUE);
+	if (!cmdlineflag) parse_core_process_name(filename, rows, false);
+	else parse_core_process_name(filename, rows, true);
 
-	if (!cmdlineflag) num = parse_plugin_names(filename, rows, FALSE);
-	else num = parse_plugin_names(filename, rows, TRUE);
+	if (!cmdlineflag) num = parse_plugin_names(filename, rows, false);
+	else num = parse_plugin_names(filename, rows, true);
 
 	if (!num && config.acct_type < ACCT_FWPLANE_MAX) {
 		Log(LOG_WARNING, "WARN: [%s] No plugin has been activated; defaulting to in-memory table.\n", filename);
@@ -188,7 +188,7 @@ void sanitize_cfg(int rows, char *filename)
 		*/
 		len = strlen(cfg[rindex]);
 		if (len) {
-			int symbol = FALSE, cindex = 0, got_first = 0, got_first_colon = 0;
+			int symbol = false, cindex = 0, got_first = 0, got_first_colon = 0;
 
 			if (!strchr(cfg[rindex], ':')) {
 				Log(LOG_ERR, "ERROR: [%s:%u] Syntax error: missing ':'. Exiting.\n", filename, rindex+1);
@@ -203,7 +203,7 @@ void sanitize_cfg(int rows, char *filename)
 				}
 
 				if (cfg[rindex][cindex] == ':' && !got_first_colon) {
-					got_first_colon = TRUE;
+					got_first_colon = true;
 
 					if (symbol) {
 						Log(LOG_ERR, "ERROR: [%s:%u] Syntax error: illegal brackets. Exiting.\n", filename, rindex+1);
@@ -237,7 +237,7 @@ void sanitize_cfg(int rows, char *filename)
 		   untouched */
 		len = strlen(cfg[rindex]);
 		if (len) {
-			int symbol = FALSE, value = FALSE, cindex = 0, lbindex = 0;
+			int symbol = false, value = false, cindex = 0, lbindex = 0;
 			char *valueptr;
 
 			while(cindex <= len) {
@@ -268,7 +268,7 @@ void sanitize_cfg(int rows, char *filename)
 		/* checking key field: each symbol must refer to a key */
 		len = strlen(cfg[rindex]);
 		if (len) {
-			int symbol = FALSE, key = FALSE, cindex = 0;
+			int symbol = false, key = false, cindex = 0;
 
 			while (cindex < rows) {
 				if (cfg[rindex][cindex] == '[') symbol++;
@@ -280,7 +280,7 @@ void sanitize_cfg(int rows, char *filename)
 				if (cfg[rindex][cindex] == ':') break;
 
 				if (!symbol) {
-					if (isalpha(cfg[rindex][cindex])) key = TRUE;
+					if (isalpha(cfg[rindex][cindex])) key = true;
 				} else {
 					if (!key) {
 						Log(LOG_ERR, "ERROR: [%s:%u] Syntax error: symbol not referring to any key. Exiting.\n", filename, rindex+1);
@@ -304,7 +304,7 @@ void sanitize_cfg(int rows, char *filename)
 		/* checking key field: converting key to lower chars */
 		len = strlen(cfg[rindex]);
 		if (len) {
-			int symbol = FALSE, cindex = 0;
+			int symbol = false, cindex = 0;
 
 			while(cindex <= len) {
 				if (cfg[rindex][cindex] == '[') symbol++;
@@ -341,7 +341,7 @@ void parse_core_process_name(char *filename, int rows, int ignore_names)
 			if (!strncmp(key, "core_proc_name", sizeof("core_proc_name"))) {
 				start = end+1;
 				strlcpy(name, start, SRVBUFLEN);
-				found = TRUE;
+				found = true;
 				break;
 			}
 		}
@@ -356,7 +356,7 @@ void parse_core_process_name(char *filename, int rows, int ignore_names)
    if it exists and creates the plugins linked list */
 int parse_plugin_names(char *filename, int rows, int ignore_names)
 {
-	int index = 0, num = 0, found = 0, default_name = FALSE;
+	int index = 0, num = 0, found = 0, default_name = false;
 	char *start, *end, *start_name, *end_name;
 	char key[SRVBUFLEN], value[10240], token[SRVBUFLEN], name[SRVBUFLEN];
 
@@ -373,7 +373,7 @@ int parse_plugin_names(char *filename, int rows, int ignore_names)
 			if (!strncmp(key, "plugins", sizeof("plugins"))) {
 				start = end+1;
 				strcpy(value, start);
-				found = TRUE;
+				found = true;
 				break;
 			}
 		}
@@ -395,7 +395,7 @@ int parse_plugin_names(char *filename, int rows, int ignore_names)
 					trim_spaces(name);
 					*start_name = '\0';
 				}
-			} else default_name = TRUE;
+			} else default_name = true;
 
 			/* Having already plugins name and type, we'll filter out reserved symbols */
 			trim_spaces(token);
@@ -429,8 +429,8 @@ void set_default_values()
 	struct plugins_list_entry *list = plugins_list;
 
 	while (list) {
-		list->cfg.promisc = TRUE;
-		list->cfg.maps_refresh = TRUE;
+		list->cfg.promisc = true;
+		list->cfg.maps_refresh = true;
 
 		list = list->next;
 	}
@@ -457,7 +457,7 @@ int create_plugin(char *filename, char *name, char *type)
 
 	if (!ptype) {
 		Log(LOG_ERR, "ERROR: [%s] Unknown plugin type: %s. Ignoring.\n", filename, type);
-		return FALSE;
+		return false;
 	}
 
 	/* checks */
@@ -472,7 +472,7 @@ int create_plugin(char *filename, char *name, char *type)
 			/* dupes */
 			if (!strcmp(name, ptr->name)) {
 				Log(LOG_WARNING, "WARN: [%s] another plugin with the same name '%s' already exists. Preserving first.\n", filename, name);
-				return FALSE;
+				return false;
 			}
 			ptr = ptr->next;
 		}
@@ -500,7 +500,7 @@ int create_plugin(char *filename, char *name, char *type)
 		ptr->next = plugin;
 	} else plugins_list = plugin;
 
-	return TRUE;
+	return true;
 }
 
 int delete_plugin_by_id(int id)

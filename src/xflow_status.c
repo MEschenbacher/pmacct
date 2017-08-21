@@ -68,17 +68,17 @@ cycle_again:
 				entry->aux1 = aux1;
 				entry->aux2 = aux2;
 				entry->seqno = 0;
-				entry->next = FALSE;
+				entry->next = false;
 				if (!saved) xflow_status_table[hash] = entry;
 				else saved->next = entry;
-				xflow_status_table_error = TRUE;
+				xflow_status_table_error = true;
 				xflow_status_table_entries++;
 			}
 		} else {
 error:
 			if (xflow_status_table_error) {
 				Log(LOG_ERR, "ERROR ( %s/%s ): unable to allocate more entries into the xFlow status table.\n", config.name, config.type);
-				xflow_status_table_error = FALSE;
+				xflow_status_table_error = false;
 				return NULL;
 			}
 		}
@@ -213,13 +213,13 @@ create_smp_entry_status_table(struct xflow_status_entry *entry)
 		if (!new) {
 			if (smp_entry_status_table_memerr) {
 				Log(LOG_ERR, "ERROR ( %s/%s ): unable to allocate more entries into the xflow renormalization table.\n", config.name, config.type);
-				smp_entry_status_table_memerr = FALSE;
+				smp_entry_status_table_memerr = false;
 			}
 		} else {
 			if (!entry->sampling) entry->sampling = new;
 			if (sentry) sentry->next = new;
-			new->next = FALSE;
-			smp_entry_status_table_memerr = TRUE;
+			new->next = false;
+			smp_entry_status_table_memerr = true;
 			xflow_status_table_entries++;
 		}
 	}
@@ -258,13 +258,13 @@ create_class_entry_status_table(struct xflow_status_entry *entry)
 		if (!new) {
 			if (class_entry_status_table_memerr) {
 				Log(LOG_ERR, "ERROR ( %s/%s ): unable to allocate more entries into the xflow classification table.\n", config.name, config.type);
-				class_entry_status_table_memerr = FALSE;
+				class_entry_status_table_memerr = false;
 			}
 		} else {
 			if (!entry->class) entry->class = new;
 			if (centry) centry->next = new;
-			new->next = FALSE;
-			class_entry_status_table_memerr = TRUE;
+			new->next = false;
+			class_entry_status_table_memerr = true;
 			xflow_status_table_entries++;
 		}
 	}

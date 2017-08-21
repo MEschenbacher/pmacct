@@ -85,13 +85,13 @@ int compare_accounting_structure(struct acc *elem, struct primitives_ptrs *prim_
 	struct pkt_tunnel_primitives *ptun = prim_ptrs->ptun;
 	char *pcust = prim_ptrs->pcust;
 	struct pkt_vlen_hdr_primitives *pvlen = prim_ptrs->pvlen;
-	int res_data = TRUE, res_bgp = TRUE, res_nat = TRUE, res_mpls = TRUE, res_tun = TRUE;
-	int res_cust = TRUE, res_vlen = TRUE, res_lbgp = TRUE;
+	int res_data = true, res_bgp = true, res_nat = true, res_mpls = true, res_tun = true;
+	int res_cust = true, res_vlen = true, res_lbgp = true;
 
 	res_data = memcmp(&elem->primitives, data, sizeof(struct pkt_primitives));
 
 	if (pbgp && elem->pbgp) res_bgp = memcmp(elem->pbgp, pbgp, sizeof(struct pkt_bgp_primitives));
-	else res_bgp = FALSE;
+	else res_bgp = false;
 
 	if (plbgp) {
 		if (elem->clbgp) {
@@ -100,22 +100,22 @@ int compare_accounting_structure(struct acc *elem, struct primitives_ptrs *prim_
 			cache_to_pkt_legacy_bgp_primitives(&tmp_plbgp, elem->clbgp);
 			res_lbgp = memcmp(&tmp_plbgp, plbgp, sizeof(struct pkt_legacy_bgp_primitives));
 		}
-	} else res_lbgp = FALSE;
+	} else res_lbgp = false;
 
 	if (pnat && elem->pnat) res_nat = memcmp(elem->pnat, pnat, sizeof(struct pkt_nat_primitives));
-	else res_nat = FALSE;
+	else res_nat = false;
 
 	if (pmpls && elem->pmpls) res_mpls = memcmp(elem->pmpls, pmpls, sizeof(struct pkt_mpls_primitives));
-	else res_mpls = FALSE;
+	else res_mpls = false;
 
 	if (ptun && elem->ptun) res_tun = memcmp(elem->ptun, ptun, sizeof(struct pkt_tunnel_primitives));
-	else res_tun = FALSE;
+	else res_tun = false;
 
 	if (pcust && elem->pcust) res_cust = memcmp(elem->pcust, pcust, config.cpptrs.len);
-	else res_cust = FALSE;
+	else res_cust = false;
 
 	if (pvlen && elem->pvlen) res_vlen = vlen_prims_cmp(elem->pvlen, pvlen);
-	else res_vlen = FALSE;
+	else res_vlen = false;
 
 	return res_data | res_bgp | res_lbgp | res_nat | res_mpls | res_cust | res_vlen;
 }
@@ -133,7 +133,7 @@ void insert_accounting_structure(struct primitives_ptrs *prim_ptrs)
 	struct pkt_vlen_hdr_primitives *pvlen = prim_ptrs->pvlen;
 	struct acc *elem_acc;
 	unsigned char *elem, *new_elem;
-	int solved = FALSE;
+	int solved = false;
 	unsigned int hash, pos;
 	unsigned int pp_size = sizeof(struct pkt_primitives);
 	unsigned int pb_size = sizeof(struct pkt_bgp_primitives);
@@ -209,7 +209,7 @@ void insert_accounting_structure(struct primitives_ptrs *prim_ptrs)
 	elem_acc = (struct acc *) elem;
 	elem_acc += pos;
 
-	while (solved == FALSE) {
+	while (solved == false) {
 		if (elem_acc->signature == hash) {
 			if (compare_accounting_structure(elem_acc, prim_ptrs) == 0) {
 				if (elem_acc->reset_flag) reset_counters(elem_acc);
@@ -228,7 +228,7 @@ void insert_accounting_structure(struct primitives_ptrs *prim_ptrs)
 			}
 		}
 		if (!elem_acc->bytes_counter && !elem_acc->packet_counter) { /* hmmm */
-			if (elem_acc->reset_flag) elem_acc->reset_flag = FALSE;
+			if (elem_acc->reset_flag) elem_acc->reset_flag = false;
 			memcpy(&elem_acc->primitives, addr, sizeof(struct pkt_primitives));
 
 			if (pbgp) {
@@ -349,7 +349,7 @@ void insert_accounting_structure(struct primitives_ptrs *prim_ptrs)
 		else if (elem_acc->next != NULL) {
 			Log(LOG_DEBUG, "DEBUG ( %s/%s ): Walking through the collision-chain.\n", config.name, config.type);
 			elem_acc = elem_acc->next;
-			solved = FALSE;
+			solved = false;
 		} else if (elem_acc->next == NULL) {
 			/* We have to know if there is enough space for a new element;
 			   if not we are losing informations; conservative approach */
@@ -366,7 +366,7 @@ void insert_accounting_structure(struct primitives_ptrs *prim_ptrs)
 				current_pool = request_memory_pool(config.memory_pool_size);
 				if (current_pool == NULL) {
 					Log(LOG_WARNING, "WARN ( %s/%s ): Unable to allocate more memory pools, clear stats manually!\n", config.name, config.type);
-					no_more_space = TRUE;
+					no_more_space = true;
 					return;
 				} else {
 					new_elem = current_pool->ptr;
@@ -470,12 +470,12 @@ void insert_accounting_structure(struct primitives_ptrs *prim_ptrs)
 
 void set_reset_flag(struct acc *elem)
 {
-	elem->reset_flag = TRUE;
+	elem->reset_flag = true;
 }
 
 void reset_counters(struct acc *elem)
 {
-	elem->reset_flag = FALSE;
+	elem->reset_flag = false;
 	elem->packet_counter = 0;
 	elem->bytes_counter = 0;
 	elem->tcp_flags = 0;

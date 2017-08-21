@@ -128,10 +128,10 @@ int pmc_sanitize_buf(char *buf)
 		if (!isspace(buf[x])) valid_char++;
 		x++;
 	}
-	if (!valid_char) return TRUE;
-	if (buf[0] == '!') return TRUE;
+	if (!valid_char) return true;
+	if (buf[0] == '!') return true;
 
-	return FALSE;
+	return false;
 }
 
 void pmc_trim_all_spaces(char *buf)
@@ -252,7 +252,7 @@ void write_stats_header_formatted(pm_cfgreg_t what_to_count, pm_cfgreg_t what_to
 			int cp_idx;
 
 			for (cp_idx = 0; cp_idx < pmc_custom_primitives_registry.num; cp_idx++) {
-				pmc_custom_primitive_header_print(cp_str, SRVBUFLEN, &pmc_custom_primitives_registry.primitive[cp_idx], TRUE);
+				pmc_custom_primitive_header_print(cp_str, SRVBUFLEN, &pmc_custom_primitives_registry.primitive[cp_idx], true);
 				printf("%s  ", cp_str);
 			}
 		}
@@ -375,7 +375,7 @@ void write_stats_header_formatted(pm_cfgreg_t what_to_count, pm_cfgreg_t what_to
 			int cp_idx;
 
 			for (cp_idx = 0; cp_idx < pmc_custom_primitives_registry.num; cp_idx++) {
-				pmc_custom_primitive_header_print(cp_str, SRVBUFLEN, &pmc_custom_primitives_registry.primitive[cp_idx], TRUE);
+				pmc_custom_primitive_header_print(cp_str, SRVBUFLEN, &pmc_custom_primitives_registry.primitive[cp_idx], true);
 				printf("%s  ", cp_str);
 			}
 		}
@@ -490,7 +490,7 @@ void write_stats_header_csv(pm_cfgreg_t what_to_count, pm_cfgreg_t what_to_count
 			int cp_idx;
 
 			for (cp_idx = 0; cp_idx < pmc_custom_primitives_registry.num; cp_idx++) {
-				pmc_custom_primitive_header_print(cp_str, SRVBUFLEN, &pmc_custom_primitives_registry.primitive[cp_idx], FALSE);
+				pmc_custom_primitive_header_print(cp_str, SRVBUFLEN, &pmc_custom_primitives_registry.primitive[cp_idx], false);
 				printf("%s%s", write_sep(sep, &count), cp_str);
 			}
 		}
@@ -596,7 +596,7 @@ void write_stats_header_csv(pm_cfgreg_t what_to_count, pm_cfgreg_t what_to_count
 			int cp_idx;
 
 			for (cp_idx = 0; cp_idx < pmc_custom_primitives_registry.num; cp_idx++) {
-				pmc_custom_primitive_header_print(cp_str, SRVBUFLEN, &pmc_custom_primitives_registry.primitive[cp_idx], FALSE);
+				pmc_custom_primitive_header_print(cp_str, SRVBUFLEN, &pmc_custom_primitives_registry.primitive[cp_idx], false);
 				printf("%s%s", write_sep(sep, &count), cp_str);
 			}
 		}
@@ -738,31 +738,31 @@ int main(int argc,char **argv)
 	errflag = 0;
 	buflen = 0;
 	protocols_number = 0;
-	want_stats = FALSE;
-	want_erase = FALSE;
-	want_erase_last_tstamp = FALSE;
-	want_status = FALSE;
-	want_counter = FALSE;
-	want_mrtg = FALSE;
-	want_match = FALSE;
-	want_all_fields = FALSE;
-	want_reset = FALSE;
-	want_class_table = FALSE;
-	want_ipproto_num = FALSE;
-	want_pkt_len_distrib_table = FALSE;
-	want_custom_primitives_table = FALSE;
-	which_counter = FALSE;
-	topN_counter = FALSE;
-	topN_howmany = FALSE;
-	sum_counters = FALSE;
-	num_counters = FALSE;
-	fetch_from_file = FALSE;
-	what_to_count = FALSE;
-	what_to_count_2 = FALSE;
-	have_wtc = FALSE;
+	want_stats = false;
+	want_erase = false;
+	want_erase_last_tstamp = false;
+	want_status = false;
+	want_counter = false;
+	want_mrtg = false;
+	want_match = false;
+	want_all_fields = false;
+	want_reset = false;
+	want_class_table = false;
+	want_ipproto_num = false;
+	want_pkt_len_distrib_table = false;
+	want_custom_primitives_table = false;
+	which_counter = false;
+	topN_counter = false;
+	topN_howmany = false;
+	sum_counters = false;
+	num_counters = false;
+	fetch_from_file = false;
+	what_to_count = false;
+	what_to_count_2 = false;
+	have_wtc = false;
 	want_output = PRINT_OUTPUT_FORMATTED;
-	is_event = FALSE;
-	want_tstamp_since_epoch = FALSE;
+	is_event = false;
+	want_tstamp_since_epoch = false;
 
 	PvhdrSz = sizeof(struct pkt_vlen_hdr_primitives);
 	PmLabelTSz = sizeof(pm_label_t);
@@ -774,7 +774,7 @@ int main(int argc,char **argv)
 			if (CHECK_Q_TYPE(q.type)) print_ex_options_error();
 			q.type |= WANT_STATS;
 			q.num = 1;
-			want_stats = TRUE;
+			want_stats = true;
 			break;
 		case 'c':
 			strlcpy(count, optarg, sizeof(count));
@@ -1011,47 +1011,47 @@ int main(int argc,char **argv)
 			if (CHECK_Q_TYPE(q.type)) print_ex_options_error();
 			q.type |= WANT_CLASS_TABLE;
 			q.num = 1;
-			want_class_table = TRUE;
+			want_class_table = true;
 			break;
 		case 'U':
 			if (CHECK_Q_TYPE(q.type)) print_ex_options_error();
 			q.type |= WANT_CUSTOM_PRIMITIVES_TABLE;
 			q.num = 1;
-			want_custom_primitives_table = TRUE;
+			want_custom_primitives_table = true;
 			break;
 		case 'D':
 			if (CHECK_Q_TYPE(q.type)) print_ex_options_error();
 			q.type |= WANT_PKT_LEN_DISTRIB_TABLE;
 			q.num = 1;
-			want_pkt_len_distrib_table = TRUE;
+			want_pkt_len_distrib_table = true;
 			break;
 		case 'e':
 			q.type |= WANT_ERASE;
-			want_erase = TRUE;
+			want_erase = true;
 			break;
 		case 'i':
 			q.type |= WANT_ERASE_LAST_TSTAMP;
-			want_erase_last_tstamp = TRUE;
+			want_erase_last_tstamp = true;
 			break;
 		case 't':
 			if (CHECK_Q_TYPE(q.type)) print_ex_options_error();
 			q.type |= WANT_STATUS;
-			want_status = TRUE;
+			want_status = true;
 			break;
 		case 'I':
-			want_tstamp_since_epoch = TRUE;
+			want_tstamp_since_epoch = true;
 			break;
 		case 'l':
 			q.type |= WANT_LOCK_OP;
 			break;
 		case 'm': /* obsoleted */
-			want_mrtg = TRUE;
+			want_mrtg = true;
 		case 'N':
 			if (CHECK_Q_TYPE(q.type)) print_ex_options_error();
 			strlcpy(match_string, optarg, sizeof(match_string));
 			match_string[LARGEBUFLEN-1] = '\0';
 			q.type |= WANT_COUNTER;
-			want_counter = TRUE;
+			want_counter = true;
 			break;
 		case 'n':
 			strlcpy(tmpbuf, optarg, sizeof(tmpbuf));
@@ -1078,14 +1078,14 @@ int main(int argc,char **argv)
 			else printf("WARN: -T, ignoring unknown counter type: %s.\n", tmpbuf);
 			break;
 		case 'S':
-			sum_counters = TRUE;
+			sum_counters = true;
 			break;
 		case 'M':
 			if (CHECK_Q_TYPE(q.type)) print_ex_options_error();
 			strlcpy(match_string, optarg, sizeof(match_string));
 			match_string[LARGEBUFLEN-1] = '\0';
 			q.type |= WANT_MATCH;
-			want_match = TRUE;
+			want_match = true;
 			break;
 		case 'p':
 			strlcpy(path, optarg, sizeof(path));
@@ -1094,11 +1094,11 @@ int main(int argc,char **argv)
 			strlcpy(password, optarg, sizeof(password));
 			break;
 		case 'a':
-			want_all_fields = TRUE;
+			want_all_fields = true;
 			break;
 		case 'r':
 			q.type |= WANT_RESET;
-			want_reset = TRUE;
+			want_reset = true;
 			break;
 		case 'O':
 			strlcpy(tmpbuf, optarg, sizeof(tmpbuf));
@@ -1126,7 +1126,7 @@ int main(int argc,char **argv)
 			strlcpy(sep, optarg, sizeof(sep));
 			break;
 		case 'u':
-			want_ipproto_num = TRUE;
+			want_ipproto_num = true;
 			break;
 		case 'V':
 			version_client(argv[0]);
@@ -1186,11 +1186,11 @@ int main(int argc,char **argv)
 				int idx, idx2, found;
 
 				for (idx = 0; idx < custom_primitives_input.num; idx++) {
-					found = FALSE;
+					found = false;
 
 					for (idx2 = 0; idx2 < pmc_custom_primitives_registry.num; idx2++) {
 						if (!strcmp(custom_primitives_input.primitive[idx].name, pmc_custom_primitives_registry.primitive[idx2].name)) {
-							found = TRUE;
+							found = true;
 							break;
 						}
 					}
@@ -1208,7 +1208,7 @@ int main(int argc,char **argv)
 	}
 
 	/* some post-getopt-processing task */
-	if (want_output & PRINT_OUTPUT_EVENT) is_event = TRUE;
+	if (want_output & PRINT_OUTPUT_EVENT) is_event = true;
 
 	if (!q.type) {
 		printf("ERROR: no options specified. Either -s, -e, -t, -M, -N or -C must be supplied. \n  Exiting...\n\n");
@@ -1245,7 +1245,7 @@ int main(int argc,char **argv)
 
 		while(isspace(*ptr)) ptr++;
 		if (!strncmp(ptr, prefix, strlen(prefix))) {
-			fetch_from_file = TRUE;
+			fetch_from_file = true;
 			ptr += strlen(prefix);
 			strlcpy(file, ptr, sizeof(file));
 		}
@@ -1853,9 +1853,9 @@ int main(int argc,char **argv)
 				} else {
 					int idx, found;
 
-					for (idx = 0, found = FALSE; idx < pmc_custom_primitives_registry.num; idx++) {
+					for (idx = 0, found = false; idx < pmc_custom_primitives_registry.num; idx++) {
 						if (!strcmp(count_token[match_string_index], pmc_custom_primitives_registry.primitive[idx].name)) {
-							found = TRUE;
+							found = true;
 							break;
 						}
 					}
@@ -1896,8 +1896,8 @@ int main(int argc,char **argv)
 			exit(1);
 		}
 
-		if (want_all_fields) have_wtc = FALSE;
-		else have_wtc = TRUE;
+		if (want_all_fields) have_wtc = false;
+		else have_wtc = true;
 		what_to_count = ((struct query_header *)largebuf)->what_to_count;
 		what_to_count_2 = ((struct query_header *)largebuf)->what_to_count_2;
 		datasize = ((struct query_header *)largebuf)->datasize;
@@ -2621,7 +2621,7 @@ int main(int argc,char **argv)
 				if (!have_wtc || (what_to_count_2 & COUNT_TIMESTAMP_START)) {
 					char tstamp_str[SRVBUFLEN];
 
-					pmc_compose_timestamp(tstamp_str, SRVBUFLEN, &pnat->timestamp_start, TRUE, want_tstamp_since_epoch);
+					pmc_compose_timestamp(tstamp_str, SRVBUFLEN, &pnat->timestamp_start, true, want_tstamp_since_epoch);
 					if (want_output & PRINT_OUTPUT_FORMATTED) printf("%-30s ", tstamp_str);
 					else if (want_output & PRINT_OUTPUT_CSV) printf("%s%s", write_sep(sep_ptr, &count), tstamp_str);
 				}
@@ -2629,7 +2629,7 @@ int main(int argc,char **argv)
 				if (!have_wtc || (what_to_count_2 & COUNT_TIMESTAMP_END)) {
 					char tstamp_str[SRVBUFLEN];
 
-					pmc_compose_timestamp(tstamp_str, SRVBUFLEN, &pnat->timestamp_end, TRUE, want_tstamp_since_epoch);
+					pmc_compose_timestamp(tstamp_str, SRVBUFLEN, &pnat->timestamp_end, true, want_tstamp_since_epoch);
 					if (want_output & PRINT_OUTPUT_FORMATTED) printf("%-30s ", tstamp_str);
 					else if (want_output & PRINT_OUTPUT_CSV) printf("%s%s", write_sep(sep_ptr, &count), tstamp_str);
 				}
@@ -2637,7 +2637,7 @@ int main(int argc,char **argv)
 				if (!have_wtc || (what_to_count_2 & COUNT_TIMESTAMP_ARRIVAL)) {
 					char tstamp_str[SRVBUFLEN];
 
-					pmc_compose_timestamp(tstamp_str, SRVBUFLEN, &pnat->timestamp_arrival, TRUE, want_tstamp_since_epoch);
+					pmc_compose_timestamp(tstamp_str, SRVBUFLEN, &pnat->timestamp_arrival, true, want_tstamp_since_epoch);
 					if (want_output & PRINT_OUTPUT_FORMATTED) printf("%-30s ", tstamp_str);
 					else if (want_output & PRINT_OUTPUT_CSV) printf("%s%s", write_sep(sep_ptr, &count), tstamp_str);
 				}
@@ -2892,7 +2892,7 @@ int Recv(int sd, unsigned char **buf)
 		num = recv(sd, rxbuf, LARGEBUFLEN, 0);
 		if (num > 0) {
 			if (!memcmp(rxbuf, emptybuf, LARGEBUFLEN)) {
-				eof_received = TRUE;
+				eof_received = true;
 			} else {
 				/* check 1: enough space in allocated buffer */
 				if (unpacked+num >= round*LARGEBUFLEN) {
@@ -3086,7 +3086,7 @@ int pmc_bgp_rd2str(char *str, rd_t *rd)
 		break;
 	}
 
-	return TRUE;
+	return true;
 }
 
 int pmc_bgp_str2rd(rd_t *output, char *value)
@@ -3121,7 +3121,7 @@ int pmc_bgp_str2rd(rd_t *output, char *value)
 				break;
 			default:
 				printf("ERROR: Invalid RD type specified\n");
-				return FALSE;
+				return false;
 			}
 		}
 		if (idx == 1) {
@@ -3163,7 +3163,7 @@ int pmc_bgp_str2rd(rd_t *output, char *value)
 
 	memcpy(output, &rd, sizeof(rd));
 
-	return TRUE;
+	return true;
 }
 
 #ifdef WITH_JANSSON
@@ -3177,7 +3177,7 @@ char *pmc_compose_json(u_int64_t wtc, u_int64_t wtc_2, u_int8_t flow_type, struc
 	char src_mac[18], dst_mac[18], src_host[INET6_ADDRSTRLEN], dst_host[INET6_ADDRSTRLEN], ip_address[INET6_ADDRSTRLEN];
 	char rd_str[SRVBUFLEN], misc_str[SRVBUFLEN], *as_path, *bgp_comm, empty_string[] = "", *tmpbuf;
 	char tstamp_str[SRVBUFLEN], ndpi_class[SUPERSHORTBUFLEN], unknown_pkt_len_distrib[] = "not_recv", *label_ptr;
-	int ret = FALSE;
+	int ret = false;
 	json_t *obj = json_object();
 
 	if (wtc & COUNT_TAG) json_object_set_new_nocheck(obj, "tag", json_integer((json_int_t)pbase->tag));
@@ -3500,17 +3500,17 @@ char *pmc_compose_json(u_int64_t wtc, u_int64_t wtc_2, u_int8_t flow_type, struc
 	if (wtc_2 & COUNT_TUNNEL_IP_TOS) json_object_set_new_nocheck(obj, "tunnel_tos", json_integer((json_int_t)ptun->tunnel_tos));
 
 	if (wtc_2 & COUNT_TIMESTAMP_START) {
-		pmc_compose_timestamp(tstamp_str, SRVBUFLEN, &pnat->timestamp_start, TRUE, want_tstamp_since_epoch);
+		pmc_compose_timestamp(tstamp_str, SRVBUFLEN, &pnat->timestamp_start, true, want_tstamp_since_epoch);
 		json_object_set_new_nocheck(obj, "timestamp_start", json_string(tstamp_str));
 	}
 
 	if (wtc_2 & COUNT_TIMESTAMP_END) {
-		pmc_compose_timestamp(tstamp_str, SRVBUFLEN, &pnat->timestamp_end, TRUE, want_tstamp_since_epoch);
+		pmc_compose_timestamp(tstamp_str, SRVBUFLEN, &pnat->timestamp_end, true, want_tstamp_since_epoch);
 		json_object_set_new_nocheck(obj, "timestamp_end", json_string(tstamp_str));
 	}
 
 	if (wtc_2 & COUNT_TIMESTAMP_ARRIVAL) {
-		pmc_compose_timestamp(tstamp_str, SRVBUFLEN, &pnat->timestamp_arrival, TRUE, want_tstamp_since_epoch);
+		pmc_compose_timestamp(tstamp_str, SRVBUFLEN, &pnat->timestamp_arrival, true, want_tstamp_since_epoch);
 		json_object_set_new_nocheck(obj, "timestamp_arrival", json_string(tstamp_str));
 	}
 
@@ -3526,7 +3526,7 @@ char *pmc_compose_json(u_int64_t wtc, u_int64_t wtc_2, u_int8_t flow_type, struc
 			if (pmc_custom_primitives_registry.primitive[cp_idx].len != PM_VARIABLE_LENGTH) {
 				char cp_str[SRVBUFLEN];
 
-				pmc_custom_primitive_value_print(cp_str, SRVBUFLEN, pcust, &pmc_custom_primitives_registry.primitive[cp_idx], FALSE);
+				pmc_custom_primitive_value_print(cp_str, SRVBUFLEN, pcust, &pmc_custom_primitives_registry.primitive[cp_idx], false);
 				json_object_set_new_nocheck(obj, pmc_custom_primitives_registry.primitive[cp_idx].name, json_string(cp_str));
 			} else {
 				char *label_ptr = NULL;

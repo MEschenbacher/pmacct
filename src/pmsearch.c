@@ -517,7 +517,7 @@ void *pm_tdelete (const void *key, void **vrootp, pm_compar_fn_t compar)
    (FALSE), ie. due to budgeted traversal */
 static void pm_trecurse (const void *vroot, pm_action_fn_t action, int level, void *extra)
 {
-	int ret = TRUE;
+	int ret = true;
 	pm_const_node root = (pm_const_node) vroot;
 
 	if (LEFT(root) == NULL && RIGHT(root) == NULL) {

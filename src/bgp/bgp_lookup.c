@@ -61,7 +61,7 @@ void bgp_srcdst_lookup(struct packet_ptrs *pptrs, int type)
 	pptrs->bgp_dst_info = NULL;
 	pptrs->bgp_peer = NULL;
 	pptrs->bgp_nexthop_info = NULL;
-	compare_bgp_port = FALSE;
+	compare_bgp_port = false;
 	safi = SAFI_UNICAST;
 
 	memset(&rd, 0, sizeof(rd));
@@ -73,7 +73,7 @@ void bgp_srcdst_lookup(struct packet_ptrs *pptrs, int type)
 			((struct sockaddr_in *)sa)->sin_addr.s_addr = pptrs->bta;
 			if (pptrs->lookup_bgp_port.set) {
 				((struct sockaddr_in *)sa)->sin_port = pptrs->lookup_bgp_port.n;
-				compare_bgp_port = TRUE;
+				compare_bgp_port = true;
 			}
 		}
 #if defined ENABLE_IPV6
@@ -83,7 +83,7 @@ void bgp_srcdst_lookup(struct packet_ptrs *pptrs, int type)
 			ip6_addr_32bit_cpy(&((struct sockaddr_in6 *)sa)->sin6_addr, &pptrs->bta2, 2, 0, 1);
 			if (pptrs->lookup_bgp_port.set) {
 				((struct sockaddr_in6 *)sa)->sin6_port = pptrs->lookup_bgp_port.n;
-				compare_bgp_port = TRUE;
+				compare_bgp_port = true;
 			}
 		}
 #endif
@@ -273,7 +273,7 @@ start_again_mpls_label:
 
 			if (!pptrs->bgp_src || !pptrs->bgp_dst) {
 				follow_default--;
-				compare_bgp_port = FALSE; // XXX: fixme: follow default in NAT traversal scenarios
+				compare_bgp_port = false; // XXX: fixme: follow default in NAT traversal scenarios
 
 				if (default_node) {
 					if (info && info->attr) {
@@ -543,7 +543,7 @@ struct bgp_peer *bgp_lookup_find_bgp_peer(struct sockaddr *sa, struct xflow_stat
 
 int bgp_lookup_node_match_cmp_bgp(struct bgp_info *info, struct node_match_cmp_term2 *nmct2)
 {
-	int no_match = FALSE;
+	int no_match = false;
 
 	if (info->peer == nmct2->peer) {
 		if (nmct2->safi == SAFI_MPLS_VPN) no_match++;
@@ -563,10 +563,10 @@ int bgp_lookup_node_match_cmp_bgp(struct bgp_info *info, struct node_match_cmp_t
 			}
 		}
 
-		if (!no_match) return FALSE;
+		if (!no_match) return false;
 	}
 
-	return TRUE;
+	return true;
 }
 
 void pkt_to_cache_legacy_bgp_primitives(struct cache_legacy_bgp_primitives *c, struct pkt_legacy_bgp_primitives *p,

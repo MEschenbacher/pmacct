@@ -121,7 +121,7 @@ int main(int argc,char **argv, char **envp)
 			rows++;
 			break;
 		case 'd':
-			debug = TRUE;
+			debug = true;
 			strlcpy(cfg_cmdline[rows], "debug: true", SRVBUFLEN);
 			rows++;
 			break;
@@ -209,7 +209,7 @@ int main(int argc,char **argv, char **envp)
 	}
 
 	if (config.logfile) {
-		config.logfile_fd = open_output_file(config.logfile, "a", FALSE);
+		config.logfile_fd = open_output_file(config.logfile, "a", false);
 		while (list) {
 			list->cfg.logfile_fd = config.logfile_fd ;
 			list = list->next;

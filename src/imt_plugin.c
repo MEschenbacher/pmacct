@@ -41,7 +41,7 @@ void imt_plugin(int pipe_fd, struct configuration *cfgptr, void *ptr)
 	struct query_header *qh;
 	unsigned char *pipebuf, *dataptr;
 	char path[] = "/tmp/collect.pipe";
-	short int go_to_clear = FALSE;
+	short int go_to_clear = false;
 	u_int32_t request, sz;
 	struct ch_status *status = ((struct channels_list_entry *)ptr)->status;
 	int datasize = ((struct channels_list_entry *)ptr)->datasize;
@@ -51,7 +51,7 @@ void imt_plugin(int pipe_fd, struct configuration *cfgptr, void *ptr)
 	int pollagain = 0;
 	u_int32_t seq = 0;
 	int rg_err_count = 0;
-	int ret, lock = FALSE, cLen, num, sd, sd2;
+	int ret, lock = false, cLen, num, sd, sd2;
 	struct pkt_bgp_primitives *pbgp, empty_pbgp;
 	struct pkt_legacy_bgp_primitives *plbgp, empty_plbgp;
 	struct pkt_nat_primitives *pnat, empty_pnat;
@@ -87,7 +87,7 @@ void imt_plugin(int pipe_fd, struct configuration *cfgptr, void *ptr)
 	if (config.pidfile) write_pid_file_plugin(config.pidfile, config.type, config.name);
 	if (config.logfile) {
 		fclose(config.logfile_fd);
-		config.logfile_fd = open_output_file(config.logfile, "a", FALSE);
+		config.logfile_fd = open_output_file(config.logfile, "a", false);
 	}
 
 	if (extras.off_pkt_vlen_hdr_primitives) {
@@ -95,8 +95,8 @@ void imt_plugin(int pipe_fd, struct configuration *cfgptr, void *ptr)
 		exit_plugin(1);
 	}
 
-	reload_map = FALSE;
-	status->wakeup = TRUE;
+	reload_map = false;
+	status->wakeup = true;
 
 	/* a bunch of default definitions and post-checks */
 	pipebuf = (unsigned char *) malloc(config.buffer_size);
@@ -117,7 +117,7 @@ void imt_plugin(int pipe_fd, struct configuration *cfgptr, void *ptr)
 	} else setnonblocking(pipe_fd);
 
 	memset(pipebuf, 0, config.buffer_size);
-	no_more_space = FALSE;
+	no_more_space = false;
 
 	if (config.what_to_count & (COUNT_SUM_HOST|COUNT_SUM_NET))
 		imt_insert_func = sum_host_insert;
@@ -266,7 +266,7 @@ recv_again:
 			request = qh->type;
 			if (request & WANT_RESET) request ^= WANT_RESET;
 			if (request & WANT_LOCK_OP) {
-				lock = TRUE;
+				lock = true;
 				request ^= WANT_LOCK_OP;
 			}
 
@@ -285,27 +285,27 @@ recv_again:
 			if (request & WANT_ERASE) {
 				request ^= WANT_ERASE;
 				if (request) {
-					if (num > 0) process_query_data(sd2, srvbuf, num, &extras, datasize, FALSE);
+					if (num > 0) process_query_data(sd2, srvbuf, num, &extras, datasize, false);
 					else Log(LOG_DEBUG, "DEBUG ( %s/%s ): %d incoming bytes. Errno: %d\n", config.name, config.type, num, errno);
 				}
 				Log(LOG_DEBUG, "DEBUG ( %s/%s ): Closing connection with client ...\n", config.name, config.type);
-				go_to_clear = TRUE;
+				go_to_clear = true;
 			} else if (((request == WANT_COUNTER) || (request == WANT_MATCH)) &&
 			           (qh->num == 1) && (qh->what_to_count == config.what_to_count)) {
-				if (num > 0) process_query_data(sd2, srvbuf, num, &extras, datasize, FALSE);
+				if (num > 0) process_query_data(sd2, srvbuf, num, &extras, datasize, false);
 				else Log(LOG_DEBUG, "DEBUG ( %s/%s ): %d incoming bytes. ERRNO: %d\n", config.name, config.type, num, errno);
 				Log(LOG_DEBUG, "DEBUG ( %s/%s ): Closing connection with client ...\n", config.name, config.type);
 			} else if (request == WANT_CLASS_TABLE) {
-				if (num > 0) process_query_data(sd2, srvbuf, num, &extras, datasize, FALSE);
+				if (num > 0) process_query_data(sd2, srvbuf, num, &extras, datasize, false);
 				else Log(LOG_DEBUG, "DEBUG ( %s/%s ): %d incoming bytes. ERRNO: %d\n", config.name, config.type, num, errno);
 				Log(LOG_DEBUG, "DEBUG ( %s/%s ): Closing connection with client ...\n", config.name, config.type);
 			} else if (request == WANT_PKT_LEN_DISTRIB_TABLE) {
-				if (num > 0) process_query_data(sd2, srvbuf, num, &extras, datasize, FALSE);
+				if (num > 0) process_query_data(sd2, srvbuf, num, &extras, datasize, false);
 				else Log(LOG_DEBUG, "DEBUG ( %s/%s ): %d incoming bytes. ERRNO: %d\n", config.name, config.type, num, errno);
 				Log(LOG_DEBUG, "DEBUG ( %s/%s ): Closing connection with client ...\n", config.name, config.type);
 			} else {
 				if (lock) {
-					if (num > 0) process_query_data(sd2, srvbuf, num, &extras, datasize, FALSE);
+					if (num > 0) process_query_data(sd2, srvbuf, num, &extras, datasize, false);
 					else Log(LOG_DEBUG, "DEBUG ( %s/%s ): %d incoming bytes. Errno: %d\n", config.name, config.type, num, errno);
 					Log(LOG_DEBUG, "DEBUG ( %s/%s ): Closing connection with client ...\n", config.name, config.type);
 				} else {
@@ -316,7 +316,7 @@ recv_again:
 					case 0: /* Child */
 						close(sd);
 						pm_setproctitle("%s [%s]", "IMT Plugin -- serving client", config.name);
-						if (num > 0) process_query_data(sd2, srvbuf, num, &extras, datasize, TRUE);
+						if (num > 0) process_query_data(sd2, srvbuf, num, &extras, datasize, true);
 						else Log(LOG_DEBUG, "DEBUG ( %s/%s ): %d incoming bytes. Errno: %d\n", config.name, config.type, num, errno);
 						Log(LOG_DEBUG, "DEBUG ( %s/%s ): Closing connection with client ...\n", config.name, config.type);
 						close(sd2);
@@ -350,15 +350,15 @@ recv_again:
 				Log(LOG_ERR, "ERROR ( %s/%s ): Cannot allocate more memory pools, try with larger value.\n", config.name, config.type);
 				exit_plugin(1);
 			}
-			go_to_clear = FALSE;
-			no_more_space = FALSE;
+			go_to_clear = false;
+			no_more_space = false;
 			memcpy(&table_reset_stamp, &cycle_stamp, sizeof(struct timeval));
 		}
 
 		if (reload_map) {
 			load_networks(config.networks_file, &nt, &nc);
 			load_ports(config.ports_file, &pt);
-			reload_map = FALSE;
+			reload_map = false;
 		}
 
 		if (poll_fd[0].revents & POLLIN) {
@@ -369,12 +369,12 @@ read_data:
 					seq %= MAX_SEQNUM;
 				}
 
-				pollagain = FALSE;
+				pollagain = false;
 				if ((num = read(pipe_fd, &rgptr, sizeof(rgptr))) == 0)
 					exit_plugin(1); /* we exit silently; something happened at the write end */
 
 				if (num < 0) {
-					pollagain = TRUE;
+					pollagain = true;
 					goto poll_again;
 				}
 
@@ -538,7 +538,7 @@ void free_extra_allocs()
 {
 	struct acc *acc_elem = NULL;
 	unsigned char *elem;
-	int following_chain = FALSE;
+	int following_chain = false;
 	unsigned int idx;
 
 	elem = (unsigned char *) a;
@@ -576,7 +576,7 @@ void free_extra_allocs()
 			idx--;
 		} else {
 			elem += sizeof(struct acc);
-			following_chain = FALSE;
+			following_chain = false;
 		}
 	}
 }

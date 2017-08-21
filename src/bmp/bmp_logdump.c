@@ -68,12 +68,12 @@ int bmp_log_msg(struct bgp_peer *peer, struct bmp_data *bdata, void *log_data, u
 		json_object_set_new_nocheck(obj, "seq", json_integer((json_int_t)log_seq));
 
 		if (etype == BGP_LOGDUMP_ET_LOG) {
-			compose_timestamp(tstamp_str, SRVBUFLEN, &bdata->tstamp, TRUE, config.timestamps_since_epoch);
+			compose_timestamp(tstamp_str, SRVBUFLEN, &bdata->tstamp, true, config.timestamps_since_epoch);
 			json_object_set_new_nocheck(obj, "timestamp", json_string(tstamp_str));
 		} else if (etype == BGP_LOGDUMP_ET_DUMP) {
 			json_object_set_new_nocheck(obj, "timestamp", json_string(bms->dump.tstamp_str));
 
-			compose_timestamp(tstamp_str, SRVBUFLEN, &bdata->tstamp, TRUE, config.timestamps_since_epoch);
+			compose_timestamp(tstamp_str, SRVBUFLEN, &bdata->tstamp, true, config.timestamps_since_epoch);
 			json_object_set_new_nocheck(obj, "event_timestamp", json_string(tstamp_str));
 		}
 
@@ -479,7 +479,7 @@ void bmp_handle_dump_event()
 								link_latest_output_file(latest_filename, last_filename);
 							}
 						}
-						peer->log->fd = open_output_file(current_filename, "w", TRUE);
+						peer->log->fd = open_output_file(current_filename, "w", true);
 						if (fd_buf) {
 							if (setvbuf(peer->log->fd, fd_buf, _IOFBF, OUTPUT_FILE_BUFSZ))
 								Log(LOG_WARNING, "WARN ( %s/%s ): [%s] setvbuf() failed: %s\n", config.name, bms->log_str, current_filename, errno);
@@ -580,12 +580,12 @@ void bmp_handle_dump_event()
 
 #ifdef WITH_RABBITMQ
 		if (config.bmp_dump_amqp_routing_key)
-			p_amqp_close(&bmp_dump_amqp_host, FALSE);
+			p_amqp_close(&bmp_dump_amqp_host, false);
 #endif
 
 #ifdef WITH_KAFKA
 		if (config.bmp_dump_kafka_topic)
-			p_kafka_close(&bmp_dump_kafka_host, FALSE);
+			p_kafka_close(&bmp_dump_kafka_host, false);
 #endif
 
 		if (config.bmp_dump_latest_file && peer) {

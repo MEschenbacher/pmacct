@@ -56,7 +56,7 @@ void load_networks4(char *filename, struct networks_table *nt, struct networks_c
 	memset(&bkt, 0, sizeof(bkt));
 	memset(&tmp, 0, sizeof(tmp));
 	memset(&st, 0, sizeof(st));
-	default_route_in_networks4_table = FALSE;
+	default_route_in_networks4_table = false;
 
 	/* backing up pre-existing table and cache */
 	if (nt->num) {
@@ -93,7 +93,7 @@ void load_networks4(char *filename, struct networks_table *nt, struct networks_c
 			/* We have no (valid) rows. We build a zeroed single-row table aimed to complete
 			successfully any further lookup */
 			if (!rows) {
-				fake_row = TRUE;
+				fake_row = true;
 				rows++;
 			}
 
@@ -334,7 +334,7 @@ cycle_end:
 				}
 				if (!nt->table[index].mask) {
 					Log(LOG_DEBUG, "DEBUG ( %s/%s ): [%s] v4 contains a default route\n", config.name, config.type, filename);
-					default_route_in_networks4_table = TRUE;
+					default_route_in_networks4_table = true;
 				}
 				index++;
 			}
@@ -1023,7 +1023,7 @@ void search_src_nmask(struct networks_table *nt, struct networks_cache *nc, stru
 
 		if (config.networks_file_filter && !mask && !default_route_in_networks_table) {
 			p->src_nmask = 0;
-			nfd->zero_src_nmask = TRUE;
+			nfd->zero_src_nmask = true;
 		}
 	}
 }
@@ -1063,7 +1063,7 @@ void search_dst_nmask(struct networks_table *nt, struct networks_cache *nc, stru
 
 		if (config.networks_file_filter && !mask && !default_route_in_networks_table) {
 			p->dst_nmask = 0;
-			nfd->zero_dst_nmask = TRUE;
+			nfd->zero_dst_nmask = true;
 		}
 	}
 }
@@ -1394,7 +1394,7 @@ void load_networks6(char *filename, struct networks_table *nt, struct networks_c
 	memset(&bkt, 0, sizeof(bkt));
 	memset(&tmp, 0, sizeof(tmp));
 	memset(&st, 0, sizeof(st));
-	default_route_in_networks6_table = FALSE;
+	default_route_in_networks6_table = false;
 
 	/* backing up pre-existing table and cache */
 	if (nt->num6) {
@@ -1431,7 +1431,7 @@ void load_networks6(char *filename, struct networks_table *nt, struct networks_c
 			/* We have no (valid) rows. We build a zeroed single-row table aimed to complete
 			   successfully any further lookup */
 			if (!rows) {
-				fake_row = TRUE;
+				fake_row = true;
 				rows++;
 			}
 
@@ -1673,7 +1673,7 @@ cycle_end:
 				if (!nt->table6[index].mask[0] && !nt->table6[index].mask[1] &&
 				    !nt->table6[index].mask[2] && !nt->table6[index].mask[3])
 					Log(LOG_DEBUG, "DEBUG ( %s/%s ): [%s] v6 contains a default route\n", config.name, config.type, filename);
-				default_route_in_networks6_table = TRUE;
+				default_route_in_networks6_table = true;
 				index++;
 			}
 

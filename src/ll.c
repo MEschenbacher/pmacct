@@ -187,7 +187,7 @@ u_int16_t mpls_handler(u_char *bp, u_int16_t *caplen, u_int16_t *nl, register st
 		break;
 	}
 
-	return FALSE;
+	return false;
 }
 
 void ppp_handler(const struct pcap_pkthdr *h, register struct packet_ptrs *pptrs)

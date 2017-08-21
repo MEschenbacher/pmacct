@@ -186,8 +186,8 @@ void evaluate_classifiers(struct packet_ptrs *pptrs, struct ip_flow_common *fp, 
 		}
 	}
 
-	fp->class[idx] = FALSE;
-	pptrs->class = FALSE;
+	fp->class[idx] = false;
+	pptrs->class = false;
 	handle_class_accumulators(pptrs, fp, idx);
 }
 
@@ -201,7 +201,7 @@ void init_class_accumulators(struct packet_ptrs *pptrs, struct ip_flow_common *f
 	clear_context_chain(fp, idx);
 
 	fp->cst[idx].tentatives = config.classifier_tentatives;
-	fp->class[idx] = FALSE;
+	fp->class[idx] = false;
 
 	memcpy(&fp->cst[idx].stamp, &fp->last[idx], sizeof(struct timeval));
 	/* If the reciprocal of this flow a) is not expired and b) has a class
@@ -614,9 +614,9 @@ pm_class_t pmct_find_first_free()
 	}
 
 	if (num && idx == num) {
-		if (!log_notification_isset(&log_notifications.max_classifiers, FALSE)) {
+		if (!log_notification_isset(&log_notifications.max_classifiers, false)) {
 			Log(LOG_WARNING, "WARN ( %s/%s ): Finished elements in class table (%u). Raise via classifier_table_num.\n", config.name, config.type, num);
-			log_notification_set(&log_notifications.max_classifiers, FALSE, FALSE);
+			log_notification_set(&log_notifications.max_classifiers, false, false);
 		}
 	}
 

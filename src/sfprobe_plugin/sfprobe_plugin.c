@@ -586,7 +586,7 @@ void sfprobe_plugin(int pipe_fd, struct configuration *cfgptr, void *ptr)
 	u_int32_t bufsz = ((struct channels_list_entry *)ptr)->bufsize;
 	pid_t core_pid = ((struct channels_list_entry *)ptr)->core_pid;
 	unsigned char *rgptr;
-	int pollagain = TRUE;
+	int pollagain = true;
 	u_int32_t seq = 1, rg_err_count = 0;
 	struct networks_file_data nfd;
 
@@ -605,7 +605,7 @@ void sfprobe_plugin(int pipe_fd, struct configuration *cfgptr, void *ptr)
 	if (config.pidfile) write_pid_file_plugin(config.pidfile, config.type, config.name);
 	if (config.logfile) {
 		fclose(config.logfile_fd);
-		config.logfile_fd = open_output_file(config.logfile, "a", FALSE);
+		config.logfile_fd = open_output_file(config.logfile, "a", false);
 	}
 
 	if (config.proc_priority) {
@@ -616,7 +616,7 @@ void sfprobe_plugin(int pipe_fd, struct configuration *cfgptr, void *ptr)
 		else Log(LOG_INFO, "INFO ( %s/%s ): proc_priority set to %d\n", config.name, config.type, getpriority(PRIO_PROCESS, 0));
 	}
 
-	reload_map = FALSE;
+	reload_map = false;
 
 	/* signal handling */
 	signal(SIGINT, sfprobe_exit_now);
@@ -669,7 +669,7 @@ void sfprobe_plugin(int pipe_fd, struct configuration *cfgptr, void *ptr)
 
 	for (;;) {
 poll_again:
-		status->wakeup = TRUE;
+		status->wakeup = true;
 
 		pfd.fd = pipe_fd;
 		pfd.events = POLLIN;
@@ -680,7 +680,7 @@ poll_again:
 
 		if (reload_map) {
 			load_networks(config.networks_file, &nt, &nc);
-			reload_map = FALSE;
+			reload_map = false;
 		}
 
 		if (ret > 0) { /* we received data */
@@ -689,7 +689,7 @@ read_data:
 				if (!pollagain) {
 					seq++;
 					seq %= MAX_SEQNUM;
-					if (seq == 0) rg_err_count = FALSE;
+					if (seq == 0) rg_err_count = false;
 				} else {
 					if ((ret = read(pipe_fd, &rgptr, sizeof(rgptr))) == 0)
 						exit_plugin(1); /* we exit silently; something happened at the write end */
@@ -699,7 +699,7 @@ read_data:
 
 				if (((struct ch_buf_hdr *)rg->ptr)->seq != seq) {
 					if (!pollagain) {
-						pollagain = TRUE;
+						pollagain = true;
 						goto handle_tick;
 					} else {
 						rg_err_count++;
@@ -715,7 +715,7 @@ read_data:
 					}
 				}
 
-				pollagain = FALSE;
+				pollagain = false;
 				memcpy(pipebuf, rg->ptr, bufsz);
 				rg->ptr += bufsz;
 			}

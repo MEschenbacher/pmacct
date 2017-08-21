@@ -46,7 +46,7 @@ void P_init_default_values()
 	if (config.pidfile) write_pid_file_plugin(config.pidfile, config.type, config.name);
 	if (config.logfile) {
 		if (config.logfile_fd) fclose(config.logfile_fd);
-		config.logfile_fd = open_output_file(config.logfile, "a", FALSE);
+		config.logfile_fd = open_output_file(config.logfile, "a", false);
 	}
 
 	if (config.proc_priority) {
@@ -57,7 +57,7 @@ void P_init_default_values()
 		else Log(LOG_INFO, "INFO ( %s/%s ): proc_priority set to %d\n", config.name, config.type, getpriority(PRIO_PROCESS, 0));
 	}
 
-	reload_map = FALSE;
+	reload_map = false;
 
 	basetime_init = NULL;
 	basetime_eval = NULL;
@@ -154,39 +154,39 @@ struct chained_cache *P_cache_search(struct primitives_ptrs *prim_ptrs)
 	struct pkt_vlen_hdr_primitives *pvlen = prim_ptrs->pvlen;
 	unsigned int modulo = P_cache_modulo(prim_ptrs);
 	struct chained_cache *cache_ptr = &cache[modulo];
-	int res_data = TRUE, res_bgp = TRUE, res_nat = TRUE, res_mpls = TRUE, res_tun = TRUE;
-	int res_time = TRUE, res_cust = TRUE, res_vlen = TRUE;
+	int res_data = true, res_bgp = true, res_nat = true, res_mpls = true, res_tun = true;
+	int res_time = true, res_cust = true, res_vlen = true;
 
 start:
 	res_data = memcmp(&cache_ptr->primitives, data, sizeof(struct pkt_primitives));
 
 	if (basetime_cmp) {
 		res_time = (*basetime_cmp)(&cache_ptr->basetime, &ibasetime);
-	} else res_time = FALSE;
+	} else res_time = false;
 
 	if (pbgp) {
 		if (cache_ptr->pbgp) res_bgp = memcmp(cache_ptr->pbgp, pbgp, sizeof(struct pkt_bgp_primitives));
-	} else res_bgp = FALSE;
+	} else res_bgp = false;
 
 	if (pnat) {
 		if (cache_ptr->pnat) res_nat = memcmp(cache_ptr->pnat, pnat, sizeof(struct pkt_nat_primitives));
-	} else res_nat = FALSE;
+	} else res_nat = false;
 
 	if (pmpls) {
 		if (cache_ptr->pmpls) res_mpls = memcmp(cache_ptr->pmpls, pmpls, sizeof(struct pkt_mpls_primitives));
-	} else res_mpls = FALSE;
+	} else res_mpls = false;
 
 	if (ptun) {
 		if (cache_ptr->ptun) res_tun = memcmp(cache_ptr->ptun, ptun, sizeof(struct pkt_tunnel_primitives));
-	} else res_tun = FALSE;
+	} else res_tun = false;
 
 	if (pcust) {
 		if (cache_ptr->pcust) res_cust = memcmp(cache_ptr->pcust, pcust, config.cpptrs.len);
-	} else res_cust = FALSE;
+	} else res_cust = false;
 
 	if (pvlen) {
 		if (cache_ptr->pvlen) res_vlen = vlen_prims_cmp(cache_ptr->pvlen, pvlen);
-	} else res_vlen = FALSE;
+	} else res_vlen = false;
 
 	if (res_data || res_bgp || res_nat || res_mpls || res_tun || res_time || res_cust || res_vlen) {
 		if (cache_ptr->valid == PRINT_CACHE_INUSE) {
@@ -271,37 +271,37 @@ new_timeslot:
 	}
 
 start:
-	res_data = res_bgp = res_nat = res_mpls = res_tun = res_time = res_cust = res_vlen = TRUE;
+	res_data = res_bgp = res_nat = res_mpls = res_tun = res_time = res_cust = res_vlen = true;
 
 	res_data = memcmp(&cache_ptr->primitives, srcdst, sizeof(struct pkt_primitives));
 
 	if (basetime_cmp) {
 		res_time = (*basetime_cmp)(&cache_ptr->basetime, &ibasetime);
-	} else res_time = FALSE;
+	} else res_time = false;
 
 	if (pbgp) {
 		if (cache_ptr->pbgp) res_bgp = memcmp(cache_ptr->pbgp, pbgp, sizeof(struct pkt_bgp_primitives));
-	} else res_bgp = FALSE;
+	} else res_bgp = false;
 
 	if (pnat) {
 		if (cache_ptr->pnat) res_nat = memcmp(cache_ptr->pnat, pnat, sizeof(struct pkt_nat_primitives));
-	} else res_nat = FALSE;
+	} else res_nat = false;
 
 	if (pmpls) {
 		if (cache_ptr->pmpls) res_mpls = memcmp(cache_ptr->pmpls, pmpls, sizeof(struct pkt_mpls_primitives));
-	} else res_mpls = FALSE;
+	} else res_mpls = false;
 
 	if (ptun) {
 		if (cache_ptr->ptun) res_tun = memcmp(cache_ptr->ptun, ptun, sizeof(struct pkt_tunnel_primitives));
-	} else res_tun = FALSE;
+	} else res_tun = false;
 
 	if (pcust) {
 		if (cache_ptr->pcust) res_cust = memcmp(cache_ptr->pcust, pcust, config.cpptrs.len);
-	} else res_cust = FALSE;
+	} else res_cust = false;
 
 	if (pvlen) {
 		if (cache_ptr->pvlen) res_vlen = vlen_prims_cmp(cache_ptr->pvlen, pvlen);
-	} else res_vlen = FALSE;
+	} else res_vlen = false;
 
 	if (res_data || res_bgp || res_nat || res_mpls || res_tun || res_time || res_cust || res_vlen) {
 		/* aliasing of entries */
@@ -480,7 +480,7 @@ safe_action: {
 		if (config.type_id == PLUGIN_ID_PRINT && config.sql_table && !config.print_output_file_append)
 			Log(LOG_WARNING, "WARN ( %s/%s ): Make sure print_output_file_append is set to true.\n", config.name, config.type);
 
-		if (qq_ptr) P_cache_mark_flush(queries_queue, qq_ptr, FALSE);
+		if (qq_ptr) P_cache_mark_flush(queries_queue, qq_ptr, false);
 
 		/* Writing out to replenish cache space */
 		dump_writers_count();
@@ -488,7 +488,7 @@ safe_action: {
 			switch (ret = fork()) {
 			case 0: /* Child */
 				pm_setproctitle("%s %s [%s]", config.type, "Plugin -- Writer (urgent)", config.name);
-				(*purge_func)(queries_queue, qq_ptr, TRUE);
+				(*purge_func)(queries_queue, qq_ptr, true);
 				exit(0);
 			default: /* Parent */
 				if (ret == -1) Log(LOG_WARNING, "WARN ( %s/%s ): Unable to fork writer: %s\n", config.name, config.type, strerror(errno));
@@ -499,7 +499,7 @@ safe_action: {
 		} else Log(LOG_WARNING, "WARN ( %s/%s ): Maximum number of writer processes reached (%d).\n", config.name, config.type, dump_writers_get_active());
 
 		P_cache_flush(queries_queue, qq_ptr);
-		qq_ptr = FALSE;
+		qq_ptr = false;
 		if (pqq_ptr) {
 			P_cache_insert_pending(pending_queries_queue, pqq_ptr, pqq_container);
 			pqq_ptr = 0;
@@ -577,14 +577,14 @@ void P_cache_handle_flush_event(struct ports_table *pt)
 {
 	pid_t ret;
 
-	if (qq_ptr) P_cache_mark_flush(queries_queue, qq_ptr, FALSE);
+	if (qq_ptr) P_cache_mark_flush(queries_queue, qq_ptr, false);
 
 	dump_writers_count();
 	if (dump_writers_get_flags() != CHLD_ALERT) {
 		switch (ret = fork()) {
 		case 0: /* Child */
 			pm_setproctitle("%s %s [%s]", config.type, "Plugin -- Writer", config.name);
-			(*purge_func)(queries_queue, qq_ptr, FALSE);
+			(*purge_func)(queries_queue, qq_ptr, false);
 			exit(0);
 		default: /* Parent */
 			if (ret == -1) Log(LOG_WARNING, "WARN ( %s/%s ): Unable to fork writer: %s\n", config.name, config.type, strerror(errno));
@@ -598,7 +598,7 @@ void P_cache_handle_flush_event(struct ports_table *pt)
 
 	gettimeofday(&flushtime, NULL);
 	refresh_deadline += config.sql_refresh_time;
-	qq_ptr = FALSE;
+	qq_ptr = false;
 	memset(&new_basetime, 0, sizeof(new_basetime));
 
 	if (pqq_ptr) {
@@ -609,7 +609,7 @@ void P_cache_handle_flush_event(struct ports_table *pt)
 	if (reload_map) {
 		load_networks(config.networks_file, &nt, &nc);
 		load_ports(config.ports_file, pt);
-		reload_map = FALSE;
+		reload_map = false;
 	}
 }
 
@@ -737,10 +737,10 @@ void P_sum_mac_insert(struct primitives_ptrs *prim_ptrs, struct insert_data *ida
 
 void P_exit_now(int signum)
 {
-	if (qq_ptr) P_cache_mark_flush(queries_queue, qq_ptr, TRUE);
+	if (qq_ptr) P_cache_mark_flush(queries_queue, qq_ptr, true);
 
 	dump_writers_count();
-	if (dump_writers_get_flags() != CHLD_ALERT) (*purge_func)(queries_queue, qq_ptr, FALSE);
+	if (dump_writers_get_flags() != CHLD_ALERT) (*purge_func)(queries_queue, qq_ptr, false);
 	else Log(LOG_WARNING, "WARN ( %s/%s ): Maximum number of writer processes reached (%d).\n", config.name, config.type, dump_writers_get_active());
 
 	wait(NULL);
@@ -841,7 +841,7 @@ void P_eval_historical_acct(struct timeval *stamp, struct timeval *basetime, tim
 
 int P_cmp_historical_acct(struct timeval *entry_basetime, struct timeval *insert_basetime)
 {
-	int ret = TRUE;
+	int ret = true;
 
 	ret = memcmp(entry_basetime, insert_basetime, sizeof(struct timeval));
 
@@ -852,18 +852,18 @@ int P_test_zero_elem(struct chained_cache *elem)
 {
 	if (elem) {
 		if (elem->flow_type == NF9_FTYPE_NAT_EVENT) {
-			if (elem->pnat && elem->pnat->nat_event) return FALSE;
-			else return TRUE;
+			if (elem->pnat && elem->pnat->nat_event) return false;
+			else return true;
 		} else if (elem->flow_type == NF9_FTYPE_OPTION) {
 			/* not really much we can test */
-			return FALSE;
+			return false;
 		} else {
-			if (elem->bytes_counter || elem->packet_counter || elem->flow_counter) return FALSE;
-			else return TRUE;
+			if (elem->bytes_counter || elem->packet_counter || elem->flow_counter) return false;
+			else return true;
 		}
 	}
 
-	return TRUE;
+	return true;
 }
 
 void primptrs_set_all_from_chained_cache(struct primitives_ptrs *prim_ptrs, struct chained_cache *entry)
@@ -1007,12 +1007,12 @@ time_t P_broker_timers_get_last_fail(struct p_broker_timers *btimers)
 {
 	if (btimers) return btimers->last_fail;
 
-	return FALSE;
+	return false;
 }
 
 void P_broker_timers_unset_last_fail(struct p_broker_timers *btimers)
 {
-	if (btimers) btimers->last_fail = FALSE;
+	if (btimers) btimers->last_fail = false;
 }
 
 void P_broker_timers_set_retry_interval(struct p_broker_timers *btimers, int interval)

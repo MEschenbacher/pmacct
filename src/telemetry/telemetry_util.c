@@ -51,7 +51,7 @@ int telemetry_peer_z_init(telemetry_peer_z *peer_z)
 	if (inflateInit(&peer_z->stm) != Z_OK) return ERR;
 #endif
 
-	return FALSE;
+	return false;
 }
 
 void telemetry_peer_close(telemetry_peer *peer, int type)
@@ -83,7 +83,7 @@ void telemetry_peer_close(telemetry_peer *peer, int type)
 		peer->fd = ERR; /* dirty trick to prevent close() a valid fd in bgp_peer_close() */
 	}
 
-	bgp_peer_close(peer, type, FALSE, FALSE, FALSE, FALSE, NULL);
+	bgp_peer_close(peer, type, false, false, false, false, NULL);
 }
 
 void telemetry_peer_z_close(telemetry_peer_z *peer_z)
@@ -115,8 +115,8 @@ u_int32_t telemetry_cisco_hdr_get_type(telemetry_peer *peer)
 
 int telemetry_is_zjson(int decoder)
 {
-	if (decoder == TELEMETRY_DECODER_ZJSON || decoder == TELEMETRY_DECODER_CISCO_ZJSON) return TRUE;
-	else return FALSE;
+	if (decoder == TELEMETRY_DECODER_ZJSON || decoder == TELEMETRY_DECODER_CISCO_ZJSON) return true;
+	else return false;
 }
 
 int telemetry_tpuc_addr_cmp(const void *a, const void *b)
@@ -151,10 +151,10 @@ void telemetry_link_misc_structs(telemetry_misc_structs *tms)
 int telemetry_validate_input_output_decoders(int input, int output)
 {
 	if (input == TELEMETRY_DATA_DECODER_GPB) {
-		if (output == PRINT_OUTPUT_JSON) return FALSE;
-		/* else if (output == PRINT_OUTPUT_GPB) return FALSE; */
+		if (output == PRINT_OUTPUT_JSON) return false;
+		/* else if (output == PRINT_OUTPUT_GPB) return false; */
 	} else if (input == TELEMETRY_DATA_DECODER_JSON) {
-		if (output == PRINT_OUTPUT_JSON) return FALSE;
+		if (output == PRINT_OUTPUT_JSON) return false;
 		/* else if (output == PRINT_OUTPUT_GPB) return ERR; */
 	}
 }

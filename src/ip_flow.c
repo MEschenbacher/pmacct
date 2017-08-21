@@ -106,8 +106,8 @@ void evaluate_tcp_flags(struct timeval *now, struct packet_ptrs *pptrs, struct i
 		    fp->tcp_flags[rev] & TH_ACK) {
 			if (ntohl(((struct pm_tcphdr *)pptrs->tlh_ptr)->th_seq) == fp->last_tcp_seq+1) {
 				/* The flow successfully entered the ESTABLISHED state: clearing flags */
-				fp->tcp_flags[idx] = FALSE;
-				fp->tcp_flags[rev] = FALSE;
+				fp->tcp_flags[idx] = false;
+				fp->tcp_flags[rev] = false;
 			}
 		}
 
@@ -159,7 +159,7 @@ void find_flow(struct timeval *now, struct packet_ptrs *pptrs)
 				evaluate_tcp_flags(now, pptrs, &fp->cmn, idx);
 				fp->cmn.last[idx].tv_sec = now->tv_sec;
 				fp->cmn.last[idx].tv_usec = now->tv_usec;
-				pptrs->new_flow = FALSE;
+				pptrs->new_flow = false;
 				if (config.classifiers_path) evaluate_classifiers(pptrs, &fp->cmn, idx);
 				return;
 			} else {
@@ -168,7 +168,7 @@ void find_flow(struct timeval *now, struct packet_ptrs *pptrs)
 				evaluate_tcp_flags(now, pptrs, &fp->cmn, idx);
 				fp->cmn.last[idx].tv_sec = now->tv_sec;
 				fp->cmn.last[idx].tv_usec = now->tv_usec;
-				pptrs->new_flow = TRUE;
+				pptrs->new_flow = true;
 				if (config.classifiers_path) evaluate_classifiers(pptrs, &fp->cmn, idx);
 				return;
 			}
@@ -177,8 +177,8 @@ void find_flow(struct timeval *now, struct packet_ptrs *pptrs)
 		last_seen = fp;
 	}
 
-	if (candidate) create_flow(now, candidate, TRUE, bucket, pptrs, iphp, tlhp, idx);
-	else create_flow(now, last_seen, FALSE, bucket, pptrs, iphp, tlhp, idx);
+	if (candidate) create_flow(now, candidate, true, bucket, pptrs, iphp, tlhp, idx);
+	else create_flow(now, last_seen, false, bucket, pptrs, iphp, tlhp, idx);
 }
 
 void create_flow(struct timeval *now, struct ip_flow *fp, u_int8_t is_candidate, unsigned int bucket, struct packet_ptrs *pptrs,
@@ -192,7 +192,7 @@ void create_flow(struct timeval *now, struct ip_flow *fp, u_int8_t is_candidate,
 			flt_emergency_prune = now->tv_sec;
 			prune_old_flows(now);
 		}
-		pptrs->new_flow = FALSE;
+		pptrs->new_flow = false;
 		return;
 	}
 
@@ -207,7 +207,7 @@ void create_flow(struct timeval *now, struct ip_flow *fp, u_int8_t is_candidate,
 					flt_emergency_prune = now->tv_sec;
 					prune_old_flows(now);
 				}
-				pptrs->new_flow = FALSE;
+				pptrs->new_flow = false;
 				return;
 			} else flt_total_nodes--;
 			memset(newf, 0, sizeof(struct ip_flow));
@@ -241,7 +241,7 @@ void create_flow(struct timeval *now, struct ip_flow *fp, u_int8_t is_candidate,
 				flt_emergency_prune = now->tv_sec;
 				prune_old_flows(now);
 			}
-			pptrs->new_flow = FALSE;
+			pptrs->new_flow = false;
 			return;
 		} else flt_total_nodes--;
 		memset(fp, 0, sizeof(struct ip_flow));
@@ -261,7 +261,7 @@ void create_flow(struct timeval *now, struct ip_flow *fp, u_int8_t is_candidate,
 	fp->cmn.last[idx].tv_sec = now->tv_sec;
 	fp->cmn.last[idx].tv_usec = now->tv_usec;
 
-	pptrs->new_flow = TRUE;
+	pptrs->new_flow = true;
 	if (config.classifiers_path) evaluate_classifiers(pptrs, &fp->cmn, idx);
 }
 
@@ -323,7 +323,7 @@ unsigned int normalize_flow(u_int32_t *ip_src, u_int32_t *ip_dst,
 		*ip_src = *ip_dst;
 		*ip_dst = ip_tmp;
 
-		return TRUE; /* reverse flow */
+		return true; /* reverse flow */
 	}
 
 	if (*port_src == *port_dst) {
@@ -332,11 +332,11 @@ unsigned int normalize_flow(u_int32_t *ip_src, u_int32_t *ip_dst,
 			*ip_src = *ip_dst;
 			*ip_dst = ip_tmp;
 
-			return TRUE; /* reverse flow */
+			return true; /* reverse flow */
 		}
 	}
 
-	return FALSE; /* forward flow */
+	return false; /* forward flow */
 }
 
 /* hash_flow() is taken (it has another name there) from Linux kernel 2.4;
@@ -347,8 +347,8 @@ unsigned int hash_flow(u_int32_t ip_src, u_int32_t ip_dst,
 	return jhash_3words((u_int32_t)(port_src ^ port_dst) << 16 | proto, ip_src, ip_dst, flt_trivial_hash_rnd) & (config.flow_hashsz-1);
 }
 
-/* is_expired() checks for the expiration of the bi-directional flow; returns: TRUE if
-   a) the TCP flow is expired or, b) the non-TCP flow scores 2 points; FALSE in any other
+/* is_expired() checks for the expiration of the bi-directional flow; returns: true if
+   a) the TCP flow is expired or, b) the non-TCP flow scores 2 points; false in any other
    case. This function will also contain any further semi-stateful evaluation of specific
    protocols */
 unsigned int is_expired(struct timeval *now, struct ip_flow_common *fp)
@@ -358,28 +358,28 @@ unsigned int is_expired(struct timeval *now, struct ip_flow_common *fp)
 	forward = is_expired_uni(now, fp, 0);
 	reverse = is_expired_uni(now, fp, 1);
 
-	if (forward && reverse) return TRUE;
-	else return FALSE;
+	if (forward && reverse) return true;
+	else return false;
 }
 
-/* is_expired_uni() checks for the expiration of the uni-directional flow; returns: TRUE
-   if the flow has expired; FALSE in any other case. */
+/* is_expired_uni() checks for the expiration of the uni-directional flow; returns: true
+   if the flow has expired; false in any other case. */
 unsigned int is_expired_uni(struct timeval *now, struct ip_flow_common *fp, unsigned int idx)
 {
 	if (fp->proto == IPPROTO_TCP) {
 		/* tcp_flags == 0 ==> the TCP flow is in ESTABLISHED mode */
 		if (!fp->tcp_flags[idx]) {
-			if (now->tv_sec > fp->last[idx].tv_sec+flow_tcpest_lifetime) return TRUE;
+			if (now->tv_sec > fp->last[idx].tv_sec+flow_tcpest_lifetime) return true;
 		} else {
-			if (fp->tcp_flags[idx] & TH_SYN && now->tv_sec > fp->last[idx].tv_sec+FLOW_TCPSYN_LIFETIME) return TRUE;
-			if (fp->tcp_flags[idx] & TH_FIN && now->tv_sec > fp->last[idx].tv_sec+FLOW_TCPFIN_LIFETIME) return TRUE;
-			if (fp->tcp_flags[idx] & TH_RST && now->tv_sec > fp->last[idx].tv_sec+FLOW_TCPRST_LIFETIME) return TRUE;
+			if (fp->tcp_flags[idx] & TH_SYN && now->tv_sec > fp->last[idx].tv_sec+FLOW_TCPSYN_LIFETIME) return true;
+			if (fp->tcp_flags[idx] & TH_FIN && now->tv_sec > fp->last[idx].tv_sec+FLOW_TCPFIN_LIFETIME) return true;
+			if (fp->tcp_flags[idx] & TH_RST && now->tv_sec > fp->last[idx].tv_sec+FLOW_TCPRST_LIFETIME) return true;
 		}
 	} else {
-		if (now->tv_sec > fp->last[idx].tv_sec+flow_generic_lifetime) return TRUE;
+		if (now->tv_sec > fp->last[idx].tv_sec+flow_generic_lifetime) return true;
 	}
 
-	return FALSE;
+	return false;
 }
 
 #if defined ENABLE_IPV6
@@ -467,7 +467,7 @@ unsigned int normalize_flow6(struct in6_addr *saddr, struct in6_addr *daddr,
 		ip6_addr_cpy(saddr, daddr);
 		ip6_addr_cpy(daddr, &taddr);
 
-		return TRUE; /* reverse flow */
+		return true; /* reverse flow */
 	}
 
 	if (*port_src == *port_dst) {
@@ -476,11 +476,11 @@ unsigned int normalize_flow6(struct in6_addr *saddr, struct in6_addr *daddr,
 			ip6_addr_cpy(saddr, daddr);
 			ip6_addr_cpy(daddr, &taddr);
 
-			return TRUE; /* reverse flow */
+			return true; /* reverse flow */
 		}
 	}
 
-	return FALSE; /* forward flow */
+	return false; /* forward flow */
 }
 
 void find_flow6(struct timeval *now, struct packet_ptrs *pptrs)
@@ -507,7 +507,7 @@ void find_flow6(struct timeval *now, struct packet_ptrs *pptrs)
 				evaluate_tcp_flags(now, pptrs, &fp->cmn, idx);
 				fp->cmn.last[idx].tv_sec = now->tv_sec;
 				fp->cmn.last[idx].tv_usec = now->tv_usec;
-				pptrs->new_flow = FALSE;
+				pptrs->new_flow = false;
 				if (config.classifiers_path) evaluate_classifiers(pptrs, &fp->cmn, idx);
 				return;
 			} else {
@@ -516,7 +516,7 @@ void find_flow6(struct timeval *now, struct packet_ptrs *pptrs)
 				evaluate_tcp_flags(now, pptrs, &fp->cmn, idx);
 				fp->cmn.last[idx].tv_sec = now->tv_sec;
 				fp->cmn.last[idx].tv_usec = now->tv_usec;
-				pptrs->new_flow = TRUE;
+				pptrs->new_flow = true;
 				if (config.classifiers_path) evaluate_classifiers(pptrs, &fp->cmn, idx);
 				return;
 			}
@@ -526,8 +526,8 @@ void find_flow6(struct timeval *now, struct packet_ptrs *pptrs)
 	}
 
 create:
-	if (candidate) create_flow6(now, candidate, TRUE, bucket, pptrs, iphp, tlhp, idx);
-	else create_flow6(now, last_seen, FALSE, bucket, pptrs, iphp, tlhp, idx);
+	if (candidate) create_flow6(now, candidate, true, bucket, pptrs, iphp, tlhp, idx);
+	else create_flow6(now, last_seen, false, bucket, pptrs, iphp, tlhp, idx);
 }
 
 void create_flow6(struct timeval *now, struct ip_flow6 *fp, u_int8_t is_candidate, unsigned int bucket,
@@ -541,7 +541,7 @@ void create_flow6(struct timeval *now, struct ip_flow6 *fp, u_int8_t is_candidat
 			flt6_emergency_prune = now->tv_sec;
 			prune_old_flows6(now);
 		}
-		pptrs->new_flow = FALSE;
+		pptrs->new_flow = false;
 		return;
 	}
 
@@ -556,7 +556,7 @@ void create_flow6(struct timeval *now, struct ip_flow6 *fp, u_int8_t is_candidat
 					flt6_emergency_prune = now->tv_sec;
 					prune_old_flows6(now);
 				}
-				pptrs->new_flow = FALSE;
+				pptrs->new_flow = false;
 				return;
 			} else flt6_total_nodes--;
 			memset(newf, 0, sizeof(struct ip_flow6));
@@ -589,7 +589,7 @@ void create_flow6(struct timeval *now, struct ip_flow6 *fp, u_int8_t is_candidat
 				flt6_emergency_prune = now->tv_sec;
 				prune_old_flows6(now);
 			}
-			pptrs->new_flow = FALSE;
+			pptrs->new_flow = false;
 			return;
 		} else flt6_total_nodes--;
 		memset(fp, 0, sizeof(struct ip_flow6));
@@ -609,7 +609,7 @@ void create_flow6(struct timeval *now, struct ip_flow6 *fp, u_int8_t is_candidat
 	fp->cmn.last[idx].tv_sec = now->tv_sec;
 	fp->cmn.last[idx].tv_usec = now->tv_usec;
 
-	pptrs->new_flow = TRUE;
+	pptrs->new_flow = true;
 	if (config.classifiers_path) evaluate_classifiers(pptrs, &fp->cmn, idx);
 }
 

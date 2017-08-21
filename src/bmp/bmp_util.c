@@ -67,7 +67,7 @@ u_int32_t bmp_packet_adj_offset(char *bmp_packet, u_int32_t buf_len, u_int32_t r
 		if (addr_str)
 			Log(LOG_INFO, "INFO ( %s/core/BMP ): [%s] packet discarded: failed bmp_packet_adj_offset()\n", config.name, addr_str);
 
-		return FALSE;
+		return false;
 	}
 
 	memcpy(tmp_packet, &bmp_packet[recv_len - remaining_len], remaining_len);
@@ -163,15 +163,15 @@ void bmp_link_misc_structs(struct bgp_misc_structs *bms)
 	bms->bgp_lookup_find_peer = bgp_lookup_find_bmp_peer;
 	bms->bgp_lookup_node_match_cmp = bgp_lookup_node_match_cmp_bmp;
 
-	if (!bms->is_thread && !bms->dump_backend_methods) bms->skip_rib = TRUE;
+	if (!bms->is_thread && !bms->dump_backend_methods) bms->skip_rib = true;
 }
 
 struct bgp_peer *bmp_sync_loc_rem_peers(struct bgp_peer *bgp_peer_loc, struct bgp_peer *bgp_peer_rem)
 {
 	if (!bgp_peer_loc || !bgp_peer_rem) return NULL;
 
-	if (!bgp_peer_loc->cap_4as || !bgp_peer_rem->cap_4as) bgp_peer_rem->cap_4as = FALSE;
-	if (!bgp_peer_loc->cap_add_paths || !bgp_peer_rem->cap_add_paths) bgp_peer_rem->cap_add_paths = FALSE;
+	if (!bgp_peer_loc->cap_4as || !bgp_peer_rem->cap_4as) bgp_peer_rem->cap_4as = false;
+	if (!bgp_peer_loc->cap_add_paths || !bgp_peer_rem->cap_add_paths) bgp_peer_rem->cap_add_paths = false;
 
 	bgp_peer_rem->type = FUNC_TYPE_BMP;
 	memcpy(&bgp_peer_rem->id, &bgp_peer_rem->addr, sizeof(struct host_addr));
@@ -210,7 +210,7 @@ void bmp_peer_close(struct bmp_peer *bmpp, int type)
 	if (bms->dump_file || bms->dump_amqp_routing_key || bms->dump_kafka_topic)
 		bmp_dump_close_peer(peer);
 
-	bgp_peer_close(peer, type, FALSE, FALSE, FALSE, FALSE, NULL);
+	bgp_peer_close(peer, type, false, false, false, false, NULL);
 }
 
 void bgp_msg_data_set_data_bmp(struct bgp_msg_extra_data_bmp *bmed_bmp, struct bmp_data *bdata)

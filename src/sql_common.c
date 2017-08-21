@@ -136,7 +136,7 @@ void sql_init_default_values(struct extra_primitives *extras)
 
 	if (config.sql_aggressive_classification) {
 		if (config.acct_type == ACCT_PM && config.what_to_count & COUNT_CLASS);
-		else config.sql_aggressive_classification = FALSE;
+		else config.sql_aggressive_classification = false;
 	}
 
 	/* SQL table type parsing; basically mapping everything down to a SQL table version */
@@ -308,7 +308,7 @@ void sql_cache_modulo(struct primitives_ptrs *prim_ptrs, struct insert_data *ida
 
 int sql_cache_flush(struct db_cache *queue[], int index, struct insert_data *idata, int exiting)
 {
-	int j, delay = 0, new_basetime = FALSE;
+	int j, delay = 0, new_basetime = false;
 	struct db_cache *Cursor, *auxCursor, *PendingElem, SavedCursor;
 
 	/* We are seeking how many time-bins data has to be delayed by; residual
@@ -323,7 +323,7 @@ int sql_cache_flush(struct db_cache *queue[], int index, struct insert_data *ida
 	   sure). */
 	if (idata->new_basetime && idata->new_basetime < idata->basetime &&
 	    idata->new_basetime > idata->committed_basetime) {
-		new_basetime = TRUE;
+		new_basetime = true;
 		idata->committed_basetime = idata->new_basetime;
 	} else idata->committed_basetime = idata->basetime;
 
@@ -393,7 +393,7 @@ int sql_cache_flush_pending(struct db_cache *queue[], int index, struct insert_d
 						memcpy(Cursor, PendingElem, sizeof(struct db_cache));
 						Cursor->prev = NULL;
 						Cursor->next = SavedCursor.next;
-						Cursor->chained = FALSE;
+						Cursor->chained = false;
 						Cursor->lru_prev = NULL;
 						Cursor->lru_next = NULL;
 
@@ -475,15 +475,15 @@ void sql_cache_handle_flush_event(struct insert_data *idata, time_t *refresh_dea
 			idata->t_timeslot = calc_monthly_timeslot(idata->triggertime, config.sql_trigger_time_howmany, ADD);
 	}
 
-	idata->new_basetime = FALSE;
-	glob_new_basetime = FALSE;
+	idata->new_basetime = false;
+	glob_new_basetime = false;
 	qq_ptr = pqq_ptr;
 	memcpy(queries_queue, pending_queries_queue, qq_ptr*sizeof(struct db_cache *));
 
 	if (reload_map) {
 		load_networks(config.networks_file, &nt, &nc);
 		load_ports(config.ports_file, pt);
-		reload_map = FALSE;
+		reload_map = false;
 	}
 }
 
@@ -500,8 +500,8 @@ struct db_cache *sql_cache_search(struct primitives_ptrs *prim_ptrs, time_t base
 	unsigned int modulo;
 	struct db_cache *Cursor;
 	struct insert_data idata;
-	int res_data = TRUE, res_bgp = TRUE, res_nat = TRUE, res_mpls = TRUE, res_tun = TRUE;
-	int res_cust = TRUE, res_vlen = TRUE;
+	int res_data = true, res_bgp = true, res_nat = true, res_mpls = true, res_tun = true;
+	int res_cust = true, res_vlen = true;
 
 	sql_cache_modulo(prim_ptrs, &idata);
 	modulo = idata.modulo;
@@ -524,27 +524,27 @@ follow_chain:
 
 			if (pbgp && Cursor->pbgp) {
 				res_bgp = memcmp(Cursor->pbgp, pbgp, sizeof(struct pkt_bgp_primitives));
-			} else res_bgp = FALSE;
+			} else res_bgp = false;
 
 			if (pnat && Cursor->pnat) {
 				res_nat = memcmp(Cursor->pnat, pnat, sizeof(struct pkt_nat_primitives));
-			} else res_nat = FALSE;
+			} else res_nat = false;
 
 			if (pmpls && Cursor->pmpls) {
 				res_mpls = memcmp(Cursor->pmpls, pmpls, sizeof(struct pkt_mpls_primitives));
-			} else res_mpls = FALSE;
+			} else res_mpls = false;
 
 			if (ptun && Cursor->ptun) {
 				res_tun = memcmp(Cursor->ptun, ptun, sizeof(struct pkt_tunnel_primitives));
-			} else res_tun = FALSE;
+			} else res_tun = false;
 
 			if (pcust && Cursor->pcust) {
 				res_cust = memcmp(Cursor->pcust, pcust, config.cpptrs.len);
-			} else res_cust = FALSE;
+			} else res_cust = false;
 
 			if (pvlen && Cursor->pvlen) {
 				res_vlen = vlen_prims_cmp(Cursor->pvlen, pvlen);
-			} else res_vlen = FALSE;
+			} else res_vlen = false;
 
 			if (!res_data && !res_bgp && !res_nat && !res_mpls && !res_tun && !res_cust && !res_vlen) {
 				/* additional check: time */
@@ -685,35 +685,35 @@ follow_chain:
 		/* we found a no more valid entry; let's insert here our data */
 	} else {
 		if (Cursor->valid == SQL_CACHE_INUSE) {
-			int res_data = TRUE, res_bgp = TRUE, res_nat = TRUE, res_mpls = TRUE, res_tun = TRUE;
-			int res_cust = TRUE, res_vlen = TRUE;
+			int res_data = true, res_bgp = true, res_nat = true, res_mpls = true, res_tun = true;
+			int res_cust = true, res_vlen = true;
 
 			/* checks: pkt_primitives and pkt_bgp_primitives */
 			res_data = memcmp(&Cursor->primitives, srcdst, sizeof(struct pkt_primitives));
 
 			if (pbgp && Cursor->pbgp) {
 				res_bgp = memcmp(Cursor->pbgp, pbgp, sizeof(struct pkt_bgp_primitives));
-			} else res_bgp = FALSE;
+			} else res_bgp = false;
 
 			if (pnat && Cursor->pnat) {
 				res_nat = memcmp(Cursor->pnat, pnat, sizeof(struct pkt_nat_primitives));
-			} else res_nat = FALSE;
+			} else res_nat = false;
 
 			if (pmpls && Cursor->pmpls) {
 				res_mpls = memcmp(Cursor->pmpls, pmpls, sizeof(struct pkt_mpls_primitives));
-			} else res_mpls = FALSE;
+			} else res_mpls = false;
 
 			if (ptun && Cursor->ptun) {
 				res_tun = memcmp(Cursor->ptun, ptun, sizeof(struct pkt_tunnel_primitives));
-			} else res_tun = FALSE;
+			} else res_tun = false;
 
 			if (pcust && Cursor->pcust) {
 				res_cust = memcmp(Cursor->pcust, pcust, config.cpptrs.len);
-			} else res_cust = FALSE;
+			} else res_cust = false;
 
 			if (pvlen && Cursor->pvlen) {
 				res_vlen = vlen_prims_cmp(Cursor->pvlen, pvlen);
-			} else res_vlen = FALSE;
+			} else res_vlen = false;
 
 			if (!res_data && !res_bgp && !res_nat && !res_mpls && !res_tun && !res_cust && !res_vlen) {
 				/* additional check: time */
@@ -893,7 +893,7 @@ safe_action:
 
 		Log(LOG_INFO, "INFO ( %s/%s ): Finished cache entries (ie. sql_cache_entries). Purging.\n", config.name, config.type);
 
-		if (qq_ptr) sql_cache_flush(queries_queue, qq_ptr, idata, FALSE);
+		if (qq_ptr) sql_cache_flush(queries_queue, qq_ptr, idata, false);
 
 		dump_writers_count();
 		if (dump_writers_get_flags() != CHLD_ALERT) {
@@ -1002,14 +1002,14 @@ int sql_trigger_exec(char *filename)
 
 void sql_db_ok(struct DBdesc *db)
 {
-	db->fail = FALSE;
-	db->connected = TRUE;
+	db->fail = false;
+	db->connected = true;
 }
 
 void sql_db_fail(struct DBdesc *db)
 {
-	db->fail = TRUE;
-	db->connected = FALSE;
+	db->fail = true;
+	db->connected = false;
 }
 
 void sql_db_errmsg(struct DBdesc *db)
@@ -1041,11 +1041,11 @@ void sql_exit_gracefully(int signum)
 	idata.new_basetime = glob_new_basetime;
 	idata.timeslot = glob_timeslot;
 	idata.committed_basetime = glob_committed_basetime;
-	if (config.sql_backup_host) idata.recover = TRUE;
-	if (config.what_to_count & COUNT_CLASS) config.sql_aggressive_classification = FALSE;
+	if (config.sql_backup_host) idata.recover = true;
+	if (config.what_to_count & COUNT_CLASS) config.sql_aggressive_classification = false;
 	if (config.sql_locking_style) idata.locks = sql_select_locking_style(config.sql_locking_style);
 
-	sql_cache_flush(queries_queue, qq_ptr, &idata, TRUE);
+	sql_cache_flush(queries_queue, qq_ptr, &idata, true);
 
 	dump_writers_count();
 	if (dump_writers_get_flags() != CHLD_ALERT) {
@@ -1061,7 +1061,7 @@ void sql_exit_gracefully(int signum)
 int sql_evaluate_primitives(int primitive)
 {
 	pm_cfgreg_t what_to_count = 0, what_to_count_2 = 0, fakes = 0;
-	short int assume_custom_table = FALSE;
+	short int assume_custom_table = false;
 	char *insert_clause_start_ptr = insert_clause + strlen(insert_clause);
 	char default_delim[] = ",", delim_buf[SRVBUFLEN];
 
@@ -1078,7 +1078,7 @@ int sql_evaluate_primitives(int primitive)
 	if (config.sql_optimize_clauses) {
 		what_to_count = config.what_to_count;
 		what_to_count_2 = config.what_to_count_2;
-		assume_custom_table = TRUE;
+		assume_custom_table = true;
 	} else {
 		/* It is being requested to avoid SQL query optmization;
 		   then we will build an all-true bitmap */
@@ -1226,12 +1226,12 @@ int sql_evaluate_primitives(int primitive)
 
 #if defined (HAVE_L2)
 	if (what_to_count & (COUNT_SRC_MAC|COUNT_SUM_MAC)) {
-		int count_it = FALSE;
+		int count_it = false;
 
 		if ((config.sql_table_version >= SQL_TABLE_VERSION_BGP) && !assume_custom_table) {
 			Log(LOG_ERR, "ERROR ( %s/%s ): MAC accounting not supported for selected sql_table_version/_type. Read about SQL table versioning or consider using sql_optimize_clauses.\n", config.name, config.type);
 			exit_plugin(1);
-		} else count_it = TRUE;
+		} else count_it = true;
 
 		if (count_it) {
 			if (primitive) {
@@ -1249,12 +1249,12 @@ int sql_evaluate_primitives(int primitive)
 	}
 
 	if (what_to_count & COUNT_DST_MAC) {
-		int count_it = FALSE;
+		int count_it = false;
 
 		if ((config.sql_table_version >= SQL_TABLE_VERSION_BGP) && !assume_custom_table) {
 			Log(LOG_ERR, "ERROR ( %s/%s ): MAC accounting not supported for selected sql_table_version/_type. Read about SQL table versioning or consider using sql_optimize_clauses.\n", config.name, config.type);
 			exit_plugin(1);
-		} else count_it = TRUE;
+		} else count_it = true;
 
 		if (count_it) {
 			if (primitive) {
@@ -1272,14 +1272,14 @@ int sql_evaluate_primitives(int primitive)
 	}
 
 	if (what_to_count & COUNT_VLAN) {
-		int count_it = FALSE;
+		int count_it = false;
 
 		if ((config.sql_table_version < 2 || config.sql_table_version >= SQL_TABLE_VERSION_BGP) && !assume_custom_table) {
 			if (config.what_to_count & COUNT_VLAN) {
 				Log(LOG_ERR, "ERROR ( %s/%s ): VLAN accounting not supported for selected sql_table_version/_type. Read about SQL table versioning or consider using sql_optimize_clauses.\n", config.name, config.type);
 				exit_plugin(1);
 			} else what_to_count ^= COUNT_VLAN;
-		} else count_it = TRUE;
+		} else count_it = true;
 
 		if (count_it) {
 			if (primitive) {
@@ -1326,12 +1326,12 @@ int sql_evaluate_primitives(int primitive)
 #endif
 
 	if (what_to_count & (COUNT_SRC_HOST|COUNT_SUM_HOST)) {
-		int count_it = FALSE;
+		int count_it = false;
 
 		if ((config.sql_table_version >= SQL_TABLE_VERSION_BGP) && !assume_custom_table) {
 			Log(LOG_ERR, "ERROR ( %s/%s ): IP host accounting not supported for selected sql_table_version/_type. Read about SQL table versioning or consider using sql_optimize_clauses.\n", config.name, config.type);
 			exit_plugin(1);
-		} else count_it = TRUE;
+		} else count_it = true;
 
 		if (count_it) {
 			if (primitive) {
@@ -1381,12 +1381,12 @@ int sql_evaluate_primitives(int primitive)
 	}
 
 	if (what_to_count & COUNT_DST_HOST) {
-		int count_it = FALSE;
+		int count_it = false;
 
 		if ((config.sql_table_version >= SQL_TABLE_VERSION_BGP) && !assume_custom_table) {
 			Log(LOG_ERR, "ERROR ( %s/%s ): IP host accounting not supported for selected sql_table_version/_type. Read about SQL table versioning or consider using sql_optimize_clauses.\n", config.name, config.type);
 			exit_plugin(1);
-		} else count_it = TRUE;
+		} else count_it = true;
 
 		if (count_it) {
 			if (primitive) {
@@ -1546,12 +1546,12 @@ int sql_evaluate_primitives(int primitive)
 	}
 
 	if (what_to_count & COUNT_STD_COMM) {
-		int count_it = FALSE;
+		int count_it = false;
 
 		if ((config.sql_table_version < SQL_TABLE_VERSION_BGP) && !assume_custom_table) {
 			Log(LOG_ERR, "ERROR ( %s/%s ): BGP accounting not supported for selected sql_table_version/_type. Read about SQL table versioning or consider using sql_optimize_clauses.\n", config.name, config.type);
 			exit_plugin(1);
-		} else count_it = TRUE;
+		} else count_it = true;
 
 		if (count_it) {
 			if (primitive) {
@@ -1569,12 +1569,12 @@ int sql_evaluate_primitives(int primitive)
 	}
 
 	if (what_to_count & COUNT_EXT_COMM) {
-		int count_it = FALSE;
+		int count_it = false;
 
 		if ((config.sql_table_version < SQL_TABLE_VERSION_BGP) && !assume_custom_table) {
 			Log(LOG_ERR, "ERROR ( %s/%s ): BGP accounting not supported for selected sql_table_version/_type. Read about SQL table versioning or consider using sql_optimize_clauses.\n", config.name, config.type);
 			exit_plugin(1);
-		} else count_it = TRUE;
+		} else count_it = true;
 
 		if (count_it) {
 			if (primitive) {
@@ -1654,12 +1654,12 @@ int sql_evaluate_primitives(int primitive)
 	}
 
 	if (what_to_count & COUNT_AS_PATH) {
-		int count_it = FALSE;
+		int count_it = false;
 
 		if ((config.sql_table_version < SQL_TABLE_VERSION_BGP) && !assume_custom_table) {
 			Log(LOG_ERR, "ERROR ( %s/%s ): BGP accounting not supported for selected sql_table_version/_type. Read about SQL table versioning or consider using sql_optimize_clauses.\n", config.name, config.type);
 			exit_plugin(1);
-		} else count_it = TRUE;
+		} else count_it = true;
 
 		if (count_it) {
 			if (primitive) {
@@ -1691,14 +1691,14 @@ int sql_evaluate_primitives(int primitive)
 	}
 
 	if (what_to_count & COUNT_LOCAL_PREF) {
-		int count_it = FALSE;
+		int count_it = false;
 
 		if ((config.sql_table_version < SQL_TABLE_VERSION_BGP) && !assume_custom_table) {
 			if (config.what_to_count & COUNT_LOCAL_PREF) {
 				Log(LOG_ERR, "ERROR ( %s/%s ): BGP accounting not supported for selected sql_table_version/_type. Read about SQL table versioning or consider using sql_optimize_clauses.\n", config.name, config.type);
 				exit_plugin(1);
 			} else what_to_count ^= COUNT_LOCAL_PREF;
-		} else count_it = TRUE;
+		} else count_it = true;
 
 		if (count_it) {
 			if (primitive) {
@@ -1730,14 +1730,14 @@ int sql_evaluate_primitives(int primitive)
 	}
 
 	if (what_to_count & COUNT_MED) {
-		int count_it = FALSE;
+		int count_it = false;
 
 		if ((config.sql_table_version < SQL_TABLE_VERSION_BGP) && !assume_custom_table) {
 			if (config.what_to_count & COUNT_MED) {
 				Log(LOG_ERR, "ERROR ( %s/%s ): BGP accounting not supported for selected sql_table_version/_type. Read about SQL table versioning or consider using sql_optimize_clauses.\n", config.name, config.type);
 				exit_plugin(1);
 			} else what_to_count ^= COUNT_MED;
-		} else count_it = TRUE;
+		} else count_it = true;
 
 		if (count_it) {
 			if (primitive) {
@@ -1783,12 +1783,12 @@ int sql_evaluate_primitives(int primitive)
 	}
 
 	if (what_to_count & COUNT_PEER_SRC_AS) {
-		int count_it = FALSE;
+		int count_it = false;
 
 		if ((config.sql_table_version < SQL_TABLE_VERSION_BGP) && !assume_custom_table) {
 			Log(LOG_ERR, "ERROR ( %s/%s ): BGP accounting not supported for selected sql_table_version/_type. Read about SQL table versioning or consider using sql_optimize_clauses.\n", config.name, config.type);
 			exit_plugin(1);
-		} else count_it = TRUE;
+		} else count_it = true;
 
 		if (count_it) {
 			if (primitive) {
@@ -1807,12 +1807,12 @@ int sql_evaluate_primitives(int primitive)
 	}
 
 	if (what_to_count & COUNT_PEER_DST_AS) {
-		int count_it = FALSE;
+		int count_it = false;
 
 		if ((config.sql_table_version < SQL_TABLE_VERSION_BGP) && !assume_custom_table) {
 			Log(LOG_ERR, "ERROR ( %s/%s ): BGP accounting not supported for selected sql_table_version/_type. Read about SQL table versioning or consider using sql_optimize_clauses.\n", config.name, config.type);
 			exit_plugin(1);
-		} else count_it = TRUE;
+		} else count_it = true;
 
 		if (count_it) {
 			if (primitive) {
@@ -1831,12 +1831,12 @@ int sql_evaluate_primitives(int primitive)
 	}
 
 	if (what_to_count & COUNT_PEER_SRC_IP) {
-		int count_it = FALSE;
+		int count_it = false;
 
 		if ((config.sql_table_version < SQL_TABLE_VERSION_BGP) && !assume_custom_table) {
 			Log(LOG_ERR, "ERROR ( %s/%s ): BGP accounting not supported for selected sql_table_version/_type. Read about SQL table versioning or consider using sql_optimize_clauses.\n", config.name, config.type);
 			exit_plugin(1);
-		} else count_it = TRUE;
+		} else count_it = true;
 
 		if (count_it) {
 			if (primitive) {
@@ -1863,12 +1863,12 @@ int sql_evaluate_primitives(int primitive)
 	}
 
 	if (what_to_count & COUNT_PEER_DST_IP) {
-		int count_it = FALSE;
+		int count_it = false;
 
 		if ((config.sql_table_version < SQL_TABLE_VERSION_BGP) && !assume_custom_table) {
 			Log(LOG_ERR, "ERROR ( %s/%s ): BGP accounting not supported for selected sql_table_version/_type. Read about SQL table versioning or consider using sql_optimize_clauses.\n", config.name, config.type);
 			exit_plugin(1);
-		} else count_it = TRUE;
+		} else count_it = true;
 
 		if (count_it) {
 			if (primitive) {
@@ -1895,7 +1895,7 @@ int sql_evaluate_primitives(int primitive)
 	}
 
 	if (what_to_count & (COUNT_SRC_PORT|COUNT_SUM_PORT)) {
-		int count_it = FALSE;
+		int count_it = false;
 
 		if ((config.sql_table_version >= SQL_TABLE_VERSION_BGP) && !assume_custom_table) {
 			if (config.what_to_count & (COUNT_SRC_PORT|COUNT_SUM_PORT)) {
@@ -1905,7 +1905,7 @@ int sql_evaluate_primitives(int primitive)
 				if (what_to_count & COUNT_SRC_PORT) what_to_count ^= COUNT_SRC_PORT;
 				if (what_to_count & COUNT_SUM_PORT) what_to_count ^= COUNT_SUM_PORT;
 			}
-		} else count_it = TRUE;
+		} else count_it = true;
 
 		if (count_it) {
 			if (primitive) {
@@ -1929,14 +1929,14 @@ int sql_evaluate_primitives(int primitive)
 	}
 
 	if (what_to_count & COUNT_DST_PORT) {
-		int count_it = FALSE;
+		int count_it = false;
 
 		if ((config.sql_table_version >= SQL_TABLE_VERSION_BGP) && !assume_custom_table) {
 			if (config.what_to_count & COUNT_DST_PORT) {
 				Log(LOG_ERR, "ERROR ( %s/%s ): TCP/UDP port accounting not supported for selected sql_table_version/_type. Read about SQL table versioning or consider using sql_optimize_clauses.\n", config.name, config.type);
 				exit_plugin(1);
 			} else what_to_count ^= COUNT_DST_PORT;
-		} else count_it = TRUE;
+		} else count_it = true;
 
 		if (count_it) {
 			if (primitive) {
@@ -1960,14 +1960,14 @@ int sql_evaluate_primitives(int primitive)
 	}
 
 	if (what_to_count & COUNT_TCPFLAGS) {
-		int count_it = FALSE;
+		int count_it = false;
 
 		if ((config.sql_table_version < 7 || config.sql_table_version >= SQL_TABLE_VERSION_BGP) && !assume_custom_table) {
 			if (config.what_to_count & COUNT_TCPFLAGS) {
 				Log(LOG_ERR, "ERROR ( %s/%s ): TCP flags accounting not supported for selected sql_table_version/_type. Read about SQL table versioning or consider using sql_optimize_clauses.\n", config.name, config.type);
 				exit_plugin(1);
 			} else what_to_count ^= COUNT_TCPFLAGS;
-		} else count_it = TRUE;
+		} else count_it = true;
 
 		if (count_it) {
 			if (primitive) {
@@ -1983,14 +1983,14 @@ int sql_evaluate_primitives(int primitive)
 	}
 
 	if (what_to_count & COUNT_IP_TOS) {
-		int count_it = FALSE;
+		int count_it = false;
 
 		if ((config.sql_table_version < 3 || config.sql_table_version >= SQL_TABLE_VERSION_BGP) && !assume_custom_table) {
 			if (config.what_to_count & COUNT_IP_TOS) {
 				Log(LOG_ERR, "ERROR ( %s/%s ): IP ToS accounting not supported for selected sql_table_version/_type. Read about SQL table versioning or consider using sql_optimize_clauses.\n", config.name, config.type);
 				exit_plugin(1);
 			} else what_to_count ^= COUNT_IP_TOS;
-		} else count_it = TRUE;
+		} else count_it = true;
 
 		if (count_it) {
 			if (primitive) {
@@ -2008,14 +2008,14 @@ int sql_evaluate_primitives(int primitive)
 	}
 
 	if (what_to_count & COUNT_IP_PROTO) {
-		int count_it = FALSE;
+		int count_it = false;
 
 		if ((config.sql_table_version >= SQL_TABLE_VERSION_BGP) && !assume_custom_table) {
 			if (config.what_to_count & COUNT_IP_PROTO) {
 				Log(LOG_ERR, "ERROR ( %s/%s ): IP proto accounting not supported for selected sql_table_version/_type. Read about SQL table versioning or consider using sql_optimize_clauses.\n", config.name, config.type);
 				exit_plugin(1);
 			} else what_to_count ^= COUNT_IP_PROTO;
-		} else count_it = TRUE;
+		} else count_it = true;
 
 		if (count_it) {
 			if (primitive) {
@@ -2355,7 +2355,7 @@ int sql_evaluate_primitives(int primitive)
 			} else if (!strcmp(config.type, "pgsql")) {
 				if (config.sql_use_copy) {
 					strncat(values[primitive].string, "%s", SPACELEFT(values[primitive].string));
-					use_copy = TRUE;
+					use_copy = true;
 				} else {
 					strncat(where[primitive].string, "timestamp_start=ABSTIME(%u)::Timestamp", SPACELEFT(where[primitive].string));
 					strncat(values[primitive].string, "ABSTIME(%u)::Timestamp", SPACELEFT(values[primitive].string));
@@ -2403,7 +2403,7 @@ int sql_evaluate_primitives(int primitive)
 			} else if (!strcmp(config.type, "pgsql")) {
 				if (config.sql_use_copy) {
 					strncat(values[primitive].string, "%s", SPACELEFT(values[primitive].string));
-					use_copy = TRUE;
+					use_copy = true;
 				} else {
 					strncat(where[primitive].string, "timestamp_end=ABSTIME(%u)::Timestamp", SPACELEFT(where[primitive].string));
 					strncat(values[primitive].string, "ABSTIME(%u)::Timestamp", SPACELEFT(values[primitive].string));
@@ -2451,7 +2451,7 @@ int sql_evaluate_primitives(int primitive)
 			} else if (!strcmp(config.type, "pgsql")) {
 				if (config.sql_use_copy) {
 					strncat(values[primitive].string, "%s", SPACELEFT(values[primitive].string));
-					use_copy = TRUE;
+					use_copy = true;
 				} else {
 					strncat(where[primitive].string, "timestamp_arrival=ABSTIME(%u)::Timestamp", SPACELEFT(where[primitive].string));
 					strncat(values[primitive].string, "ABSTIME(%u)::Timestamp", SPACELEFT(values[primitive].string));
@@ -2500,7 +2500,7 @@ int sql_evaluate_primitives(int primitive)
 			} else if (!strcmp(config.type, "pgsql")) {
 				if (config.sql_use_copy) {
 					strncat(values[primitive].string, "%s", SPACELEFT(values[primitive].string));
-					use_copy = TRUE;
+					use_copy = true;
 				} else {
 					strncat(where[primitive].string, "timestamp_min=ABSTIME(%u)::Timestamp", SPACELEFT(where[primitive].string));
 					strncat(values[primitive].string, "ABSTIME(%u)::Timestamp", SPACELEFT(values[primitive].string));
@@ -2512,7 +2512,7 @@ int sql_evaluate_primitives(int primitive)
 		}
 		if (!use_copy) values[primitive].handler = where[primitive].handler = count_timestamp_min_handler;
 		else values[primitive].handler = where[primitive].handler = PG_copy_count_timestamp_min_handler;
-		values[primitive].type = where[primitive].type = FALSE;
+		values[primitive].type = where[primitive].type = false;
 		primitive++;
 
 		if (!config.timestamps_secs) {
@@ -2523,7 +2523,7 @@ int sql_evaluate_primitives(int primitive)
 			strncat(insert_clause, "timestamp_min_residual", SPACELEFT(insert_clause));
 			strncat(where[primitive].string, "timestamp_min_residual=%u", SPACELEFT(where[primitive].string));
 			strncat(values[primitive].string, "%u", SPACELEFT(values[primitive].string));
-			values[primitive].type = where[primitive].type = FALSE;
+			values[primitive].type = where[primitive].type = false;
 			values[primitive].handler = where[primitive].handler = count_timestamp_min_residual_handler;
 			primitive++;
 		}
@@ -2545,7 +2545,7 @@ int sql_evaluate_primitives(int primitive)
 			} else if (!strcmp(config.type, "pgsql")) {
 				if (config.sql_use_copy) {
 					strncat(values[primitive].string, "%s", SPACELEFT(values[primitive].string));
-					use_copy = TRUE;
+					use_copy = true;
 				} else {
 					strncat(where[primitive].string, "timestamp_max=ABSTIME(%u)::Timestamp", SPACELEFT(where[primitive].string));
 					strncat(values[primitive].string, "ABSTIME(%u)::Timestamp", SPACELEFT(values[primitive].string));
@@ -2558,7 +2558,7 @@ int sql_evaluate_primitives(int primitive)
 
 		if (!use_copy) values[primitive].handler = where[primitive].handler = count_timestamp_max_handler;
 		else values[primitive].handler = where[primitive].handler = PG_copy_count_timestamp_max_handler;
-		values[primitive].type = where[primitive].type = FALSE;
+		values[primitive].type = where[primitive].type = false;
 		primitive++;
 
 		if (!config.timestamps_secs) {
@@ -2569,7 +2569,7 @@ int sql_evaluate_primitives(int primitive)
 			strncat(insert_clause, "timestamp_max_residual", SPACELEFT(insert_clause));
 			strncat(where[primitive].string, "timestamp_max_residual=%u", SPACELEFT(where[primitive].string));
 			strncat(values[primitive].string, "%u", SPACELEFT(values[primitive].string));
-			values[primitive].type = where[primitive].type = FALSE;
+			values[primitive].type = where[primitive].type = false;
 			values[primitive].handler = where[primitive].handler = count_timestamp_max_residual_handler;
 			primitive++;
 		}
@@ -2634,14 +2634,14 @@ int sql_evaluate_primitives(int primitive)
 	}
 
 	if (what_to_count & COUNT_TAG) {
-		int count_it = FALSE;
+		int count_it = false;
 
 		if ((config.sql_table_version < 2) && !assume_custom_table) {
 			if (config.what_to_count & COUNT_TAG) {
 				Log(LOG_ERR, "ERROR ( %s/%s ): Tag/ID accounting not supported for selected sql_table_version/_type. Read about SQL table versioning or consider using sql_optimize_clauses.\n", config.name, config.type);
 				exit_plugin(1);
 			} else what_to_count ^= COUNT_TAG;
-		} else count_it = TRUE;
+		} else count_it = true;
 
 		if (count_it) {
 			if (primitive) {
@@ -2693,14 +2693,14 @@ int sql_evaluate_primitives(int primitive)
 	}
 
 	if (what_to_count & COUNT_CLASS) {
-		int count_it = FALSE;
+		int count_it = false;
 
 		if ((config.sql_table_version < 5 || config.sql_table_version >= SQL_TABLE_VERSION_BGP) && !assume_custom_table) {
 			if (config.what_to_count & COUNT_CLASS) {
 				Log(LOG_ERR, "ERROR ( %s/%s ): L7 classification accounting not supported for selected sql_table_version/_type. Read about SQL table versioning or consider using sql_optimize_clauses.\n", config.name, config.type);
 				exit_plugin(1);
 			} else what_to_count ^= COUNT_CLASS;
-		} else count_it = TRUE;
+		} else count_it = true;
 
 		if (count_it) {
 			if (primitive) {
@@ -2735,11 +2735,11 @@ int sql_evaluate_primitives(int primitive)
 
 #if defined (HAVE_L2)
 	if (fakes & FAKE_SRC_MAC) {
-		int count_it = FALSE;
+		int count_it = false;
 
 		if ((config.sql_table_version >= SQL_TABLE_VERSION_BGP) && !assume_custom_table) {
 			fakes ^= FAKE_SRC_MAC;
-		} else count_it = TRUE;
+		} else count_it = true;
 
 		if (count_it) {
 			if (primitive) {
@@ -2757,11 +2757,11 @@ int sql_evaluate_primitives(int primitive)
 	}
 
 	if (fakes & FAKE_DST_MAC) {
-		int count_it = FALSE;
+		int count_it = false;
 
 		if ((config.sql_table_version >= SQL_TABLE_VERSION_BGP) && !assume_custom_table) {
 			fakes ^= FAKE_DST_MAC;
-		} else count_it = TRUE;
+		} else count_it = true;
 
 		if (count_it) {
 			if (primitive) {
@@ -2780,11 +2780,11 @@ int sql_evaluate_primitives(int primitive)
 #endif
 
 	if (fakes & FAKE_SRC_HOST) {
-		int count_it = FALSE;
+		int count_it = false;
 
 		if ((config.sql_table_version >= SQL_TABLE_VERSION_BGP) && !assume_custom_table) {
 			fakes ^= FAKE_SRC_HOST;
-		} else count_it = TRUE;
+		} else count_it = true;
 
 		if (count_it) {
 			if (primitive) {
@@ -2811,11 +2811,11 @@ int sql_evaluate_primitives(int primitive)
 	}
 
 	if (fakes & FAKE_DST_HOST) {
-		int count_it = FALSE;
+		int count_it = false;
 
 		if ((config.sql_table_version >= SQL_TABLE_VERSION_BGP) && !assume_custom_table) {
 			fakes ^= FAKE_DST_HOST;
-		} else count_it = TRUE;
+		} else count_it = true;
 
 		if (count_it) {
 			if (primitive) {
@@ -2882,11 +2882,11 @@ int sql_evaluate_primitives(int primitive)
 	}
 
 	if (fakes & FAKE_COMMS) {
-		int count_it = FALSE;
+		int count_it = false;
 
 		if ((config.sql_table_version < SQL_TABLE_VERSION_BGP) && !assume_custom_table) {
 			fakes ^= FAKE_COMMS;
-		} else count_it = TRUE;
+		} else count_it = true;
 
 		if (count_it) {
 			if (primitive) {
@@ -2904,11 +2904,11 @@ int sql_evaluate_primitives(int primitive)
 	}
 
 	if (fakes & FAKE_AS_PATH) {
-		int count_it = FALSE;
+		int count_it = false;
 
 		if ((config.sql_table_version < SQL_TABLE_VERSION_BGP) && !assume_custom_table) {
 			fakes ^= FAKE_AS_PATH;
-		} else count_it = TRUE;
+		} else count_it = true;
 
 		if (count_it) {
 			if (primitive) {
@@ -2926,11 +2926,11 @@ int sql_evaluate_primitives(int primitive)
 	}
 
 	if (fakes & FAKE_PEER_SRC_AS) {
-		int count_it = FALSE;
+		int count_it = false;
 
 		if ((config.sql_table_version < SQL_TABLE_VERSION_BGP) && !assume_custom_table) {
 			fakes ^= FAKE_PEER_SRC_AS;
-		} else count_it = TRUE;
+		} else count_it = true;
 
 		if (count_it) {
 			if (primitive) {
@@ -2948,11 +2948,11 @@ int sql_evaluate_primitives(int primitive)
 	}
 
 	if (fakes & FAKE_PEER_DST_AS) {
-		int count_it = FALSE;
+		int count_it = false;
 
 		if ((config.sql_table_version < SQL_TABLE_VERSION_BGP) && !assume_custom_table) {
 			fakes ^= FAKE_PEER_DST_AS;
-		} else count_it = TRUE;
+		} else count_it = true;
 
 		if (count_it) {
 			if (primitive) {
@@ -2970,11 +2970,11 @@ int sql_evaluate_primitives(int primitive)
 	}
 
 	if (fakes & FAKE_PEER_SRC_IP) {
-		int count_it = FALSE;
+		int count_it = false;
 
 		if ((config.sql_table_version < SQL_TABLE_VERSION_BGP) && !assume_custom_table) {
 			fakes ^= FAKE_PEER_SRC_IP;
-		} else count_it = TRUE;
+		} else count_it = true;
 
 		if (count_it) {
 			if (primitive) {
@@ -3001,11 +3001,11 @@ int sql_evaluate_primitives(int primitive)
 	}
 
 	if (fakes & FAKE_PEER_DST_IP) {
-		int count_it = FALSE;
+		int count_it = false;
 
 		if ((config.sql_table_version < SQL_TABLE_VERSION_BGP) && !assume_custom_table) {
 			fakes ^= FAKE_PEER_DST_IP;
-		} else count_it = TRUE;
+		} else count_it = true;
 
 		if (count_it) {
 			if (primitive) {
@@ -3042,7 +3042,7 @@ int sql_query(struct BE_descs *bed, struct db_cache *elem, struct insert_data *i
 		if ((*sqlfunc_cbr.op)(bed->p, elem, idata)); /* failed */
 		else {
 			idata->qn++;
-			return FALSE;
+			return false;
 		}
 	}
 
@@ -3066,7 +3066,7 @@ int sql_query(struct BE_descs *bed, struct db_cache *elem, struct insert_data *i
 	}
 
 quit:
-	return TRUE;
+	return true;
 }
 
 void sql_create_table(struct DBdesc *db, time_t *basetime, struct primitives_ptrs *prim_ptrs)

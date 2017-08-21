@@ -49,7 +49,7 @@ void mysql_plugin(int pipe_fd, struct configuration *cfgptr, void *ptr)
 	char *dataptr;
 
 	unsigned char *rgptr;
-	int pollagain = TRUE;
+	int pollagain = true;
 	u_int32_t seq = 1, rg_err_count = 0;
 
 	struct extra_primitives extras;
@@ -68,7 +68,7 @@ void mysql_plugin(int pipe_fd, struct configuration *cfgptr, void *ptr)
 	if (config.pidfile) write_pid_file_plugin(config.pidfile, config.type, config.name);
 	if (config.logfile) {
 		fclose(config.logfile_fd);
-		config.logfile_fd = open_output_file(config.logfile, "a", FALSE);
+		config.logfile_fd = open_output_file(config.logfile, "a", false);
 	}
 
 	sql_set_signals();
@@ -78,7 +78,7 @@ void mysql_plugin(int pipe_fd, struct configuration *cfgptr, void *ptr)
 	sql_set_insert_func();
 
 	/* some LOCAL initialization AFTER setting some default values */
-	reload_map = FALSE;
+	reload_map = false;
 	idata.now = time(NULL);
 	refresh_deadline = idata.now;
 	idata.cfg = &config;
@@ -115,7 +115,7 @@ void mysql_plugin(int pipe_fd, struct configuration *cfgptr, void *ptr)
 	/* plugin main loop */
 	for(;;) {
 poll_again:
-		status->wakeup = TRUE;
+		status->wakeup = true;
 		calc_refresh_timeout(refresh_deadline, idata.now, &refresh_timeout);
 
 		pfd.fd = pipe_fd;
@@ -148,7 +148,7 @@ poll_again:
 
 		switch (ret) {
 		case 0: /* timeout */
-			if (qq_ptr) sql_cache_flush(queries_queue, qq_ptr, &idata, FALSE);
+			if (qq_ptr) sql_cache_flush(queries_queue, qq_ptr, &idata, false);
 			sql_cache_handle_flush_event(&idata, &refresh_deadline, &pt);
 			break;
 		default: /* we received data */
@@ -157,7 +157,7 @@ read_data:
 				if (!pollagain) {
 					seq++;
 					seq %= MAX_SEQNUM;
-					if (seq == 0) rg_err_count = FALSE;
+					if (seq == 0) rg_err_count = false;
 					idata.now = time(NULL);
 				} else {
 					if ((ret = read(pipe_fd, &rgptr, sizeof(rgptr))) == 0)
@@ -168,7 +168,7 @@ read_data:
 
 				if (((struct ch_buf_hdr *)rg->ptr)->seq != seq) {
 					if (!pollagain) {
-						pollagain = TRUE;
+						pollagain = true;
 						goto poll_again;
 					} else {
 						rg_err_count++;
@@ -184,7 +184,7 @@ read_data:
 					}
 				}
 
-				pollagain = FALSE;
+				pollagain = false;
 				memcpy(pipebuf, rg->ptr, bufsz);
 				rg->ptr += bufsz;
 			}
@@ -204,7 +204,7 @@ read_data:
 
 			/* lazy sql refresh handling */
 			if (idata.now > refresh_deadline) {
-				if (qq_ptr) sql_cache_flush(queries_queue, qq_ptr, &idata, FALSE);
+				if (qq_ptr) sql_cache_flush(queries_queue, qq_ptr, &idata, false);
 				sql_cache_handle_flush_event(&idata, &refresh_deadline, &pt);
 			} else {
 				if (config.sql_trigger_exec) {
@@ -270,13 +270,13 @@ int MY_cache_dbop(struct DBdesc *db, struct db_cache *cache_elem, struct insert_
 		    config.name, config.type, idata->mv.buffer_elem_num);
 		if (ret) goto signal_error;
 		idata->iqn++;
-		idata->mv.buffer_elem_num = FALSE;
+		idata->mv.buffer_elem_num = false;
 		idata->mv.buffer_offset = 0;
 
-		return FALSE;
+		return false;
 	}
 
-	if (config.what_to_count & COUNT_FLOWS) have_flows = TRUE;
+	if (config.what_to_count & COUNT_FLOWS) have_flows = true;
 
 	/* constructing sql query */
 	ptr_where = where_clause;
@@ -360,8 +360,8 @@ multi_values_handling:
 					    config.name, config.type, idata->mv.buffer_elem_num);
 					if (ret) goto signal_error;
 					idata->iqn++;
-					idata->mv.buffer_elem_num = FALSE;
-					idata->mv.head_buffer_elem = FALSE;
+					idata->mv.buffer_elem_num = false;
+					idata->mv.head_buffer_elem = false;
 					idata->mv.buffer_offset = 0;
 					goto multi_values_handling;
 				} else {
@@ -385,7 +385,7 @@ multi_values_handling:
 	}
 
 	idata->een++;
-	// cache_elem->valid = FALSE; /* committed */
+	// cache_elem->valid = false; /* committed */
 
 	return ret;
 
@@ -401,7 +401,7 @@ signal_error:
 	MY_get_errmsg(db);
 	if (db->errmsg) Log(LOG_ERR, "ERROR ( %s/%s ): %s\n\n", config.name, config.type, db->errmsg);
 
-	if (mysql_errno(db->desc) == 1062) return FALSE; /* not signalling duplicate entry problems */
+	if (mysql_errno(db->desc) == 1062) return false; /* not signalling duplicate entry problems */
 	else return ret;
 }
 
@@ -480,7 +480,7 @@ start:
 	if (idata->locks == PM_LOCK_EXCLUSIVE) (*sqlfunc_cbr.lock)(bed.p);
 
 	for (idata->current_queue_elem = 0; idata->current_queue_elem < index; idata->current_queue_elem++) {
-		go_to_pending = FALSE;
+		go_to_pending = false;
 
 		if (idata->dyn_table &&
 		    (!idata->dyn_table_time_only ||
@@ -500,7 +500,7 @@ start:
 				pending_queries_queue[pqq_ptr] = queue[idata->current_queue_elem];
 
 				pqq_ptr++;
-				go_to_pending = TRUE;
+				go_to_pending = true;
 			}
 		}
 
@@ -514,7 +514,7 @@ start:
 
 	/* multi-value INSERT query: wrap-up */
 	if (idata->mv.buffer_elem_num) {
-		idata->mv.last_queue_elem = TRUE;
+		idata->mv.last_queue_elem = true;
 		sql_query(&bed, LastElemCommitted, idata);
 		idata->qn--; /* increased by sql_query() one time too much */
 	}
@@ -573,7 +573,7 @@ int MY_compose_static_queries()
 	        config.sql_table_version < SQL_TABLE_VERSION_BGP &&
 	        !config.sql_optimize_clauses)) {
 		config.what_to_count |= COUNT_FLOWS;
-		have_flows = TRUE;
+		have_flows = true;
 
 		if ((config.sql_table_version < 4 || config.sql_table_version >= SQL_TABLE_VERSION_BGP) && !config.sql_optimize_clauses) {
 			Log(LOG_ERR, "ERROR ( %s/%s ): The accounting of flows requires SQL table v4. Exiting.\n", config.name, config.type);
@@ -659,7 +659,7 @@ void MY_DB_Connect(struct DBdesc *db, char *host)
 
 	if (!db->fail) {
 		mysql_init(db->desc);
-		dbptr->reconnect = TRUE;
+		dbptr->reconnect = true;
 		if (!mysql_real_connect(db->desc, host, config.sql_user, config.sql_passwd, config.sql_db, 0, NULL, 0)) {
 			sql_db_fail(db);
 			MY_get_errmsg(db);
@@ -734,20 +734,20 @@ void MY_init_default_values(struct insert_data *idata)
 		else config.sql_table = mysql_table;
 	}
 	if (strchr(config.sql_table, '%') || strchr(config.sql_table, '$')) {
-		idata->dyn_table = TRUE;
-		if (!strchr(config.sql_table, '$')) idata->dyn_table_time_only = TRUE;
+		idata->dyn_table = true;
+		if (!strchr(config.sql_table, '$')) idata->dyn_table_time_only = true;
 	}
 	glob_dyn_table = idata->dyn_table;
 	glob_dyn_table_time_only = idata->dyn_table_time_only;
 
-	if (config.sql_backup_host) idata->recover = TRUE;
+	if (config.sql_backup_host) idata->recover = true;
 
 	if (config.sql_multi_values) {
 		multi_values_buffer = malloc(config.sql_multi_values);
 		if (!multi_values_buffer) {
 			Log(LOG_ERR, "ERROR ( %s/%s ): Unable to get enough room (%d) for multi value queries.\n",
 			    config.name, config.type, config.sql_multi_values);
-			config.sql_multi_values = FALSE;
+			config.sql_multi_values = false;
 		}
 		memset(multi_values_buffer, 0, config.sql_multi_values);
 	}

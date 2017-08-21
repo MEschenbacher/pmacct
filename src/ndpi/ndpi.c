@@ -370,12 +370,12 @@ struct ndpi_proto pm_ndpi_packet_processing(struct pm_ndpi_workflow *workflow,
 	    || ((proto == IPPROTO_TCP) && (flow->packets > workflow->prefs.giveup_proto_udp))
 	    || ((proto != IPPROTO_UDP && proto != IPPROTO_TCP) && (flow->packets > workflow->prefs.giveup_proto_other))) {
 		/* New protocol detected or give up */
-		flow->detection_completed = TRUE;
+		flow->detection_completed = true;
 	}
 
 	if (proto == IPPROTO_TCP) {
 		struct pm_tcphdr *tcph = (struct pm_tcphdr *) pptrs->tlh_ptr;
-		if (tcph->th_flags & (TH_FIN|TH_RST)) flow->tcp_finished = TRUE;
+		if (tcph->th_flags & (TH_FIN|TH_RST)) flow->tcp_finished = true;
 	}
 
 	if (flow->detection_completed || flow->tcp_finished) {
@@ -385,7 +385,7 @@ struct ndpi_proto pm_ndpi_packet_processing(struct pm_ndpi_workflow *workflow,
 		if (workflow->prefs.protocol_guess) {
 			if (flow->detected_protocol.app_protocol == NDPI_PROTOCOL_UNKNOWN && !flow->guess_completed) {
 				pm_ndpi_node_guess_undetected_protocol(workflow, flow);
-				flow->guess_completed = TRUE;
+				flow->guess_completed = true;
 			}
 		}
 	}
@@ -464,20 +464,20 @@ int pm_ndpi_node_idle_scan_walker(const void *node, const pm_VISIT which, const 
 	struct pm_ndpi_flow_info *flow = *(struct pm_ndpi_flow_info **) node;
 	struct pm_ndpi_workflow *workflow = (struct pm_ndpi_workflow *) user_data;
 
-	if (!flow || !workflow) return FALSE;
+	if (!flow || !workflow) return false;
 
-	if (workflow->num_idle_flows == workflow->prefs.idle_scan_budget) return FALSE;
+	if (workflow->num_idle_flows == workflow->prefs.idle_scan_budget) return false;
 
 	if ((which == ndpi_preorder) || (which == ndpi_leaf)) { /* Avoid walking the same node multiple times */
 		/* expire Idle and TCP finished flows */
 		if ((flow->last_seen + workflow->prefs.idle_max_time < workflow->last_time) ||
-		    (flow->tcp_finished == TRUE)) {
+		    (flow->tcp_finished == true)) {
 			/* adding to a queue (we can't delete it from the tree inline) */
 			workflow->idle_flows[workflow->num_idle_flows++] = flow;
 		}
 	}
 
-	return TRUE;
+	return true;
 }
 
 void pm_ndpi_idle_flows_cleanup(struct pm_ndpi_workflow *workflow)

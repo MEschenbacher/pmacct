@@ -226,9 +226,9 @@ static char ftoft_buf_1[NF9_SOFTFLOWD_MAX_PACKET_SIZE*2];
 static char packet[NF9_SOFTFLOWD_MAX_PACKET_SIZE];
 
 static int nf9_pkts_until_template = -1;
-static u_int8_t send_options = FALSE;
-static u_int8_t send_sampling_option = FALSE;
-static u_int8_t send_class_option = FALSE;
+static u_int8_t send_options = false;
+static u_int8_t send_sampling_option = false;
+static u_int8_t send_class_option = false;
 
 /*
  * XXX: pmXXX_htonll(): similar to htonl() for 64 bits integers; no checks are done
@@ -615,7 +615,7 @@ int nf9_init_cp_template(struct NF9_SOFTFLOWD_TEMPLATE *tpl, struct NF9_SOFTFLOW
 {
 	struct NF9_INTERNAL_TEMPLATE_RECORD *cp_first_record = NULL, *cp_first_record_out = NULL;
 	struct custom_primitive_ptrs *cp_entry;
-	int cp_idx, cp_first = FALSE, cp_len = 0;
+	int cp_idx, cp_first = false, cp_len = 0;
 
 	for (cp_idx = 0; cp_idx < config.cpptrs.num; cp_idx++) {
 		cp_entry = &config.cpptrs.primitive[cp_idx];
@@ -637,7 +637,7 @@ int nf9_init_cp_template(struct NF9_SOFTFLOWD_TEMPLATE *tpl, struct NF9_SOFTFLOW
 
 						cp_first_record = &tpl_int->r[rcount];
 						cp_first_record_out = &tpl_int_out->r[rcount];
-						cp_first = TRUE;
+						cp_first = true;
 					} else {
 						tpl_int->r[rcount].handler = NULL;
 						tpl_int_out->r[rcount].handler = NULL;
@@ -661,7 +661,7 @@ int nf9_init_cp_pen_template(struct IPFIX_PEN_TEMPLATE_ADDENDUM *tpl, struct IPF
 {
 	struct NF9_INTERNAL_TEMPLATE_RECORD *cp_pen_first_record = NULL, *cp_pen_first_record_out = NULL;
 	struct custom_primitive_ptrs *cp_entry;
-	int cp_idx, cp_pen_first = FALSE, cp_pen_len = 0;
+	int cp_idx, cp_pen_first = false, cp_pen_len = 0;
 
 	for (cp_idx = 0; cp_idx < config.cpptrs.num; cp_idx++) {
 		cp_entry = &config.cpptrs.primitive[cp_idx];
@@ -683,7 +683,7 @@ int nf9_init_cp_pen_template(struct IPFIX_PEN_TEMPLATE_ADDENDUM *tpl, struct IPF
 
 				cp_pen_first_record = &tpl_int->r[rcount_pen];
 				cp_pen_first_record_out = &tpl_int_out->r[rcount_pen];
-				cp_pen_first = TRUE;
+				cp_pen_first = true;
 			} else {
 				tpl_int->r[rcount_pen].handler = NULL;
 				tpl_int_out->r[rcount_pen].handler = NULL;
@@ -2040,7 +2040,7 @@ send_netflow_v9(struct FLOW **flows, int num_flows, int nfsock,
 
 	for (direction = DIRECTION_IN; direction <= DIRECTION_OUT; direction++) {
 		last_valid = 0;
-		new_direction = TRUE;
+		new_direction = true;
 
 		for (flow_j = 0, class_j = 0; flow_j < num_flows;) {
 			bzero(packet, sizeof(packet));
@@ -2112,8 +2112,8 @@ send_netflow_v9(struct FLOW **flows, int num_flows, int nfsock,
 					offset += sampling_option_template.tot_len;
 					flows++;
 					tot_len += sampling_option_template.tot_len;
-					send_options = TRUE;
-					send_sampling_option = TRUE;
+					send_options = true;
+					send_sampling_option = true;
 				}
 				if (((config.nfprobe_what_to_count & COUNT_CLASS)
 #if defined (WITH_NDPI)
@@ -2124,9 +2124,9 @@ send_netflow_v9(struct FLOW **flows, int num_flows, int nfsock,
 					offset += class_option_template.tot_len;
 					flows++;
 					tot_len += class_option_template.tot_len;
-					send_options = TRUE;
-					send_options = TRUE;
-					send_class_option = TRUE;
+					send_options = true;
+					send_options = true;
+					send_class_option = true;
 				}
 				nf9_pkts_until_template = NF9_DEFAULT_TEMPLATE_INTERVAL;
 
@@ -2158,10 +2158,10 @@ send_netflow_v9(struct FLOW **flows, int num_flows, int nfsock,
 					if (send_options) {
 						if (send_sampling_option) {
 							dh->c.flowset_id = sampling_option_template.h.template_id;
-							// last_af = 0; new_direction = TRUE;
+							// last_af = 0; new_direction = true;
 						} else if (send_class_option) {
 							dh->c.flowset_id = class_option_template.h.template_id;
-							// last_af = 0; new_direction = TRUE;
+							// last_af = 0; new_direction = true;
 						}
 					} else {
 						if (flows[flow_i + flow_j]->af == AF_INET) {
@@ -2181,7 +2181,7 @@ send_netflow_v9(struct FLOW **flows, int num_flows, int nfsock,
 						// last_af = flows[flow_i + flow_j]->af; /* XXX */
 					}
 					last_valid = offset;
-					new_direction = FALSE;
+					new_direction = false;
 					dh->c.length = sizeof(*dh); /* Filled as we go */
 					offset += sizeof(*dh);
 				}
@@ -2191,13 +2191,13 @@ send_netflow_v9(struct FLOW **flows, int num_flows, int nfsock,
 					if (send_sampling_option) {
 						r = nf_sampling_option_to_flowset(packet + offset,
 						                                  sizeof(packet) - offset, system_boot_time, &inc);
-						send_sampling_option = FALSE;
+						send_sampling_option = false;
 					} else if (send_class_option) {
 						r = nf_class_option_to_flowset(class_i + class_j, packet + offset,
 						                               sizeof(packet) - offset, system_boot_time, &inc);
 
 						if (r > 0) class_i += r;
-						if (class_i + class_j >= num_class) send_class_option = FALSE;
+						if (class_i + class_j >= num_class) send_class_option = false;
 					}
 				} else
 					r = nf_flow_to_flowset(flows[flow_i + flow_j], packet + offset,
@@ -2230,7 +2230,7 @@ send_netflow_v9(struct FLOW **flows, int num_flows, int nfsock,
 					if (send_options) {
 						if (!send_sampling_option &&
 						    !send_class_option) {
-							send_options = FALSE;
+							send_options = false;
 						}
 						flow_i--;
 					} else last_af = flows[flow_i + flow_j]->af; /* XXX */
